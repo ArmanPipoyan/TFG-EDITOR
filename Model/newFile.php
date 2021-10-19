@@ -18,14 +18,14 @@
 				echo 'Failed to create file';
 			}
 		}		
-		else {
+		/*else {
 			if(mkdir($dst)) {
 				echo true;
 			}
 			else {
 				echo 'Failed to create folder';
 			}
-		}
+		}*/
 	}
 
 ?>
