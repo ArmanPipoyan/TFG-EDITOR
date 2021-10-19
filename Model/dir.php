@@ -7,7 +7,7 @@
   foreach($files as $file) {
     if($file === '.') {continue;}
     if($file === "..") {
-      echo '<li id="'.dirname($dir).'" onclick="openFolder(this.id)" class=" list-group-item file" >Back <div class="image-parent"> <img src="Vista/imagenes/folder.svg" class="img-fluid" alt="quixote"></div> </li>';
+      //echo '<li id="'.dirname($dir).'" onclick="openFolder(this.id)" class=" list-group-item file" >Back <div class="image-parent"> <img src="Vista/imagenes/folder.svg" class="img-fluid" alt="quixote"></div> </li>';
       continue;
     }
     $path = $dir . '/' . $file;
