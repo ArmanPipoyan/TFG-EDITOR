@@ -12,7 +12,7 @@
     }
     $path = $dir . '/' . $file;
     if(is_dir($path)) {
-      echo '<li id="'.$path.'" onclick="openFolder(this.id)" class=" list-group-item file">'.$file.' <div class="image-parent"> <img src="Vista/imagenes/folder.svg" class="img-fluid" alt="quixote"></div></li>';
+      echo '<li id="'.$path.'" onclick="openFolder(this.id)" class=" list-group-item file">'.$file.' <div class="image-parent"> <img src="Vista/imagenes/folder.svg" class="img-fluid" ></div></li>';
     }
   }
   foreach($files as $file) {
@@ -27,7 +27,7 @@
           $ext="";
         }
         //$ext=".php";
-        echo '<li id="'.$path.'" onclick="openFile(this.id)" class="list-group-item file" > '.$file.' <div class="image-parent"> <img src="Vista/imagenes/'.$ext.'.svg" class="img-fluid" alt="quixote"></div></li>';
+        echo '<li id="'.$path.'" onclick="openFile(this.id)" class="list-group-item file" > '.$file.' <div class="image-parent"> <img src="Vista/imagenes/'.$ext.'.svg" class="img-fluid" ></div></li>';
       }
     }
   }

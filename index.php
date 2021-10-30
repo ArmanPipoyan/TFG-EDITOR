@@ -12,7 +12,8 @@ if (isset($_GET["query"])) {
 switch ($query) {
     case 1: //Editor donde se puede editar codigo
         include __DIR__ . "/Vista/html/Header.php"; 
-        include __DIR__ . "/Vista/html/Editor.html"; 
+        include __DIR__ . "/Controlador/lista_problemas.php"; 
+         
         include __DIR__ . "/Vista/html/Footer.html"; 
 
         break;
@@ -25,6 +26,27 @@ switch ($query) {
     case 3: // Formulario de registro
         include __DIR__ . "/Vista/html/Header.php"; 
         include __DIR__ . "/Vista/html/Registro.html"; 
+        include __DIR__ . "/Vista/html/Footer.html"; 
+        break;
+
+    case 4: // Formulario de registro
+        include __DIR__ . "/Vista/html/Header.php"; 
+        include __DIR__ . "/Vista/html/NewProblem.php"; 
+        include __DIR__ . "/Vista/html/Footer.html"; 
+        break;
+    case 5: // Formulario de registro
+        include __DIR__ . "/Vista/html/Header.php"; 
+        include __DIR__ . "/Vista/html/Problema_satisfactori.php"; 
+        include __DIR__ . "/Vista/html/Footer.html"; 
+        break;
+    case 6: // Formulario de registro
+        include __DIR__ . "/Vista/html/Header.php"; 
+        include __DIR__ . "/Vista/html/problema_error.php"; 
+        include __DIR__ . "/Vista/html/Footer.html"; 
+        break;
+    case 7: // Formulario de registro
+        include __DIR__ . "/Vista/html/Header.php"; 
+        include __DIR__ . "/Controlador/editor.php";
         include __DIR__ . "/Vista/html/Footer.html"; 
         break;
 }

@@ -1,9 +1,13 @@
-    <a href="Model/Conectar.php">Conectar a base de datos</a>
-    <div id="button" href="#" onclick="newFile();return false;">link text</div>
+
+<script type="text/javascript" language="JavaScript">
+    var myVariable = <?php echo(json_encode($data["Ruta"])); ?>;
+    openFolder(myVariable);
+    </script>
+<br>
 
     <div class="container bg-secondary">
-    <p class="text-center font-weight-bold">Problema de programacio</p>
-    <p class="font-weight-normal">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+    <p class="text-center font-weight-bold"><?php echo $data["Title"];?></p>
+    <p class="font-weight-normal"><?php echo htmlspecialchars($data["Descripcio"]);?></p>
     <div class="control-panel">
         Selecciona llenguatge de programació
         &nbsp; &nbsp;
@@ -15,8 +19,9 @@
     </div>
     <button onclick="newFile();">New file </button>
     <div id="files"></div>
+    
     <pre id="editor">
-    <?php echo htmlspecialchars($s) ?>
+    
     </pre>
 
     <div class="button-container">
@@ -24,6 +29,7 @@
     </div>
 
     <div class="output bg-light"></div>
+    <br>
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="Vista/js/lib/ace.js"></script>

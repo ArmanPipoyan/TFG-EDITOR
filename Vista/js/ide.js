@@ -1,8 +1,6 @@
-
-
 window.onload = function() {
     editor = ace.edit("editor");
-    openFolder("..");
+    //openFolder("./../app/problemes/Qa Tester3");
     editor.setTheme("ace/theme/monokai");
     //editor.setValue("include <iostrem>");
     //editor.insert("Proba beta de codi");
@@ -14,6 +12,8 @@ window.onload = function() {
     });
     
 }
+
+
 
 function post(url,data,callback) {
     var xhr = new XMLHttpRequest();
@@ -201,13 +201,28 @@ function newFile() {
     }
   }
 
-  function load() {
-    //nada
-    
+  function openFile(file) {
 
+    post("archivo.php", {file:file}, function(data) {
+      doc = file;
+      saved = data;
+      //document.getElementById("file").textContent = doc.split('/').pop();
+      valor=doc.split('.').pop();
+      console.log(valor);
+      editor.setValue(data, -1);
+      if (valor=="cpp") {
+        editor.session.setMode("ace/mode/c_cpp"); //HACER SUBSTRING DEL FILE Y COGER EL DATO
+      }else{
+        editor.session.setMode("ace/mode/python"); //HACER SUBSTRING DEL FILE Y COGER EL DATO
+      }
+      
+    });
   }
 
+
+
   function openFolder(folder) {
+
     post("dir.php", {folder:folder}, function(data) {
       dir = folder;
       document.getElementById('files').innerHTML = data;

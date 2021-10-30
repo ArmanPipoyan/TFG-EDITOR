@@ -8,7 +8,8 @@ if($language == "python") {
 }
 
 if($language == "cpp") {
-    $s=file_get_contents("C:/xampp/htdocs/app/temp/5db7d3b.cpp"); }
+   $s=file_get_contents("C:/xampp/htdocs/app/temp/5db7d3b.cpp"); 
+}
 
 echo $s;
 ?>
