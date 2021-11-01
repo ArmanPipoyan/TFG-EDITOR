@@ -1,15 +1,25 @@
+var doc,ace;
+var keys = {};
 window.onload = function() {
-    editor = ace.edit("editor");
-    //openFolder("./../app/problemes/Qa Tester3");
-    editor.setTheme("ace/theme/monokai");
-    //editor.setValue("include <iostrem>");
-    //editor.insert("Proba beta de codi");
-    editor.session.setMode("ace/mode/c_cpp");
-    editor.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: false
-    });
+  if (ace===undefined) {return false;}
+  editor = ace.edit("editor");
+  //openFolder("./../app/problemes/Qa Tester3");
+  editor.setTheme("ace/theme/monokai");
+  //editor.setValue("include <iostrem>");
+  //editor.insert("Proba beta de codi");
+  editor.session.setMode("ace/mode/c_cpp");
+  window.addEventListener("keydown", function(event) {
+    keys[event.code] = true;
+    if((event.ctrlKey || event.metaKey) && keys["KeyS"]) {
+      event.preventDefault();
+      save();
+    }
+  });
+  editor.setOptions({
+      enableBasicAutocompletion: true,
+      enableSnippets: true,
+      enableLiveAutocompletion: false
+  });
     
 }
 
@@ -33,7 +43,9 @@ function post(url,data,callback) {
         }
       }
       data = newObj;
+      
     }
+    //console.log(data);
     xhr.send(encodeURI(data));
   }
 
@@ -187,7 +199,7 @@ function validarLogin(){
 function newFile() {
     console.log("nevo archivo");
     var filename = prompt("Enter the file/folder name");
-  
+
     if(filename) {
       post("newFile.php", {filename, dir}, function(data) {
         if(data == true) {
@@ -222,9 +234,35 @@ function newFile() {
 
 
   function openFolder(folder) {
-
+    console.log("Carpeta a abrir");
+    console.log(folder);
     post("dir.php", {folder:folder}, function(data) {
       dir = folder;
       document.getElementById('files').innerHTML = data;
     });
+  }
+
+  function save() {
+    if(doc === undefined) {return false;}
+
+    $.ajax({
+
+      url: "/Model/save.php",
+
+      method: "POST",
+
+      data: {
+          file: doc,
+          code: editor.getSession().getValue()
+      },
+
+      success: function(response) {
+        if(response === 'true') {
+          saved = editor.getSession().getValue();
+        }else{
+          console.log(response);
+        }
+
+      }
+  })
   }

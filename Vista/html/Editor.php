@@ -1,6 +1,6 @@
 
 <script type="text/javascript" language="JavaScript">
-    var myVariable = <?php echo(json_encode($data["Ruta"])); ?>;
+    var myVariable = <?php echo(json_encode($data["Ruta"])); //Sera $pegar la variable de la carpeta del alumno ?>;
     openFolder(myVariable);
     </script>
 <br>
@@ -18,6 +18,7 @@
         </select>
     </div>
     <button onclick="newFile();">New file </button>
+    <img id="save" onclick="save()" src="/Vista/imagenes/save.svg"/>
     <div id="files"></div>
     
     <pre id="editor">

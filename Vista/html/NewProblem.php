@@ -1,6 +1,9 @@
+
 <div class="container bg-secondary text-white">
+    
     <form class="form mt-3 mb-4 " action="/Controlador/newProblem.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
+        <br>
             <label for="exampleFormControlInput1">Titulo</label>
             <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Problema1">
         </div>
@@ -39,12 +42,14 @@
         </div>
         <div class="custom-file">
             <input type="file" name ="file[]" class="custom-file-input" id="customFile" multiple>
-            <label class="custom-file-label" for="customFile">Selecciona arxiu</label>
+            <label class="custom-file-label" for="customFile">Selecciona arxius</label>
         </div>
         <div class="form-group">
             <br>
                 <input type="submit" name="submit" class="btn btn-info btn-md" value="Crear Problema">
+                
             </div>
+            <br>
 
     </form>
 </div>

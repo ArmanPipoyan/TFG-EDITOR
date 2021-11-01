@@ -15,11 +15,11 @@
 
     if($language == "cpp") {
         $outputExe = $random . ".exe";
-         exec("g++ $filePath -o $outputExe" , $result);
+         $errores=exec("g++ $filePath -O3 -o $outputExe" , $result);
         //echo "vacio la ejecucion g++ " . $filePath . " -o " . $outputExe ;
 
         
         $output = shell_exec(__DIR__ . "//$outputExe");
         unlink($outputExe);
-        echo $output;
+        echo $output . " ". $errores;
     }

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$s = file_get_contents("app/temp/5db7d3b.cpp");
+//$s = file_get_contents("app/temp/5db7d3b.cpp");
 //$_SESSION['filename']="/app/temp/5db7d3b.cpp";
 
 if (isset($_GET["query"])) {

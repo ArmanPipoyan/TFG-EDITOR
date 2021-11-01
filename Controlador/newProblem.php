@@ -28,7 +28,6 @@ if (verificar_problema($titulo)==0) {
   $uploadOk=0;
 }
 
-
 if ($uploadOk==1) {
   
   mkdir($target_dir, 0777); // Creamos carpeta para guardar archivos
