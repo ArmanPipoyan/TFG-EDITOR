@@ -10,9 +10,14 @@ function logIn($connexio,$mail,$password)
         $connexio = null;
 
         $resspass=$data['Pass'];
-        $_SESSION['usuario']=$data['Nom'];
-        echo $data['Nom'] . " ";
         $ress=password_verify($password,$resspass);
+        if ($ress==true) {
+            $_SESSION['usuario']=$data['Nom'];
+            $_SESSION['mail']=$mail;
+        }
+        
+        echo $data['Nom'] . " ";
+        
 
     }catch (PDOException $e) {
 

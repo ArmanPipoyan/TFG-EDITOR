@@ -2,6 +2,7 @@
 <script type="text/javascript" language="JavaScript">
     var myVariable = <?php echo(json_encode($data["Ruta"])); //Sera $pegar la variable de la carpeta del alumno ?>;
     openFolder(myVariable);
+
     </script>
 <br>
 
@@ -25,6 +26,8 @@
     
     </pre>
 
+<br>
+
     <div class="button-container">
         <button class="btn btn-primary" onclick="executeCode()"> Executa </button>
     </div>
@@ -36,3 +39,8 @@
     <script src="Vista/js/lib/ace.js"></script>
     <script src="Vista/js/lib/theme-monokai.js"></script>
     <script src="Vista/js/ide.js"></script>
+    
+    <script type="text/javascript" language="JavaScript">
+        var lenguaje = <?php echo(json_encode($data["Llenguatge"])); //Sera $pegar la variable de la carpeta del alumno ?>;
+        setLanguage(lenguaje);
+    </script>

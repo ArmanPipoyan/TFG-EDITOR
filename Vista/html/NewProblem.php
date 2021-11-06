@@ -31,11 +31,20 @@
         </div>
         <div class="form-group">
             <label for="exampleFormControlSelect2">Visio</label>
-            <select multiple class="form-control" name="visio" id="exampleFormControlSelect2">
+            <select class="form-control" name="visio" id="exampleFormControlSelect2">
             <option>Public</option>
             <option>Privat</option>
             </select>
         </div>
+
+        <div class="form-group">
+            <label for="llenguatgeProgramacio">Llenguatge de programació</label>
+            <select class="form-control" name="programacio" id="llenguatgeProgramacio">
+            <option>C++</option>
+            <option>Python</option>
+            </select>
+        </div>
+
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Descripció problema</label>
             <textarea class="form-control" name="descripcio" id="exampleFormControlTextarea1" placeholder="Descripcio detallada del problema" rows="3"></textarea>

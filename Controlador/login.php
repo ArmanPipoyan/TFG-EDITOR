@@ -10,7 +10,7 @@ $connexio=connectaBD();
 
 $comprobacion=logIn($connexio,$mail,$password);
 if ($comprobacion==true){
-    $_SESSION['mail']=$mail;
+    
     //header("Location:/../index.php?accio=6");
     echo "has iniciado sesion correctamente";
     echo $_SESSION['usuario'] ." " . $_SESSION['mail'];

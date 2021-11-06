@@ -23,3 +23,5 @@
         unlink($outputExe);
         echo $output . " ". $errores;
     }
+
+?>

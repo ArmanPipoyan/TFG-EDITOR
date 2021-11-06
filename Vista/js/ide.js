@@ -1,5 +1,6 @@
 var doc,ace;
 var keys = {};
+var llenguatge;
 window.onload = function() {
   if (ace===undefined) {return false;}
   editor = ace.edit("editor");
@@ -77,6 +78,20 @@ function changeLanguage() {
         }
     })
 
+  }
+  function setLanguage(language) {
+    editor = ace.edit("editor");
+    if(language == 'C++'){
+      llenguatge="cpp";
+      editor.session.setMode("ace/mode/c_cpp");
+      //editor.setValue("sd");
+  }
+  else if(language == 'Python') {
+      llenguatge="python";
+      editor.session.setMode("ace/mode/python");
+      //editor.setValue("print('hello world')");
+  }
+
 }
 
 function executeCode() {
@@ -88,7 +103,7 @@ function executeCode() {
         method: "POST",
 
         data: {
-            language: $("#languages").val(),
+            language: llenguatge,
             code: editor.getSession().getValue()
         },
 
@@ -165,22 +180,22 @@ function validarRegistro(){
 }
 
 function validarLogin(){
-    var nombre,apellido,contraseña,error,exRegPassword,exRegUser;
-    nombre=document.getElementById("nombre").value;
-    contraseña=document.getElementById("contraseña").value;
+    var nombre,contraseña,error,exRegPassword,exRegUser;
+    nombre=document.getElementById("email").value;
+    contraseña=document.getElementById("password").value;
     error=document.getElementById("error_mssg");
     exRegPassword="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-
+    console.log(nombre);
     if(nombre==""||contraseña=="")
     {
         alert("Faltan campos por rellenar");
         error.classList.remove('hide');
-        error.innerHTML="Hay campos vacios miratelos ";
+        error.innerHTML="Hay campos vacios ";
         return false;
-    }else if (nombre.length > 30){
-        alert("El  nombre o apellido es muy largo");
+    }else if (nombre.length > 40){
+        //alert("El  nombre o apellido es muy largo");
         error.classList.remove('hide');
-        error.innerHTML="Nombre o apellidos incorrectos ";
+        error.innerHTML="Email demasiado largo ";
         return false;
     }else if (contraseña.length<8 || contraseña.length>24){
         alert("La contraseña no cumple con los requisitos");

@@ -19,10 +19,11 @@ $descripcio=$_POST['descripcio'];
 $memory=$_POST['memory'];
 $time=$_POST['time'];
 $visio=$_POST['visio'];
+$problema=$_POST['programacio'];
 $target_dir = "./../app/problemes/" . $_POST['title']; // directorio donde guardamos los archivos
 if (verificar_problema($titulo)==0) {
   echo "El problema no existe por lo tanto se crea";
-  $s=crear_problema($target_dir,$titulo,$descripcio,$memory,$visio,$time);
+  $s=crear_problema($target_dir,$titulo,$descripcio,$memory,$visio,$time,$problema);
 }else {
   echo "El problema ya existe por lo tanto no se crea";
   $uploadOk=0;
