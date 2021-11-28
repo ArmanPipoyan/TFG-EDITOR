@@ -1,6 +1,6 @@
 
 <script type="text/javascript" language="JavaScript">
-    var myVariable = <?php echo(json_encode($data["Ruta"])); //Sera $pegar la variable de la carpeta del alumno ?>;
+    var myVariable = <?php echo(json_encode($pegar)); //Sera $pegar la variable de la carpeta del alumno ?>;
     openFolder(myVariable);
 
     </script>
@@ -9,15 +9,7 @@
     <div class="container bg-secondary">
     <p class="text-center font-weight-bold"><?php echo $data["Title"];?></p>
     <p class="font-weight-normal"><?php echo htmlspecialchars($data["Descripcio"]);?></p>
-    <div class="control-panel">
-        Selecciona llenguatge de programació
-        &nbsp; &nbsp;
-        <select id="languages" class="languages" onchange="changeLanguage()">
-            <option value="cpp"> C++ </option>
-            <option value="python"> Python </option>
 
-        </select>
-    </div>
     <button onclick="newFile();">New file </button>
     <img id="save" onclick="save()" src="/Vista/imagenes/save.svg"/>
     <div id="files"></div>

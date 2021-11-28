@@ -1,4 +1,5 @@
-
+<h3 class="text-center text-white pt-5">Formulari crear problema</h3>
+<br>
 <div class="container bg-secondary text-white">
     
     <form class="form mt-3 mb-4 " action="/Controlador/newProblem.php" method="post" enctype="multipart/form-data">

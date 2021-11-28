@@ -2,11 +2,13 @@
 session_start();
 //$s = file_get_contents("app/temp/5db7d3b.cpp");
 //$_SESSION['filename']="/app/temp/5db7d3b.cpp";
+// Sesion tipo 0 es un profesor $_SESSION['tipo']=0;
+// Sesio tipo 1 es un estudiante $_SESSION['tipo']=1;
 
 if (isset($_GET["query"])) {
 	$query=$_GET["query"];
 }else{
-        $query = 1;
+        $query = 8;
 }
 
 switch ($query) {
@@ -14,7 +16,6 @@ switch ($query) {
         include __DIR__ . "/Vista/html/Header.php"; 
         include __DIR__ . "/Controlador/lista_problemas.php"; 
         include __DIR__ . "/Vista/html/Footer.html"; 
-
         break;
 	case 2: // Formulario de login
 		include __DIR__ . "/Vista/html/Header.php"; 
@@ -24,7 +25,7 @@ switch ($query) {
 
     case 3: // Formulario de registro
         include __DIR__ . "/Vista/html/Header.php"; 
-        include __DIR__ . "/Vista/html/Registro.html"; 
+        include __DIR__ . "/Vista/html/Registro.php"; 
         include __DIR__ . "/Vista/html/Footer.html"; 
         break;
 
@@ -46,6 +47,12 @@ switch ($query) {
     case 7: // Editor de codigo
         include __DIR__ . "/Vista/html/Header.php"; 
         include __DIR__ . "/Controlador/editor.php";
+        include __DIR__ . "/Vista/html/Footer.html"; 
+        break;
+
+    case 8: // Mostrar asignaturas
+        include __DIR__ . "/Vista/html/Header.php"; 
+        include __DIR__ . "/Controlador/lista_asignaturas.php";
         include __DIR__ . "/Vista/html/Footer.html"; 
         break;
 }

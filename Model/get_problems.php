@@ -30,11 +30,27 @@ function getProblemToSolve($id) {
 
     }catch (PDOException $e) {
 
-        echo 'Error al fer log-in' . $e->getMessage();
+        echo 'Error al recuperar el problema algo ha fallado' . $e->getMessage();
     }
     return $data;
 }
 
+function getSubjects() {
 
+    try{
+        $conn=connectaBD();
+        $stmt = $conn->prepare("SELECT * FROM assignatura");
+        $stmt->execute();
+        $data=$stmt->fetchAll(); //guardamos en la variable data nuestro usuario su ID
+        $conn = null;
+
+        
+
+    }catch (PDOException $e) {
+
+        echo 'Error al fer log-in' . $e->getMessage();
+    }
+    return $data;
+}
 
 ?>

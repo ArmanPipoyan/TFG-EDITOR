@@ -24,7 +24,21 @@ window.onload = function() {
     
 }
 
+function generateToken() {
+  $.ajax({
 
+    url: "/Model/tokenGenerator.php",
+    success: function(response) {
+        document.getElementById("myInput").value = "http://localhost/index.php?query=3&token="+response;
+    }
+})
+}
+function copiado() {
+  var copyTextarea = document.getElementById("myInput");
+  copyTextarea.select(); //select the text area
+  document.execCommand("copy"); //copy to clipboard
+  $(".message").text("Link copiat!");
+  }
 
 function post(url,data,callback) {
     var xhr = new XMLHttpRequest();
@@ -50,35 +64,7 @@ function post(url,data,callback) {
     xhr.send(encodeURI(data));
   }
 
-function changeLanguage() {
 
-    let language = $("#languages").val();
-    if(language == 'cpp'){
-        editor.session.setMode("ace/mode/c_cpp");
-        //editor.setValue("sd");
-    }
-    else if(language == 'python') {
-        editor.session.setMode("ace/mode/python");
-        //editor.setValue("print('hello world')");
-    }
-    //Cargamos el dato en el archivo
-    $.ajax({
-
-        url: "/Vista/resources/getFile.php",
-
-        method: "POST",
-
-        data: {
-            language: $("#languages").val(),
-            code: editor.getSession().getValue()
-        },
-
-        success: function(response) {
-            editor.setValue(response);
-        }
-    })
-
-  }
   function setLanguage(language) {
     editor = ace.edit("editor");
     if(language == 'C++'){
@@ -113,7 +99,7 @@ function executeCode() {
     })
 }
 function validarRegistro(){
-    var nombre,apellido,correo,usuario,contraseña,expersion,error,contraseña2,reg,exRegPassword,exRegUser,re;
+    var nombre,apellido,correo,contraseña,error,contraseña2,reg,exRegPassword,exRegUser,re;
     exRegUser=/^(?=.*\d)(?=.*[a-z])[0-9a-z]{6,16}$/;
     exRegPassword="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
      re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -126,10 +112,7 @@ function validarRegistro(){
     error=document.getElementById("error_mssg");
     reg=/^[A-Z]+$/i;
 
-    var isChecked = document.getElementById('my_checkbox').checked;
-    var the_value = isChecked ? "Professor" : "Estudiant";
 
-    console.log(the_value);
     
     if(nombre==""||apellido==""||contraseña==""||correo=="")
     {

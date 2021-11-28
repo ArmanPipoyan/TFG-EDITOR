@@ -7,11 +7,12 @@
 <body>
     <div id="login">
         <h3 class="text-center text-white pt-3">Formulari Registre</h3>
+        
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
-                        <form id="login-form" class="form" action="/Controlador/registro.php" method="post" onsubmit="return validarRegistro();">
+                        <form id="login-form" class="form" action="/Controlador/registro.php?query=5" method="post" onsubmit="return validarRegistro();">
                             <h3 class="text-center text-info">Registre</h3>
 			    			<div class="row">
 			    				<div class="col-xs-6 col-sm-6 col-md-6">
@@ -41,9 +42,13 @@
 			    					</div>
 			    				</div>
 			    			</div>
-
-                            </script>
+                            <?php  if(isset($_GET["token"])) {?>
                             <div class="form-group">
+                                <input type="hidden" name="token" value="<?php echo $_GET["token"]?>" />
+			    			</div>
+                            <?php } ?>
+                            <div class="form-group">
+                                
                                 <br>
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="Registra't">
                             </div>
@@ -56,7 +61,26 @@
             </div>
         </div>
     </div>
+    <div class="container">
+    <?php
+    if(isset($_GET["error"])){ 
+        if ($_GET["error"]==3) {?>
+    <p class="alert alert-danger" id="error_mssg"> El usuari ja existeix
+      <button type="button" class="close" data-dismiss="alert">&times;</button></p>
+         <?php } ?>
+
+         <?php if ($_GET["error"]==2) {?>
+    <p class="alert alert-danger" id="error_mssg"> Token de registre invalid
+      <button type="button" class="close" data-dismiss="alert">&times;</button></p>
+         <?php } ?>
+
+
+         <?php } ?>
+
+
     <p class="alert alert-danger hide" id="error_mssg">
       <button type="button" class="close" data-dismiss="alert">&times;</button></p>
+
+         </div>
 </body>
 

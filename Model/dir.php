@@ -28,7 +28,11 @@
           $ext="";
         }
         //$ext=".php";
-        echo '<li id="'.$path.'" onclick="openFile(this.id)" class="list-group-item file" > '.$file.' <div class="image-parent"> <img src="Vista/imagenes/'.$ext.'.svg" class="img-fluid" ></div></li>';
+        echo '<li id="'.$path.'" onclick="openFile(this.id)" class="list-group-item file" >
+        <div class="row">
+         '.$file.' <div class="image-parent"> <img src="Vista/imagenes/'.$ext.'.svg" class="img-fluid "style="height: 40px;" ></div>
+         </div>
+         </li>';
       }
     }
   }
