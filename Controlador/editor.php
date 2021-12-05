@@ -9,52 +9,58 @@ if (isset($_GET["problem"])) {
 }else{
     header("Location:/../index.php");
 }
+$copiar=False;
+if (isset($_GET["reiteratiu"])&&isset($_GET["usuario"])) {
+  if ($_GET["reiteratiu"]==1) {
+    $usuarioCopiar=$_GET["usuario"];
+    $copiar=True;
+  }else {
+    header("Location:/../index.php");
+  }
+}
 $data=getProblemToSolve($query);
-
+$asignatura=$data["AsignaturaID"];
 $ruta=$data["Ruta"];
-//echo $ruta . '<br>';
 $dir = str_replace('\\', '/', realpath(__DIR__ . $ruta));
-//echo $dir .'<br>';
 $files = scandir($dir);
 
 $existe = True;
-$variable='./../app/solucions/'.$_SESSION['mail'];
+if ($copiar==True) {
+  $variable='./../app/solucions/'.$usuarioCopiar;
+}else {
+  $variable='./../app/solucions/'.$_SESSION['mail'];
+}
+//$variable='./../app/solucions/'.$_SESSION['mail'];
 if (!file_exists(__DIR__ .$variable)) {
-  
   if(mkdir(__DIR__ .$variable)) {
-     echo "La carpeta se ha creado";
+     //echo "La carpeta se ha creado";
      $existe=False;
    }
    else {
-     echo 'Failed to create folder';
+      echo 'Failed to create folder';
    }
-  
-} else {
-  echo "The directory $variable exists. <br>";
 }
-//Creamos carpeta alumno
 
-//creamos carpeta problema dentro del alumno
-$variable=$variable.'/'.$data["Title"];
+if ($copiar==True) {
+  $variable='./../app/solucions/'.$usuarioCopiar."/".$data["Title"];
+}else {
+  $variable='./../app/solucions/'.$_SESSION['mail']."/".$data["Title"];
+}
 
-
-$variable='./../app/solucions/'.$_SESSION['mail']."/".$data["Title"];
 if (!file_exists(__DIR__ .$variable)) {
-  
   if(mkdir(__DIR__ .$variable)) {
-    echo "La carpeta se ha creado";
+    //echo "La carpeta se ha creado";
     $existe=False;
-   }
-   else {
-    echo 'Failed to create folder';
-   }
-  
-} else {
-  echo "The directory $variable exists.";
+   }  
+} 
+
+if ($copiar==True) {
+  $pegar=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/".$usuarioCopiar."/".$data["Title"])); //modificar para cada alumno
+}else {
+  $pegar=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/".$_SESSION['mail']."/".$data["Title"])); //modificar para cada alumno
 }
 
-$pegar=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/".$_SESSION['mail']."/".$data["Title"])); //modificar para cada alumno
-echo $existe." La variable existe <br>";
+//Si no existe la carpeta con el problema se crea aqui
 if (!$existe) {
   foreach($files as $file) {
     if($file === '.' || $file === "..") {continue;}
@@ -64,9 +70,18 @@ if (!$existe) {
       //echo $path.'<br>';
       copy($path, $peg);
     }
-  }  
+  }
+  $usuario=$_SESSION['mail'];
+  //ruta donde se guarda, id del problema, id assignatura
+  insert_Solution($pegar,$query,$asignatura,$usuario);
 }
+
+
  
+if ($_SESSION['tipo']==0) {
+  $datas=getAlumnos($query);
+  //var_dump($datas);
+}
 
 
 include_once __DIR__ . "/../Vista/html/Editor.php";

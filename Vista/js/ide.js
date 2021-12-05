@@ -1,13 +1,12 @@
 var doc,ace;
 var keys = {};
 var llenguatge;
+var actual_doc="";
+var second_doc="";
 window.onload = function() {
   if (ace===undefined) {return false;}
   editor = ace.edit("editor");
-  //openFolder("./../app/problemes/Qa Tester3");
   editor.setTheme("ace/theme/monokai");
-  //editor.setValue("include <iostrem>");
-  //editor.insert("Proba beta de codi");
   editor.session.setMode("ace/mode/c_cpp");
   window.addEventListener("keydown", function(event) {
     keys[event.code] = true;
@@ -81,7 +80,14 @@ function post(url,data,callback) {
 }
 
 function executeCode() {
-    console.log($("#languages").val());
+
+    console.log(myVariable);
+    console.log(actual_doc);
+    if (actual_doc=="") {
+      console.log("Entra al pete");
+      $(".output").text("Selecciona el fitxer per executar");
+      return false;
+    }
     $.ajax({
 
         url: "/app/compiler.php",
@@ -90,7 +96,9 @@ function executeCode() {
 
         data: {
             language: llenguatge,
-            code: editor.getSession().getValue()
+            code: editor.getSession().getValue(),
+            route: myVariable,
+            ejecutable:actual_doc
         },
 
         success: function(response) {
@@ -163,7 +171,7 @@ function validarRegistro(){
 }
 
 function validarLogin(){
-    var nombre,contraseña,error,exRegPassword,exRegUser;
+    var nombre,contraseña,error,exRegPassword;
     nombre=document.getElementById("email").value;
     contraseña=document.getElementById("password").value;
     error=document.getElementById("error_mssg");
@@ -194,6 +202,59 @@ function validarLogin(){
 
 }
 
+
+function validarProblema(){
+  var titulo,descripcion;
+  titulo=document.getElementById("exampleFormControlInput1").value;
+  descripcion=document.getElementById("exampleFormControlTextarea1").value;
+  error=document.getElementById("error_mssg");
+  if(titulo==""||descripcion=="")
+  {
+      alert("Faltan campos por rellenar");
+      error.classList.remove('hide');
+      error.innerHTML="Hay campos vacios ";
+      return false;
+  }else if (titulo.length < 3|| titulo.length>80){
+    //alert("El  nombre o apellido es muy largo");
+    error.classList.remove('hide');
+    error.innerHTML="Titulo demasiado corto";
+    return false;
+}else if (descripcion.length<3 ){
+    //alert("La Descripcion es demasiado corta");
+    error.classList.remove('hide');
+    error.innerHTML="Descripcion demasiado corta";
+    return false;
+}
+
+  var control = document.getElementById("customFile");
+  var filelength = control.files.length;
+  if(filelength==0){
+    alert("Selecciona els arxius del problema");
+    error.classList.remove('hide');
+    error.innerHTML="Selecciona els arxius del problema";
+    return false;
+  }
+  for (var i = 0; i < control.files.length; i++) {
+    var file = control.files[i];
+    var FileName = file.name;
+    var FileExt = FileName.substr(FileName.lastIndexOf('.'));
+    var extensiones=FileExt.toUpperCase();
+    var allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python)$/i;
+    var isAllowed = allowedExtensionsRegx.test(FileExt);
+    if (!isAllowed) {
+      console.log(FileExt);
+      error.classList.remove('hide');
+      error.innerHTML="El format dels arxius "+ FileExt +  " es incorrecte";
+      return false;
+    }
+  }
+
+  console.log(titulo);
+  console.log(descripcion);
+  return true;
+}
+
+
 function newFile() {
     console.log("nevo archivo");
     var filename = prompt("Enter the file/folder name");
@@ -212,12 +273,15 @@ function newFile() {
   }
 
   function openFile(file) {
-
+    second_doc=file;
+    if (second_doc!="") {
     post("archivo.php", {file:file}, function(data) {
       doc = file;
       saved = data;
       //document.getElementById("file").textContent = doc.split('/').pop();
       valor=doc.split('.').pop();
+ 
+      actual_doc=doc.split('/').pop();
       console.log(valor);
       editor.setValue(data, -1);
       if (valor=="cpp") {
@@ -228,7 +292,16 @@ function newFile() {
       
     });
   }
-
+  }
+  function openFiler() {
+    if (second_doc!="") {
+      openFile(second_doc);
+    }
+    
+  }
+  function myStopFunction() {
+    clearInterval(myVar);
+}
 
 
   function openFolder(folder) {
@@ -264,3 +337,14 @@ function newFile() {
       }
   })
   }
+
+  function openRightMenu() {
+    document.getElementById("rightMenu").style.display = "block";
+  }
+  
+  function closeRightMenu() {
+    document.getElementById("rightMenu").style.display = "none";
+  }
+
+
+    

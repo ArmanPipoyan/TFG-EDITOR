@@ -3,8 +3,14 @@
 <br>
 <h1 class="font-weight-bold text-center text-uppercase h-25">Problemes</h1>
 <br>
+
 <div class="container mt-18">
-<?php
+
+<?php  if(isset($_SESSION['tipo'])) {
+            if ($_SESSION['tipo']==0) {?>
+<a href=<?php echo "/index.php?query=4&assignatura=".$_GET["assignatura"]; ?> class="btn btn-light btn-sm  mb-1">Crear problema </a>
+
+<?php }}
 
 echo '<div class="list-group">';
 
@@ -22,3 +28,4 @@ foreach ($data as $dat) {
 
 ?>
 </div>
+<br>

@@ -21,22 +21,23 @@ function verificar_problema($titol){
     }
     return $ress;
 }
-function crear_problema($ruta,$titol,$descripcio,$memoria,$visio,$execucio,$problema)
+function crear_problema($ruta,$titol,$descripcio,$memoria,$visio,$execucio,$problema,$asignatura)
 {
 
     
     try {
         $conne = connectaBD();
 
-        $stmt1 = $conne->prepare("INSERT INTO problema (Ruta,Title,Descripcio,Visio,Tiempo,Memoria,Llenguatge) 
-        VALUES (:ruta, :tit, :descripcio,:visio,:tiempo,:memoria,:programacio)");
+        $stmt1 = $conne->prepare("INSERT INTO problema (Ruta,Title,Descripcio,Visio,Tiempo,Memoria,Llenguatge,AsignaturaID) 
+        VALUES (:ruta, :tit, :descripcio,:visio,:tiempo,:memoria,:programacio,:asignatura)");
 
         #$stmt1->execute();
         #$val = $stmt1->fetchColumn();
   
 
         #$resultado = $conne->prepare($sql);
-        $stmt1->execute(array(":ruta"=>$ruta, ":tit"=>$titol, ":descripcio"=>$descripcio,":visio"=>$visio,":tiempo"=>$execucio,":memoria"=>$memoria,":programacio"=>$problema));
+        $stmt1->execute(array(":ruta"=>$ruta, ":tit"=>$titol, ":descripcio"=>$descripcio,
+        ":visio"=>$visio,":tiempo"=>$execucio,":memoria"=>$memoria,":programacio"=>$problema,":asignatura"=>$asignatura));
         //$resultado->closeCursor();
         echo "<br> Insertado todo "." <br>";
         $valid=1;

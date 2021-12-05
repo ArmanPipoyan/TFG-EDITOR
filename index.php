@@ -11,6 +11,24 @@ if (isset($_GET["query"])) {
         $query = 8;
 }
 
+
+if (isset($_SESSION["mail"])) {
+    // professor sin restriccion
+    $conectado=1;
+    if ($_SESSION['tipo']==1) {// alumno  1 8 7
+        if ($query!=8&$query!=1&$query!=7&$query!=9) {
+            header("Location:/index.php");
+        }
+    }
+    
+}else {
+    $conectado=0;
+    if ($query!=8&$query!=2&$query!=3) {
+        header("Location:/index.php");
+    }
+}
+
+
 switch ($query) {
     case 1: //Lista de problemas de la home
         include __DIR__ . "/Vista/html/Header.php"; 
@@ -53,6 +71,11 @@ switch ($query) {
     case 8: // Mostrar asignaturas
         include __DIR__ . "/Vista/html/Header.php"; 
         include __DIR__ . "/Controlador/lista_asignaturas.php";
+        include __DIR__ . "/Vista/html/Footer.html"; 
+        break;
+    case 9: // Mostrar asignaturas
+        include __DIR__ . "/Vista/html/Header.php"; 
+        include __DIR__ . "/Vista/html/test.php";
         include __DIR__ . "/Vista/html/Footer.html"; 
         break;
 }

@@ -14,7 +14,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 </head>
-<body class="bg-primary" >
+<body class="bg-primary d-flex flex-column min-vh-100" >
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">TFG</a>
@@ -27,19 +27,17 @@
         <li class="nav-item active">
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
+        <?php  if(!isset($_SESSION['tipo'])) {?>
         <li class="nav-item">
             <a class="nav-link" href="/index.php?query=2">Login</a>
         </li>
          <li class="nav-item">
             <a class="nav-link" href="/index.php?query=3">Registre</a>
         </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/index.php?query=4">Crear Problema</a>
-        </li>
-
-        <?php  if(isset($_SESSION['tipo'])) {
+        
+        <?php }  if(isset($_SESSION['tipo'])) {
             if ($_SESSION['tipo']==0) {?>
+       
             <li class="nav-item">
                 <a class="nav-link" onclick="generateToken()" href="#"  data-toggle="modal" data-target="#myModal">Invitar a un professor</a>
             </li>
