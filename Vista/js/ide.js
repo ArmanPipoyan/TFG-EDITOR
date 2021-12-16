@@ -4,6 +4,7 @@ var llenguatge;
 var actual_doc="";
 var second_doc="";
 window.onload = function() {
+  console.log("Hacemos load");
   if (ace===undefined) {return false;}
   editor = ace.edit("editor");
   editor.setTheme("ace/theme/monokai");
@@ -23,12 +24,14 @@ window.onload = function() {
     
 }
 
+
+
 function generateToken() {
   $.ajax({
 
     url: "/Model/tokenGenerator.php",
     success: function(response) {
-        document.getElementById("myInput").value = "http://localhost/index.php?query=3&token="+response;
+        document.getElementById("myInput").value = "http://tfguab.ddns.net/index.php?query=3&token="+response;
     }
 })
 }
@@ -272,7 +275,7 @@ function newFile() {
     }
   }
 
-  function openFile(file) {
+function openFile(file) {
     second_doc=file;
     if (second_doc!="") {
     post("archivo.php", {file:file}, function(data) {
@@ -292,14 +295,14 @@ function newFile() {
       
     });
   }
-  }
-  function openFiler() {
+}
+function openFiler() {
     if (second_doc!="") {
       openFile(second_doc);
     }
     
-  }
-  function myStopFunction() {
+}
+function myStopFunction() {
     clearInterval(myVar);
 }
 

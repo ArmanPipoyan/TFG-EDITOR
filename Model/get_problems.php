@@ -95,35 +95,31 @@ return $datas;
 function getSolucionToSolve($id,$usuarioCopiar) {
     try{
         $conn=connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM solucio WHERE Id_problema= :dato");
-        $stmt->execute(array(":dato"=>$id));
-        $data=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
+        $stmt = $conn->prepare("SELECT * FROM solucio WHERE Id_problema= :dato and Usuario = :usuario");
+        $stmt->execute(array(":dato"=>$id,":usuario"=>$usuarioCopiar));
+        $data2=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
-
-        
 
     }catch (PDOException $e) {
 
         echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
     }
-    return $data;
+    return $data2;
 }
 
-function modifySolucionToSolve($id,$usuarioCopiar) {
+function modifySolucionToSolve($id,$usuarioCopiar,$estado,$segundoEstado) {
     try{
         $conn=connectaBD();
-        $stmt = $conn->prepare("UPDATE solucio SET Editing=1 WHERE Id_problema= :dato and Editing = 0");
-        $stmt->execute(array(":dato"=>$id));
-        $data=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
+        $stmt = $conn->prepare("UPDATE solucio SET Editing=$estado WHERE Id_problema= :dato and Editing = :segundoEstado and Usuario = :usuario");
+        $stmt->execute(array(":dato"=>$id,":segundoEstado"=>$segundoEstado,":usuario"=>$usuarioCopiar));
+        $data3=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
-
-        
 
     }catch (PDOException $e) {
 
         echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
     }
-    return $data;
+    return $data3;
 }
 
 ?>

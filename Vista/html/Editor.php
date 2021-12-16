@@ -20,12 +20,25 @@
     </div>
     <div class="w3-teal">
     <button class="w3-button w3-teal w3-xlarge w3-right" onclick="openRightMenu()">Estudiants &#9776;</button>
-    <?php if (isset($_GET["reiteratiu"])&$_SESSION['tipo']==0) {
+    <?php if (isset($_GET["reiteratiu"])) {
         echo '<a class="w3-button w3-teal w3-xlarge w3-right" href="/index.php?query=7&problem='.$_GET["problem"].'">Tornar enrere</a>';
-    }
+        ?>
+    <script>
+        // Warning before leaving the page (back button, or outgoinglink)
+        window.onbeforeunload = function() {
+            console.log("PRUEBA BETA");
+        return "Estas editant un estudiant";
+        //if we return nothing here (just calling return;) then there will be no pop-up question at all
+        //return;
+        };
+    </script>
+
+    <?php }
     ?>
     </div>
     <!-- Final Sidebar Professor -->
+
+
 <?php }?>
 <br>
 
@@ -68,7 +81,7 @@
 
     <script>
         editor.setReadOnly(true);
-        var myVar = setInterval(openFiler, 3000);
+        var myVar = setInterval(openFiler, 1000);
 
         
 

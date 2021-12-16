@@ -6,6 +6,6 @@ int main()
 {
     my_class mc;
     mc.do_something();
-    cout << endl << " Hola mundo";
+    cout << endl << " Hello Wold! ";
     return 0;
 }

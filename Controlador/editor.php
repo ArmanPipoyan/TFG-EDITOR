@@ -14,6 +14,7 @@ if (isset($_GET["reiteratiu"])&&isset($_GET["usuario"])) {
   if ($_GET["reiteratiu"]==1) {
     $usuarioCopiar=$_GET["usuario"];
     $copiar=True;
+    $data3=modifySolucionToSolve($query,$usuarioCopiar,1,0);
   }else {
     header("Location:/../index.php");
   }
@@ -54,6 +55,7 @@ if (!file_exists(__DIR__ .$variable)) {
    }  
 } 
 
+//Variale para cargar ruta del archivo
 if ($copiar==True) {
   $pegar=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/".$usuarioCopiar."/".$data["Title"])); //modificar para cada alumno
 }else {
