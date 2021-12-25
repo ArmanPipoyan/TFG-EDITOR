@@ -3,6 +3,9 @@ var keys = {};
 var llenguatge;
 var actual_doc="";
 var second_doc="";
+var carpeta="";
+var myVar3,idToDelete;
+var readOnly=false;
 window.onload = function() {
   console.log("Hacemos load");
   if (ace===undefined) {return false;}
@@ -21,11 +24,37 @@ window.onload = function() {
       enableSnippets: true,
       enableLiveAutocompletion: false
   });
+  
+  var container = document.querySelector('#files');
+  var matches = container.querySelectorAll('ul > li');
+  console.log(matches[0].id);
+  openFile(matches[0].id);
+  
     
 }
 
 
+function changeState() {
+  $.ajax({
 
+    url: "/Model/changeSolucion.php",
+    method: "POST",
+
+      data: {
+          carpeta: carpeta,
+      },
+    success: function(response) {
+          editor.setReadOnly(false);
+        
+    }
+})
+}
+
+
+
+function cambios(){
+  console.log("ha cambiado el codigo se puede guardar");
+}
 function generateToken() {
   $.ajax({
 
@@ -42,6 +71,40 @@ function copiado() {
   $(".message").text("Link copiat!");
   }
 
+function checkChanges(){
+  console.log("El doc es: "+ carpeta);
+
+
+  $.ajax({
+
+    url: "/Model/checkStudent.php",
+    method: "POST",
+
+      data: {
+          carpeta: carpeta,
+      },
+    success: function(response) {
+        
+        if (response==1){
+          if(readOnly==false){
+            readOnly=true;
+            document.getElementById("error_mssg").classList.remove('hide');
+            editor.setReadOnly(true);
+           
+            myVar3 = setInterval(openFiler, 4000);
+            
+          }
+          
+        }else{
+          editor.setReadOnly(false);
+          myVar3=clearInterval(myVar3);
+          readOnly=false;
+          document.getElementById("error_mssg").classList.add('hide');
+          //myVar=clearInterval(myVar);
+        }
+    }
+})
+}
 function post(url,data,callback) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -86,6 +149,15 @@ function executeCode() {
 
     console.log(myVariable);
     console.log(actual_doc);
+    let text= editor.getSession().getValue();
+    if (text.includes("import os")||text.includes("import sys")) {
+      console.log("Pillado el problema");
+      error=document.getElementById("error_mssg2");
+      //error.innerHTML="<strong>Les llibreries que s'estan utilitzant no estan soportades </strong>";
+      error.classList.remove('hide');
+      
+      return false;
+    }
     if (actual_doc=="") {
       console.log("Entra al pete");
       $(".output").text("Selecciona el fitxer per executar");
@@ -147,14 +219,6 @@ function validarRegistro(){
         error.classList.remove('hide');
         error.innerHTML="Las contraseñas no son iguales";
         return false;
-    }else if (!re.test(correo)){
-        error.classList.remove('hide');
-        error.innerHTML="El correo falla";
-        return false;
-    }else if (!exRegPassword.test(contraseña)){
-        error.classList.remove('hide');
-        error.innerHTML="La contraseña debe contener almenos una Mayuscula,una minuscula y un numero";
-        return false;
     }else if(!reg.test(nombre))
     {
         error.classList.remove('hide');
@@ -195,10 +259,6 @@ function validarLogin(){
         alert("La contraseña no cumple con los requisitos");
         error.classList.remove('hide');
         error.innerHTML="El tamaño de la contraseña debe tener entre 8 y 24 caracteres ";
-        return false;
-    }else if (!exRegPassword.test(contraseña)){
-        error.classList.remove('hide');
-        error.innerHTML="La contraseña esta mal";
         return false;
     }
 
@@ -257,8 +317,49 @@ function validarProblema(){
   return true;
 }
 
+function openFile(file) {
+    second_doc=file;
+    if (second_doc!="") {
+    post("archivo.php", {file:file}, function(data) {
+      doc = file;
+      saved = data;
+      //document.getElementById("file").textContent = doc.split('/').pop();
+      valor=doc.split('.').pop();
+ 
+      actual_doc=doc.split('/').pop();
+      //console.log(valor);
+      editor.setValue(data, -1);
+      if (valor=="cpp") {
+        editor.session.setMode("ace/mode/c_cpp"); //HACER SUBSTRING DEL FILE Y COGER EL DATO
+      }else{
+        editor.session.setMode("ace/mode/python"); //HACER SUBSTRING DEL FILE Y COGER EL DATO
+      }
+      
+    });
+  }
+}
+function openFiler() {
+    if (second_doc!="") {
+            openFile(second_doc);
+      
+    }
+    
+}
+function myStopFunction() {
+    clearInterval(myVar);
+}
 
-function newFile() {
+  function openFolder(folder) {
+    carpeta=folder;
+    console.log("Carpeta a abrir");
+    console.log(folder);
+    post("dir.php", {folder:folder}, function(data) {
+      dir = folder;
+      document.getElementById('files').innerHTML = data;
+    });
+  }
+
+  function newFile() {
     console.log("nevo archivo");
     var filename = prompt("Enter the file/folder name");
 
@@ -274,51 +375,9 @@ function newFile() {
       });
     }
   }
-
-function openFile(file) {
-    second_doc=file;
-    if (second_doc!="") {
-    post("archivo.php", {file:file}, function(data) {
-      doc = file;
-      saved = data;
-      //document.getElementById("file").textContent = doc.split('/').pop();
-      valor=doc.split('.').pop();
- 
-      actual_doc=doc.split('/').pop();
-      console.log(valor);
-      editor.setValue(data, -1);
-      if (valor=="cpp") {
-        editor.session.setMode("ace/mode/c_cpp"); //HACER SUBSTRING DEL FILE Y COGER EL DATO
-      }else{
-        editor.session.setMode("ace/mode/python"); //HACER SUBSTRING DEL FILE Y COGER EL DATO
-      }
-      
-    });
-  }
-}
-function openFiler() {
-    if (second_doc!="") {
-      openFile(second_doc);
-    }
-    
-}
-function myStopFunction() {
-    clearInterval(myVar);
-}
-
-
-  function openFolder(folder) {
-    console.log("Carpeta a abrir");
-    console.log(folder);
-    post("dir.php", {folder:folder}, function(data) {
-      dir = folder;
-      document.getElementById('files').innerHTML = data;
-    });
-  }
-
   function save() {
+    
     if(doc === undefined) {return false;}
-
     $.ajax({
 
       url: "/Model/save.php",
@@ -333,8 +392,6 @@ function myStopFunction() {
       success: function(response) {
         if(response === 'true') {
           saved = editor.getSession().getValue();
-        }else{
-          console.log(response);
         }
 
       }
@@ -348,6 +405,83 @@ function myStopFunction() {
   function closeRightMenu() {
     document.getElementById("rightMenu").style.display = "none";
   }
+
+function changeVisibility(visibilidad,problema){
+    //console.log(visibilidad);
+    var vis=visibilidad;
+    var id=problema;
+    console.log(problema);
+    let cambio;
+    if(visibilidad=="Public")
+      cambio="Privat";
+    else
+      cambio="Public";
+    console.log(cambio);
+
+
+    $.ajax({
+
+      url: "/Model/changeVisibility.php",
+
+      method: "POST",
+
+      data: {
+          cosas: id,
+          code: cambio, 
+      },
+
+      success: function(response) {
+         console.log("Borrado satisfactoriamente");
+         location.reload();
+      }
+  })
+
+  
+    
+  }
+
+  function setPoblemToDelete(id){
+    idToDelete=id;
+    console.log(idToDelete);
+  }
+
+  function deleteProblem() {
+    console.log(idToDelete);
+
+    $.ajax({
+
+      url: "/Model/deleteProblem.php",
+
+      method: "POST",
+
+      data: {
+          id: idToDelete,
+          
+      },
+
+      success: function(response) {
+         console.log("Borrado satisfactoriamente");
+         location.reload();
+      }
+  })
+  }
+
+  function validarAsignatura() {
+    titol=document.getElementById("titol").value;
+    descripcio=document.getElementById("descripcio").value;
+    curs=document.getElementById("curs").value;
+    error=document.getElementById("error_mssg");
+    
+    if(titol==""||descripcio==""||curs=="")
+    {
+        error.classList.remove('hide');
+        error.innerHTML="Hay campos vacios ";
+        return false;
+    }
+    return true;
+  }
+
+/////////////////////////////////////////////////////////////////////
 
 
     

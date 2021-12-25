@@ -1,6 +1,4 @@
 import numpy as np
-
-import os
 a = np.arange(15).reshape(3, 5)
 print(a)
 
@@ -32,6 +30,7 @@ def quicksort(arr):
 
 print(quicksort([3,6,8,10,1,2,1]))
 # Prints "[1, 1, 2, 3, 6, 8, 10]"
+
 x = 3
 print(type(x)) # Prints "<class 'int'>"
 print(x)       # Prints "3"
@@ -43,8 +42,8 @@ x += 1
 print(x)  # Prints "4"
 x *= 2
 print(x)  # Prints "8"
-y = 2.55
+y = 2.5
 print(type(y)) # Prints "<class 'float'>"
 print(y, y + 1, y * 2, y ** 2) # Prints "2.5 3.5 5.0 6.25"
-
+print("CON DATOS PERSONALIZADOS DEL ALUMNO EDICION DEL PROFDESSOR")
 

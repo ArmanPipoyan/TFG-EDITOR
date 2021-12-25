@@ -24,7 +24,7 @@ if (isset($_SESSION["mail"])) {
 }else {
     $conectado=0;
     if ($query!=8&$query!=2&$query!=3) {
-        header("Location:/index.php");
+        header("Location:/index.php?err=1");
     }
 }
 
@@ -76,6 +76,11 @@ switch ($query) {
     case 9: // Mostrar asignaturas
         include __DIR__ . "/Vista/html/Header.php"; 
         include __DIR__ . "/Vista/html/test.php";
+        include __DIR__ . "/Vista/html/Footer.html"; 
+        break;
+    case 10: // Crear asignaturas
+        include __DIR__ . "/Vista/html/Header.php"; 
+        include __DIR__ . "/Vista/html/crearAsignatura.php";
         include __DIR__ . "/Vista/html/Footer.html"; 
         break;
 }

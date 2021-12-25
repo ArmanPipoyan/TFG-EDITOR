@@ -1,13 +1,11 @@
 import numpy as np
 a = np.arange(15).reshape(3, 5)
 print(a)
+print("cambios en paralelo ya no lo son porque todoe sta controlado");
 
 print(a.shape)
-
 print(a.ndim)
-
 print(a.dtype.name)
-
 print(a.itemsize)
 
 print(a.size)
@@ -46,3 +44,4 @@ y = 2.5
 print(type(y)) # Prints "<class 'float'>"
 print(y, y + 1, y * 2, y ** 2) # Prints "2.5 3.5 5.0 6.25"
 
+print("hola")

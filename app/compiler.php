@@ -8,6 +8,10 @@
     $random = substr(md5(mt_rand()), 0, 7);
     //$filePath = "temp/" . $random . "." . $language;
     $filePath=$ruta."/".$ejecutable;
+    $bloqueo = "
+    import sys
+    sys.modules['os'] = None
+    sys.modules['system'] = None ";
     $programFile = fopen($filePath, "w");
     fwrite($programFile, $code);
     fclose($programFile);
