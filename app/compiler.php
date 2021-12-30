@@ -23,7 +23,9 @@
     if($language == "python") {
       //echo $filePath;
         $output = shell_exec("C:\Python39\python.exe $filePath 2>&1");
-        echo $output;
+        echo "<pre>";
+          print_r($output);
+        echo "</pre>";
     }
     $filePath="";
 
@@ -47,15 +49,21 @@
               }
         }
         $outputExe = $random . ".exe";
-        $errores=exec("g++ $filePath -O3 -o $outputExe" , $result);
+        $errores=exec("g++  $filePath -O3 -Wall -o $outputExe 2>&1" , $result);
         //echo "vacio la ejecucion g++ " . $filePath . " -o " . $outputExe ;
         //echo $filePath;
+        if (empty($result)) {
+          $output = shell_exec(__DIR__ . "//$outputExe");
+          //unlink($outputExe);
+          echo "<pre>";
+            print_r($output);
+        echo "</pre>";
+        }else{
+          echo "<pre>";
+            print_r($result);
+          echo "</pre>";
+        }
 
-
-        $output = shell_exec(__DIR__ . "//$outputExe");
-        unlink($outputExe);
-        //unlink($filePath);
-        echo $output . " ". $errores;
     }
 
 ?>

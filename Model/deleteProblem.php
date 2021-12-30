@@ -20,7 +20,7 @@ function rrmdir($src) {
 }
 
 $connexio = connectaBD();
-$id = $_POST['id'];
+$id = $_GET['problem'];
     try{
 
         $stmt = $connexio->prepare("SELECT * FROM problema WHERE Id= :mail");

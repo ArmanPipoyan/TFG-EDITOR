@@ -16,7 +16,7 @@
 </head>
 <body class="bg-primary d-flex flex-column min-vh-100" >
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">TFG</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -49,8 +49,13 @@
         
         <?php  if(isset($_SESSION['usuario'])) {
             ?>
-            <a class="navbar-brand" href="/Model/Cerrar_sesion.php">Cerrar sesion</a>
-            <?php echo $_SESSION['usuario'] ." " . $_SESSION['mail'];} ?>
+            <a class="navbar-brand" href="/Model/Cerrar_sesion.php"> <i class="fas fa-sign-out-alt"></i> Tancar Sessió </a>
+             
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                  <a class="nav-link" href="/"><?php echo $_SESSION['usuario'];} ?> <span class="sr-only">(current)</span></a>
+              </li>
+          </ul>
     </nav>
 
 

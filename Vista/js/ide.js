@@ -6,6 +6,8 @@ var second_doc="";
 var carpeta="";
 var myVar3,idToDelete;
 var readOnly=false;
+var rutaArchivoBorrar;
+var ficheroSeleciconado="";
 window.onload = function() {
   console.log("Hacemos load");
   if (ace===undefined) {return false;}
@@ -150,6 +152,7 @@ function executeCode() {
     console.log(myVariable);
     console.log(actual_doc);
     let text= editor.getSession().getValue();
+    respuesta=document.getElementById("respuesta");
     if (text.includes("import os")||text.includes("import sys")) {
       console.log("Pillado el problema");
       error=document.getElementById("error_mssg2");
@@ -177,7 +180,9 @@ function executeCode() {
         },
 
         success: function(response) {
-            $(".output").text(response)
+           // $(".output").html(response)
+            //$('.output').html(response);
+            respuesta.innerHTML=response;
         }
     })
 }
@@ -268,8 +273,8 @@ function validarLogin(){
 
 function validarProblema(){
   var titulo,descripcion;
-  titulo=document.getElementById("exampleFormControlInput1").value;
-  descripcion=document.getElementById("exampleFormControlTextarea1").value;
+  titulo=document.getElementById("titol").value;
+  descripcion=document.getElementById("descripcio").value;
   error=document.getElementById("error_mssg");
   if(titulo==""||descripcion=="")
   {
@@ -302,12 +307,12 @@ function validarProblema(){
     var FileName = file.name;
     var FileExt = FileName.substr(FileName.lastIndexOf('.'));
     var extensiones=FileExt.toUpperCase();
-    var allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python)$/i;
+    var allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt)$/i;
     var isAllowed = allowedExtensionsRegx.test(FileExt);
     if (!isAllowed) {
       console.log(FileExt);
       error.classList.remove('hide');
-      error.innerHTML="El format dels arxius "+ FileExt +  " es incorrecte";
+      error.innerHTML="lA EXTENSIO dels arxius "+ FileExt +  " es incorrecte";
       return false;
     }
   }
@@ -322,11 +327,21 @@ function openFile(file) {
     if (second_doc!="") {
     post("archivo.php", {file:file}, function(data) {
       doc = file;
+      if (ficheroSeleciconado==""){
+        ficheroSeleciconado=file;
+      }else{
+        document.getElementById(ficheroSeleciconado).style.color = 'black';
+        document.getElementById(ficheroSeleciconado).style.fontWeight  = 'normal';
+        
+        ficheroSeleciconado=file;
+      }
       saved = data;
       //document.getElementById("file").textContent = doc.split('/').pop();
       valor=doc.split('.').pop();
  
       actual_doc=doc.split('/').pop();
+      document.getElementById(doc).style.color = 'grey';
+      document.getElementById(doc).style.fontWeight  = 'bold';
       //console.log(valor);
       editor.setValue(data, -1);
       if (valor=="cpp") {
@@ -481,7 +496,57 @@ function changeVisibility(visibilidad,problema){
     return true;
   }
 
+
+ function setBorrarArchivo(rutaArchivo){
+    rutaArchivoBorrar=rutaArchivo;
+    console.log(rutaArchivo);
+ }
+
+ function deleteArchivo() {
+   console.log("Borramos el archivo");
+
+   $.ajax({
+
+    url: "/Model/deleteFile.php",
+
+    method: "POST",
+
+    data: {
+        id: rutaArchivoBorrar,
+        
+    },
+
+    success: function(response) {
+       console.log("Borrado satisfactoriamente");
+       //openFolder(dir);
+       //document.getElementById('rutaArchivoBorrar').innerHTML = "";
+       location.reload();
+    }
+})
+ }
 /////////////////////////////////////////////////////////////////////
 
+function downloadFolder(ruta) 
+{
+  console.log(ruta);  
 
+  $.ajax({
+
+    url: "/Model/zipFolder.php",
+
+    method: "POST",
+
+    data: {
+        id: ruta,
+        
+    },
+
+    success: function(response) {
+       console.log("Descargado satisfactoriamente");
+       //openFolder(dir);
+       //document.getElementById('rutaArchivoBorrar').innerHTML = "";
+       //location.reload();
+    }
+})
+}
     

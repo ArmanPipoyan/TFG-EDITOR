@@ -52,4 +52,34 @@ function crear_problema($ruta,$titol,$descripcio,$memoria,$visio,$execucio,$prob
     return $valid;
 }
 
+function crear_asignatura($titol,$descripcio,$curs)
+{
+
+    
+    try {
+        $conne = connectaBD();
+
+        $stmt1 = $conne->prepare("INSERT INTO assignatura (Titol,Descripcio,Curs) 
+        VALUES (:tit, :descripcio,:curs)");
+
+        #$stmt1->execute();
+        #$val = $stmt1->fetchColumn();
+  
+
+        #$resultado = $conne->prepare($sql);
+        $stmt1->execute(array(":tit"=>$titol, ":descripcio"=>$descripcio,":curs"=>$curs));
+        //$resultado->closeCursor();
+        echo "<br> Insertado todo "." <br>";
+        $valid=1;
+
+        
+
+
+    } catch (Exception $e) {
+        echo "Linea del error:" . $e->getLine();
+        $valid=0;
+    }
+    return $valid;
+}
+
 ?>

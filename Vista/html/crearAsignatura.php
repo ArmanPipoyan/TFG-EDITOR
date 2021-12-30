@@ -13,8 +13,9 @@
                                 <div class="form-card">
                                     <h2 class="fs-title">Detalls</h2> 
                                     <input type="text" name="titol" id="titol" placeholder="Títol de l'assignatura" />
-                                     <input type="text" name="descripcio" id="descripcio" placeholder="Descripció de l'assignatura" /> 
-                                     <input type="text" name="curs" id="curs" placeholder="Curs on es realitzaran" /> 
+                                     <textarea type="text" name="descripcio" id="descripcio" placeholder="Descripció de l'assignatura" rows="3"></textarea> 
+                                     <input type="number" name="curs" id="curs" placeholder="Curs on es realitzaran" /> 
+
                                 </div> 
                                 <input type="submit" name="next" class="next action-button" value="Crear" />
                             </fieldset>

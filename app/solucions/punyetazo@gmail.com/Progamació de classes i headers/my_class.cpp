@@ -6,5 +6,6 @@ using namespace std;
 
 void my_class::do_something()
 {
-    cout << "Doing something!" << endl;
+    cout << "Doing something! dE VERDAD" << endl;
+    cout << "Doing something! dE VERDAD2" << endl;
 }

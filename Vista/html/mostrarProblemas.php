@@ -28,7 +28,7 @@ foreach ($data as $dat) {
               <th scope="row">'.$i.'</th>
 
               <td>
-              <a href="/index.php?query=7&problem=' . $dat[0] . '" class="text-dark"  ruta="'.$dat["Ruta"].'" onclick="openFolder(this.ruta);" id=' . $dat[0] . '"> <div style="height:100%;width:100%">'. $dat[2] . ' </div></a>
+              <a href="/index.php?query=7&problem=' . $dat[0] . '" class="text-dark"  > <div style="height:100%;width:100%">'. $dat[2] . ' </div></a>
               </td>';
               if ($_SESSION['tipo']==0) {
                 echo '<td>
@@ -38,7 +38,7 @@ foreach ($data as $dat) {
                           <button class="btn btn-primary btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Add"><i class="fa fa-table"></i></button>
                       </li>
                       <li class="list-inline-item">
-                          <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                          <a href="/index.php?query=7&problem=' . $dat[0] . '&edit=1" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
                       </li>
                       <li class="list-inline-item">
                           <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="modal" data-target="#my-modal" data-placement="top" title="Delete" onclick="setPoblemToDelete('. $dat[0] .')" ><i class="fa fa-trash"></i></button>
@@ -46,9 +46,18 @@ foreach ($data as $dat) {
                       <li class="list-inline-item">
                           <button class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"  title="'.$dat["Visio"].'" variable="'.$dat["Visio"].'"  onclick="changeVisibility(this.title,'. $dat[0] .')" ><i class="fa fa-eye"></i></button>
                       </li>
-                  </ul>
-              </td>';
+
+                        </ul>
+                   </td>';
+                  
+              }else {
+                echo '<td>
+
+                      </ul>
+                   </td>';
+                
               }
+              
 
             if ($dat["Visio"]=="Public") {
               echo '<td id=' . $dat[0] . '>
@@ -94,7 +103,7 @@ foreach ($data as $dat) {
                         </div>
                         <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
                             <div class="row justify-content-end no-gutters">
-                                <div class="col-auto"><button type="button" class="btn btn-light text-muted" data-dismiss="modal">Cancelar</button></div>
+                                <div class="col-auto mr-1"><button type="button" class="btn btn-light text-muted" data-dismiss="modal">Cancelar</button></div>
                                 <div class="col-auto"><button type="button" class="btn btn-danger px-4" onclick="deleteProblem()" data-dismiss="modal">Eliminar</button></div>
                             </div>
                         </div>

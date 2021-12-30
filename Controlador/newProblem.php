@@ -43,7 +43,7 @@ if ($uploadOk==1) {
     $tmpFileName=basename($_FILES["file"]["name"][$i]);
     $imageFileType = strtolower(pathinfo($tmpFileName,PATHINFO_EXTENSION));
     echo "La extension es " . $imageFileType . "<br>";
-    if($imageFileType != "cpp" && $imageFileType != "h" && $imageFileType != "py" && $imageFileType != "python" ) {
+    if($imageFileType != "cpp" && $imageFileType != "h" && $imageFileType != "py" && $imageFileType != "python" && $imageFileType != "txt" ) {
       echo "Sorry, only .cpp, .py, .h & .python files are allowed.";
       $uploadOk = 0;
       header("Location:/../index.php?query=6");
