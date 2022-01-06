@@ -85,7 +85,7 @@ if ($_SESSION['tipo']==0) {
   //var_dump($datas);
 }
 
-
+$sol=getSolucion($query,$_SESSION['mail']);
 include_once __DIR__ . "/../Vista/html/Editor.php";
 
 ?>

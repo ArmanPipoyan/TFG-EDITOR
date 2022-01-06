@@ -1,5 +1,5 @@
 from animal import Reverse
-rev = Reverse('Youssef 234980')
+rev = Reverse('Yousssdef')
 iter(rev)
 for char in rev:
     print(char)

@@ -48,13 +48,16 @@
                 }
               }
         }
-        $outputExe = $random . ".exe";
+        $outputExe = '"'.$dir."/".$random . ".exe".'"';
+        $finalDir= $dir."/";
+        $ejecutar=$random . ".exe";
         $errores=exec("g++  $filePath -O3 -Wall -o $outputExe 2>&1" , $result);
         //echo "vacio la ejecucion g++ " . $filePath . " -o " . $outputExe ;
         //echo $filePath;
         if (empty($result)) {
-          $output = shell_exec(__DIR__ . "//$outputExe");
-          //unlink($outputExe);
+          chdir($finalDir);
+          $output = shell_exec("$ejecutar");
+          unlink($ejecutar);
           echo "<pre>";
             print_r($output);
         echo "</pre>";

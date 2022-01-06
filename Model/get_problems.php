@@ -122,4 +122,78 @@ function modifySolucionToSolve($id,$usuarioCopiar,$estado,$segundoEstado) {
     return $data3;
 }
 
+
+function updateProblemSolve($id) {
+    try{
+        $conn=connectaBD();
+        $stmt = $conn->prepare("UPDATE solucio SET Edited=1 WHERE Id_problema= :dato");
+        $stmt->execute(array(":dato"=>$id));
+        $data3=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
+        $conn = null;
+
+    }catch (PDOException $e) {
+
+        echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
+    }
+    return $data3;
+}
+
+
+function getSolucion($id,$mail) {
+    try{
+        //echo $id ."  ".$mail;
+        $conn=connectaBD();
+        $stmt = $conn->prepare("SELECT * FROM solucio WHERE Id_problema= :dato and Usuario= :mail");
+        $stmt->execute(array(":dato"=>$id,":mail"=>$mail));
+        $sol=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
+        $conn = null;
+
+        
+
+    }catch (PDOException $e) {
+
+        echo 'Error al recuperar el problema algo ha fallado' . $e->getMessage();
+    }
+    return $sol;
+}
+
+
+function updateSolucionActualziada($id,$mail) {
+    try{
+        $conn=connectaBD();
+        $stmt = $conn->prepare("UPDATE solucio SET Edited=0 WHERE Id_problema= :dato and Usuario= :mail");
+        $stmt->execute(array(":dato"=>$id,":mail"=>$mail));
+        $data3=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
+        $conn = null;
+
+    }catch (PDOException $e) {
+
+        echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
+    }
+    return $data3;
+}
+
+
+function updateProblem($titulo,$descripcio,$memory,$time,$id) {
+    try{
+        $conn=connectaBD();
+        $stmt = $conn->prepare("UPDATE problema SET Title=:titulo, Descripcio=:descripcion, Memoria=:memoria, Tiempo=:tiempo WHERE Id= :mail");
+        $stmt->bindParam(':titulo',$titulo);
+        $stmt->bindParam(':descripcion',$descripcio);
+        $stmt->bindParam(':memoria',$memory);
+        $stmt->bindParam(':tiempo',$time);
+        $stmt->bindParam(':mail',$id);
+
+        $stmt->execute();
+        $data3=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
+        $conn = null;
+        print_r($data3);
+
+    }catch (PDOException $e) {
+
+        echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
+    }
+    
+}
+
 ?>

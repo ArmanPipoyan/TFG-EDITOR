@@ -88,6 +88,11 @@ switch ($query) {
         include __DIR__ . "/Model/zipFolder.php";
         include __DIR__ . "/Vista/html/Footer.html"; 
         break;
+    case 12: // Crear asignaturas
+        include __DIR__ . "/Vista/html/Header.php"; 
+        include __DIR__ . "/Controlador/editarProblema.php";
+        include __DIR__ . "/Vista/html/Footer.html"; 
+        break;
 }
 
 

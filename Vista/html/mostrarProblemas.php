@@ -35,7 +35,7 @@ foreach ($data as $dat) {
                   <!-- Call to action buttons -->
                   <ul class="list-inline m-0">
                       <li class="list-inline-item">
-                          <button class="btn btn-primary btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Add"><i class="fa fa-table"></i></button>
+                          <a href="/index.php?query=12&problem='.$dat[0].'" class="btn btn-primary btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Add"><i class="fa fa-table"></i></a>
                       </li>
                       <li class="list-inline-item">
                           <a href="/index.php?query=7&problem=' . $dat[0] . '&edit=1" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>

@@ -7,13 +7,26 @@ var carpeta="";
 var myVar3,idToDelete;
 var readOnly=false;
 var rutaArchivoBorrar;
-var ficheroSeleciconado="";
+var ficheroSeleciconado=""
+var editing=0;
+var problem_id;
 window.onload = function() {
   console.log("Hacemos load");
   if (ace===undefined) {return false;}
   editor = ace.edit("editor");
   editor.setTheme("ace/theme/monokai");
   editor.session.setMode("ace/mode/c_cpp");
+  const queryString = window.location.search;
+  console.log(queryString);
+  const urlParams = new URLSearchParams(queryString);
+  const product = urlParams.get('edit');
+  console.log(product);
+  problem_id= urlParams.get('problem');
+  if (product==null) {
+    editing=0;
+  }else{
+    editing=1;
+  }
   window.addEventListener("keydown", function(event) {
     keys[event.code] = true;
     if((event.ctrlKey || event.metaKey) && keys["KeyS"]) {
@@ -30,6 +43,7 @@ window.onload = function() {
   var container = document.querySelector('#files');
   var matches = container.querySelectorAll('ul > li');
   console.log(matches[0].id);
+  
   openFile(matches[0].id);
   
     
@@ -53,7 +67,6 @@ function changeState() {
 }
 
 
-
 function cambios(){
   console.log("ha cambiado el codigo se puede guardar");
 }
@@ -74,7 +87,7 @@ function copiado() {
   }
 
 function checkChanges(){
-  console.log("El doc es: "+ carpeta);
+  //console.log("El doc es: "+ carpeta);
 
 
   $.ajax({
@@ -322,6 +335,31 @@ function validarProblema(){
   return true;
 }
 
+function validarProblemaEditado(){
+  var titulo,descripcion;
+  titulo=document.getElementById("titol").value;
+  descripcion=document.getElementById("descripcio").value;
+  error=document.getElementById("error_mssg");
+  if(titulo==""||descripcion=="")
+  {
+      alert("Faltan campos por rellenar");
+      error.classList.remove('hide');
+      error.innerHTML="Hay campos vacios ";
+      return false;
+  }else if (titulo.length < 3|| titulo.length>80){
+    //alert("El  nombre o apellido es muy largo");
+    error.classList.remove('hide');
+    error.innerHTML="Titulo demasiado corto";
+    return false;
+}else if (descripcion.length<3 ){
+    //alert("La Descripcion es demasiado corta");
+    error.classList.remove('hide');
+    error.innerHTML="Descripcion demasiado corta";
+    return false;
+}
+return true;
+}
+
 function openFile(file) {
     second_doc=file;
     if (second_doc!="") {
@@ -374,12 +412,16 @@ function myStopFunction() {
     });
   }
 
-  function newFile() {
+  function newFile(edited,problema) {
     console.log("nevo archivo");
     var filename = prompt("Enter the file/folder name");
-
+    if (edited==1) {
+      console.log("HAcemos cambios");
+    }else{
+      console.log("no hacemos cambios");
+    }
     if(filename) {
-      post("newFile.php", {filename, dir}, function(data) {
+      post("newFile.php", {filename, dir,edited,problema}, function(data) {
         if(data == true) {
           openFolder(dir);
         }
@@ -390,8 +432,9 @@ function myStopFunction() {
       });
     }
   }
+
   function save() {
-    
+    console.log("La variable editing es " + editing);
     if(doc === undefined) {return false;}
     $.ajax({
 
@@ -401,7 +444,9 @@ function myStopFunction() {
 
       data: {
           file: doc,
-          code: editor.getSession().getValue()
+          code: editor.getSession().getValue(),
+          editing:editing,
+          problem:problem_id,
       },
 
       success: function(response) {
@@ -550,3 +595,65 @@ function downloadFolder(ruta)
 })
 }
     
+function recibirFichero() {
+  var control=document.getElementById('my_file')
+  control.click();
+  control.onchange = function(event) {
+    var fileList = control.files;
+    //TODO do something with fileList.  
+    if (fileList.length==0) {
+      return false;
+    }
+    console.log(fileList);
+    var filelength = control.files.length;
+    if(filelength==0){
+      alert("Selecciona els arxius del problema");
+
+      return false;
+    }
+    for (var i = 0; i < control.files.length; i++) {
+      var file = control.files[i];
+      var FileName = file.name;
+      var FileExt = FileName.substr(FileName.lastIndexOf('.'));
+      var extensiones=FileExt.toUpperCase();
+      var allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt)$/i;
+      var isAllowed = allowedExtensionsRegx.test(FileExt);
+      if (!isAllowed) {
+        console.log(FileExt);
+        console.log("Error en el fichero");
+        return false;
+      }
+    }
+    console.log("Aqui llamamos a la funcion ajax"); 
+    console.log("El direcotrio a meter en el input es "+dir)
+    this.form.submit();
+
+    // post("newFile.php", {filename, dir}, function(data)
+
+  
+  
+};
+
+}
+
+function acceptChanges(id) {
+  console.log("aceptamos los cambios");
+  console.log(id);
+  $.ajax({
+
+    url: "/Controlador/aceptarCambios.php",
+
+    method: "POST",
+
+    data: {
+        id: id,
+        
+    },
+
+    success: function(response) {
+       console.log("Cambiado satisfactoriamente");
+       location.reload();
+    }
+})
+
+}
