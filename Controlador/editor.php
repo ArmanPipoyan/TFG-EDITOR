@@ -15,7 +15,10 @@ if (isset($_GET["reiteratiu"])&&isset($_GET["usuario"])) {
     $usuarioCopiar=$_GET["usuario"];
     $copiar=True;
     $data3=modifySolucionToSolve($query,$usuarioCopiar,1,0);
-  }else {
+  }elseif ($_GET["reiteratiu"]==2) {
+    $usuarioCopiar=$_GET["usuario"];
+    $copiar=True;
+  } else {
     header("Location:/../index.php");
   }
 }

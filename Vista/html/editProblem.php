@@ -8,7 +8,8 @@
         <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2><strong>Formulari editar problema</strong></h2>
-                <p>Recorda que a l'hora d'editar el problema els canvis es guardaran automaticament!</p>
+                <p>Recorda que a l'hora d'editar el problema els canvis es guardaran automaticament! </p>
+                <p> No es podra editar el titol ja que forma part de les rutes de les solucions.</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
                         <form id="msform" action="/Controlador/updateProblem.php"  method="post" onsubmit="return validarProblemaEditado();" enctype="multipart/form-data">
@@ -16,8 +17,7 @@
                             <fieldset>
                                 <div class="form-card">
                                     <h2 class="fs-title">Detalls</h2> 
-                                    <label for="titol">Titol</label>
-                                    <input type="text" name="title" id="titol" placeholder="Títol del problema" value="<?php echo $prob["Title"];?>"/>
+
                                     <label for="descripcio">Descripcio</label>
                                      <textarea type="text" name="descripcio" id="descripcio" placeholder="Descripció del problema" rows="3"><?php echo $prob["Descripcio"];?></textarea>
                                      <div class="form-group">

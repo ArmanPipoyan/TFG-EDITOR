@@ -5,7 +5,7 @@ using namespace std;
 
 int main () {
   string line;
-  ifstream myfile ("demo.txt");
+  ifstream myfile ("tfg.txt");
   if (myfile.is_open())
   {
     while ( getline (myfile,line) )

@@ -87,7 +87,7 @@ function copiado() {
   }
 
 function checkChanges(){
-  //console.log("El doc es: "+ carpeta);
+  console.log("El doc es: "+ carpeta);
 
 
   $.ajax({
@@ -363,7 +363,7 @@ return true;
 function openFile(file) {
     second_doc=file;
     if (second_doc!="") {
-    post("archivo.php", {file:file}, function(data) {
+    post("archivo.php", {file:encodeURIComponent(file)}, function(data) {
       doc = file;
       if (ficheroSeleciconado==""){
         ficheroSeleciconado=file;
@@ -406,7 +406,7 @@ function myStopFunction() {
     carpeta=folder;
     console.log("Carpeta a abrir");
     console.log(folder);
-    post("dir.php", {folder:folder}, function(data) {
+    post("dir.php", {folder:encodeURIComponent(folder)}, function(data) {
       dir = folder;
       document.getElementById('files').innerHTML = data;
     });
@@ -421,7 +421,7 @@ function myStopFunction() {
       console.log("no hacemos cambios");
     }
     if(filename) {
-      post("newFile.php", {filename, dir,edited,problema}, function(data) {
+      post("newFile.php", {filename, dir:encodeURIComponent(dir), edited,problema}, function(data) {
         if(data == true) {
           openFolder(dir);
         }
@@ -430,6 +430,7 @@ function myStopFunction() {
         }
         closeMenu();
       });
+      location.reload();
     }
   }
 
@@ -521,7 +522,7 @@ function changeVisibility(visibilidad,problema){
 
       success: function(response) {
          console.log("Borrado satisfactoriamente");
-         location.reload();
+         //location.reload();
       }
   })
   }

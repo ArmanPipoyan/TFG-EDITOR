@@ -6,7 +6,7 @@
 
 <?php if ($_SESSION['tipo']==0 && isset($_GET["edit"])) {?>
 <script type="text/javascript" language="JavaScript">
-    var myVariable = <?php echo(json_encode($ruta)); //Sera $pegar la variable de la carpeta del alumno ?>;
+    var myVariable = <?php echo json_encode($ruta); //Sera $pegar la variable de la carpeta del alumno ?>;
     openFolder(myVariable);
     //var myVar2 = setInterval(save, 1000);
 </script>
@@ -16,7 +16,7 @@
    // echo "Cambios en mi solucion";?>
     <script type="text/javascript" language="JavaScript">
     
-    var myVariable = <?php echo(json_encode($pegar)); //Sera $pegar la variable de la carpeta del alumno ?>;
+    var myVariable = <?php echo json_encode($pegar); //Sera $pegar la variable de la carpeta del alumno ?>;
     openFolder(myVariable);
     //var myVar2 = setInterval(save, 1000);
 </script>
@@ -30,13 +30,21 @@
     <div class="w3-sidebar w3-bar-block w3-card  w3-animate-right mt-5" style="right:0;width:12%;" id="rightMenu">
     <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-hover-black w3-large">Tancar &times;</button>
     <?php 
+
+
+
+    echo '<ul class="list-group list-group-flush">';
     foreach ($datas as $datt) {
-        echo ' 
         
-        <a href="/index.php?query=7&problem='.$_GET["problem"].'&reiteratiu=1&usuario='.$datt["Usuario"].'" class="w3-bar-item  w3-button">'.$datt["Usuario"].'
-        <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Veure" style="margin-right:0px;"><i class="fa fa-eye"></i></button>
-        </a>';
+        echo '
+                <li class="list-group-item d-flex justify-content-between align-items-center ">
+                <a href="/index.php?query=7&problem='.$_GET["problem"].'&reiteratiu=1&usuario='.$datt["Usuario"].'" class="w3-bar-item  w3-button">'.$datt["Usuario"].'</a>
+                <a href="/index.php?query=7&problem='.$_GET["problem"].'&reiteratiu=2&usuario='.$datt["Usuario"].'" class="btn btn-success btn-sm rounded-0" title="Veure" ><i class="fa fa-eye"></i></a>
+                </li>';
+       
       }
+      echo '</ul>';
+     
     ?>
 
 
@@ -145,8 +153,12 @@
                 var myVar = setInterval(save, 4000);
             </script>
  <?php }
-        }
-    }?>
+        }elseif ($_GET["reiteratiu"]==2) { ?>
+            <script>
+                editor.setReadOnly(true);
+            </script>
+    <?php }
+            }?>
 
     <?php 
     if ($_SESSION['tipo']==1) {?>
@@ -158,6 +170,11 @@
     
     
 
+
+
+
+    
+    <!--  MODALS -->
     <div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content border-0">

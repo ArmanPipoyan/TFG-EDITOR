@@ -1,7 +1,9 @@
 <?php
 
 
-  $dir = str_replace('\\', '/', realpath($_POST['folder']));
+  $dir = str_replace('\\', '/', realpath(urldecode($_POST['folder'])));
+  //var_dump($_POST['folder']);
+  //echo urldecode($_POST['folder']);
   $files = scandir($dir);
   echo '<nav class="navbar navbar-expand-lg navbar-light bg-light">';
   echo '<ul class="navbar-nav mr-auto">';

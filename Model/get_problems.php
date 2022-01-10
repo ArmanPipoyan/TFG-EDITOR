@@ -174,11 +174,10 @@ function updateSolucionActualziada($id,$mail) {
 }
 
 
-function updateProblem($titulo,$descripcio,$memory,$time,$id) {
+function updateProblem($descripcio,$memory,$time,$id) {
     try{
         $conn=connectaBD();
-        $stmt = $conn->prepare("UPDATE problema SET Title=:titulo, Descripcio=:descripcion, Memoria=:memoria, Tiempo=:tiempo WHERE Id= :mail");
-        $stmt->bindParam(':titulo',$titulo);
+        $stmt = $conn->prepare("UPDATE problema SET  Descripcio=:descripcion, Memoria=:memoria, Tiempo=:tiempo WHERE Id= :mail");
         $stmt->bindParam(':descripcion',$descripcio);
         $stmt->bindParam(':memoria',$memory);
         $stmt->bindParam(':tiempo',$time);

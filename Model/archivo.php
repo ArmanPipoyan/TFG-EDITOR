@@ -1,4 +1,4 @@
 <?php
-  $file = $_POST['file'];
+  $file = urldecode($_POST['file']);
   echo file_get_contents($file);
 ?>
