@@ -4,7 +4,7 @@
     $ruta=$_POST['route'];
     $ejecutable=$_POST['ejecutable'];
     //echo $ejecutable;
-    set_time_limit(30);
+
 
     $random = substr(md5(mt_rand()), 0, 7);
     //$filePath = "temp/" . $random . "." . $language;
