@@ -4,7 +4,6 @@ One of the biggest problems teachers face in programming is supervising students
 
 # Table of Contents
  
- <img src="https://miro.medium.com/max/960/0*xLRsbQ02J7sQpNNy" align="right" width="300" alt="header"/>
 
    * [What is this?](#1)
    * [Requeriments](#R)
@@ -26,19 +25,16 @@ can be useful to solve a problem.Analyze the problem to be solved and design the
 # Requeriments <a name="R"></a>
 For running each sample code:
 
+- <a href="https://www.apachefriends.org/es/index.html">Xampp</a>
 - <a href="https://www.python.org/downloads/">Python 3.7</a>
 
-- <a href="https://numpy.org/install/">numpy</a>
+- <a href="https://numpy.org/install/">Visual Studio Code</a>
 
-- math
-- Jupyter Notebook
+- Phpmyadmin
+- G++
 
-- matplotlib
+- Python
 
-- <a href="https://scikit-learn.org/stable/install.html">sklearn</a>
-
-- seaborn
-- <a href="https://git-lfs.github.com/"> Git LFS </a>
 
 ## RUN DEMO:
 1. Install Git LFS
