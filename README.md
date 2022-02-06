@@ -8,10 +8,6 @@ One of the biggest problems teachers face in programming is supervising students
    * [What is this?](#1)
    * [Requeriments](#R)
    * [Description](#2)
-      * [Language](#7)
-   * [Models](#3)
-   * [Results](#4)
-
 
    * [Authors](#6)
 
