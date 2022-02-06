@@ -42,7 +42,7 @@ For running each sample code:
 5. Save this folder in htdocs folder
 6. Start Xampp and load apache and MySQL
 7. GoTo: http://localhost/phpmyadmin/index.php
-8. Load the Database
+8. Import the Database with the file "webtfg.sql"
 9. Start working in localhost
 
 
