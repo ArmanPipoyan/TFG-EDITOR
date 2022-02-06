@@ -18,8 +18,6 @@ One of the biggest problems teachers face in programming is supervising students
 
 
 # What is this? <a name="1"></a>
-Recognize the situations in which the application of computational learning algorithms can be useful to solve a problem.
-can be useful to solve a problem.Analyze the problem to be solved and design the optimal solution by applying the techniques learnt. Write technical documents related to the analysis and solution of a problem. Program the basic algorithms to solve the proposed problems. Evaluate the results of the implemented solution and assess possible improvements and defend and argue the decisions taken in the solution of the proposed problems.
 
 
 # Requeriments <a name="R"></a>
@@ -36,25 +34,21 @@ For running each sample code:
 - Python
 
 
-## RUN DEMO:
-1. Install Git LFS
+## INSTALLATION GUIDE:
+1. Install Xampp
 2. Install python3
-3. Install sklearn
-4. Clone this repo (Importat to have step 1)
-5. Run file demo.py
-6. Write a sentence or a text
-7. See predictions!
+3. Install G++
+4. Clone this repo
+5. Save this folder in htdocs folder
+6. Start Xampp and load apache and MySQL
+7. GoTo: http://localhost/phpmyadmin/index.php
+8. Load the Database
+9. Start working in localhost
 
 
 # Description <a name="2"></a>
  
-  In order to make a good language prediction, we must first follow a series of steps to ensure that we do it correctly:
-  - Load the data
-  - Convert the dataset to lowercase
-  - Verify that there are no null rows, if there are, remove them from the dataset.
-  - Separate the dataset into training and test subsets.
-  - Convert the training and test data into a sparse matrix with the CountVectorizer function.
-  - Test different models
+
 
 
 
