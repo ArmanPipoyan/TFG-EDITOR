@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include_once __DIR__ . "/Conectar.php";
+include_once __DIR__ . "/connection.php";
 $connexio = connectaBD();
 $carpeta = $_POST['carpeta'];
 $variable=1;

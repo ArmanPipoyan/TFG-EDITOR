@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__ . "/Conectar.php";
+include_once __DIR__ . "/connection.php";
 $connexio = connectaBD();
 $id = $_POST['cosas'];
 $visibilidad = $_POST['code'];
