@@ -21,7 +21,7 @@
                                     <label for="descripcio">Descripcio</label>
                                     <textarea type="text" name="descripcio" id="descripcio"
                                               placeholder="Descripció del problema"
-                                              rows="3"><?php echo $prob["Descripcio"]; ?></textarea>
+                                              rows="3"><?php echo $prob["description"]; ?></textarea>
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1">Temps execució en segons</label>
                                         <select class="form-control" name="time" id="exampleFormControlSelect1">

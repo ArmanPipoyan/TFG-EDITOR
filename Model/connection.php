@@ -1,7 +1,6 @@
 <?php
-function connectaBD(){
-    $servername = "localhost";
-    $database = "webtfg";
+function connectaBD()
+{
     $username = "root";
     $password = "";
     try {
@@ -9,14 +8,11 @@ function connectaBD(){
         if (mysqli_connect_errno()) {
             echo mysqli_connect_error();
         }
-       
+
         return ($conn);
-    }catch (PDOException $e){
+    } catch (PDOException $e) {
         echo 'La connexio falla' . $e->getMessage();
     }
 
     echo "La connexio connected succefully";
 }
-
-
-?>

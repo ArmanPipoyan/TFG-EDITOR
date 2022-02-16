@@ -23,8 +23,8 @@
 
     $i = 0;
     foreach ($data as $dat) {
-        if ($asignatura == $dat['AsignaturaID']) {
-            if ($_SESSION['tipo'] == 0 || $dat["Visio"] == "Public") {
+        if ($asignatura == $dat['subject_id']) {
+            if ($_SESSION['tipo'] == 0 || $dat["visibility"] == "Public") {
                 echo ' <tr>
               <th scope="row">' . $i . '</th>
 
@@ -45,7 +45,7 @@
                           <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="modal" data-target="#my-modal" data-placement="top" title="Delete" onclick="setPoblemToDelete(' . $dat[0] . ')" ><i class="fa fa-trash"></i></button>
                       </li>
                       <li class="list-inline-item">
-                          <button class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"  title="' . $dat["Visio"] . '" variable="' . $dat["Visio"] . '"  onclick="changeVisibility(this.title,' . $dat[0] . ')" ><i class="fa fa-eye"></i></button>
+                          <button class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"  title="' . $dat["visibility"] . '" variable="' . $dat["visibility"] . '"  onclick="changeVisibility(this.title,' . $dat[0] . ')" ><i class="fa fa-eye"></i></button>
                       </li>
 
                         </ul>
@@ -60,7 +60,7 @@
                 }
 
 
-                if ($dat["Visio"] == "Public") {
+                if ($dat["visibility"] == "Public") {
                     echo '<td id=' . $dat[0] . '>
               Public
               </td>';

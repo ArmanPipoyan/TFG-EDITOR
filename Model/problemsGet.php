@@ -5,7 +5,7 @@ function getProblems()
 
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM problema");
+        $stmt = $conn->prepare("SELECT * FROM problem");
         $stmt->execute();
         $data = $stmt->fetchAll(); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
@@ -22,7 +22,7 @@ function getProblemToSolve($id)
 {
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM problema WHERE Id= :dato");
+        $stmt = $conn->prepare("SELECT * FROM problem WHERE id= :dato");
         $stmt->execute(array(":dato" => $id));
         $data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
@@ -37,10 +37,9 @@ function getProblemToSolve($id)
 
 function getSubjects()
 {
-
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM assignatura");
+        $stmt = $conn->prepare("SELECT * FROM subject");
         $stmt->execute();
         $data = $stmt->fetchAll(); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
@@ -58,9 +57,7 @@ function insert_Solution($pegar, $query, $asignatura, $usuario)
     try {
         $conne = connectaBD();
         $valid = true;
-        //echo $pegar.$query.$asignatura.$usuario;
-        $sql = "INSERT INTO solucio(Ruta,Id_problema ,Id_asignatura ,Usuario ) 
-        VALUES (:nombre, :apellido, :mail, :password)";
+        $sql = "INSERT INTO solution(route, problem_id, subject_id, user) VALUES (:nombre, :apellido, :mail, :password)";
         $resultado = $conne->prepare($sql);
         //comprobar si el usuario en cuestion ya existe
         $resultado->execute(array(":nombre" => $pegar, ":apellido" => $query, ":mail" => $asignatura, ":password" => $usuario));
@@ -78,7 +75,7 @@ function getAlumnos($query)
 
     try {
         $connexio = connectaBD();
-        $stmt = $connexio->prepare("SELECT * FROM solucio WHERE Id_problema= :mail");
+        $stmt = $connexio->prepare("SELECT * FROM solution WHERE problem_id= :mail");
         $stmt->execute(array(":mail" => $query));
         $datas = $stmt->fetchAll(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $connexio = null;
@@ -98,7 +95,7 @@ function getSolucionToSolve($id, $usuarioCopiar)
 {
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM solucio WHERE Id_problema= :dato and Usuario = :usuario");
+        $stmt = $conn->prepare("SELECT * FROM solution WHERE problem_id= :dato and user = :usuario");
         $stmt->execute(array(":dato" => $id, ":usuario" => $usuarioCopiar));
         $data2 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
@@ -114,7 +111,7 @@ function modifySolucionToSolve($id, $usuarioCopiar, $estado, $segundoEstado)
 {
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE solucio SET Editing=$estado WHERE Id_problema= :dato and Editing = :segundoEstado and Usuario = :usuario");
+        $stmt = $conn->prepare("UPDATE solution SET editing=$estado WHERE problem_id= :dato and editing = :segundoEstado and user = :usuario");
         $stmt->execute(array(":dato" => $id, ":segundoEstado" => $segundoEstado, ":usuario" => $usuarioCopiar));
         $data3 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
@@ -131,7 +128,7 @@ function updateProblemSolve($id)
 {
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE solucio SET Edited=1 WHERE Id_problema= :dato");
+        $stmt = $conn->prepare("UPDATE solution SET edited=1 WHERE subject_id= :dato");
         $stmt->execute(array(":dato" => $id));
         $data3 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
@@ -147,16 +144,12 @@ function updateProblemSolve($id)
 function getSolucion($id, $mail)
 {
     try {
-        //echo $id ."  ".$mail;
         $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM solucio WHERE Id_problema= :dato and Usuario= :mail");
+        $stmt = $conn->prepare("SELECT * FROM solution WHERE problem_id= :dato and user= :mail");
         $stmt->execute(array(":dato" => $id, ":mail" => $mail));
         $sol = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
-
-
     } catch (PDOException $e) {
-
         echo 'Error al recuperar el problema algo ha fallado' . $e->getMessage();
     }
     return $sol;
@@ -167,7 +160,7 @@ function updateSolucionActualziada($id, $mail)
 {
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE solucio SET Edited=0 WHERE Id_problema= :dato and Usuario= :mail");
+        $stmt = $conn->prepare("UPDATE solution SET edited=0 WHERE problem_id= :dato and user= :mail");
         $stmt->execute(array(":dato" => $id, ":mail" => $mail));
         $data3 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
@@ -184,7 +177,7 @@ function updateProblem($descripcio, $memory, $time, $id)
 {
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE problema SET  Descripcio=:descripcion, Memoria=:memoria, Tiempo=:tiempo WHERE Id= :mail");
+        $stmt = $conn->prepare("UPDATE problem SET  description=:descripcion, memory=:memoria, time=:tiempo WHERE id= :mail");
         $stmt->bindParam(':descripcion', $descripcio);
         $stmt->bindParam(':memoria', $memory);
         $stmt->bindParam(':tiempo', $time);

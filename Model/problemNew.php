@@ -4,7 +4,7 @@ function verificar_problema($titol)
 {
     try {
         $connexio = connectaBD();
-        $stmt = $connexio->prepare("SELECT COUNT(*) FROM problema WHERE Title= :titol");
+        $stmt = $connexio->prepare("SELECT COUNT(*) FROM problem WHERE title= :titol");
         $stmt->execute(array(":titol" => $titol));
         $val = $stmt->fetchColumn();
         $connexio = null;
@@ -27,17 +27,10 @@ function crear_problema($ruta, $titol, $descripcio, $memoria, $visio, $execucio,
     try {
         $conne = connectaBD();
 
-        $stmt1 = $conne->prepare("INSERT INTO problema (Ruta,Title,Descripcio,Visio,Tiempo,Memoria,Llenguatge,AsignaturaID) 
+        $stmt1 = $conne->prepare("INSERT INTO problem (route,title,description,visibility,time,memory,language,subject_id) 
         VALUES (:ruta, :tit, :descripcio,:visio,:tiempo,:memoria,:programacio,:asignatura)");
-
-        #$stmt1->execute();
-        #$val = $stmt1->fetchColumn();
-
-
-        #$resultado = $conne->prepare($sql);
         $stmt1->execute(array(":ruta" => $ruta, ":tit" => $titol, ":descripcio" => $descripcio,
             ":visio" => $visio, ":tiempo" => $execucio, ":memoria" => $memoria, ":programacio" => $problema, ":asignatura" => $asignatura));
-        //$resultado->closeCursor();
         echo "<br> Insertado todo " . " <br>";
         $valid = 1;
 
@@ -51,25 +44,16 @@ function crear_problema($ruta, $titol, $descripcio, $memoria, $visio, $execucio,
 
 function crear_asignatura($titol, $descripcio, $curs)
 {
-
-
     try {
         $conne = connectaBD();
 
-        $stmt1 = $conne->prepare("INSERT INTO assignatura (Titol,Descripcio,Curs) 
+        $stmt1 = $conne->prepare("INSERT INTO subject (title,description,course) 
         VALUES (:tit, :descripcio,:curs)");
 
-        #$stmt1->execute();
-        #$val = $stmt1->fetchColumn();
-
-
-        #$resultado = $conne->prepare($sql);
         $stmt1->execute(array(":tit" => $titol, ":descripcio" => $descripcio, ":curs" => $curs));
-        //$resultado->closeCursor();
+
         echo "<br> Insertado todo " . " <br>";
         $valid = 1;
-
-
     } catch (Exception $e) {
         echo "Linea del error:" . $e->getLine();
         $valid = 0;

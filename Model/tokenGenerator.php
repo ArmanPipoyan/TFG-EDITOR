@@ -10,8 +10,7 @@ echo $token;
 
 $conne = connectaBD();
 
-$sql = "INSERT INTO tokens(valor) 
-            VALUES (:valor)";
+$sql = "INSERT INTO tokens(valor) VALUES (:valor)";
 
 $resultado = $conne->prepare($sql);
 $resultado->execute(array(":valor" => $token));

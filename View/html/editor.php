@@ -1,7 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="Vista/js/lib/ace.js"></script>
-<script src="Vista/js/lib/theme-monokai.js"></script>
-<script src="Vista/js/ide.js"></script>
+<script src="View/js/lib/ace.js"></script>
+<script src="View/js/lib/theme-monokai.js"></script>
+<script src="View/js/ide.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <?php if ($_SESSION['tipo']==0 && isset($_GET["edit"])) {?>
@@ -38,8 +38,8 @@
         
         echo '
                 <li class="list-group-item d-flex justify-content-between align-items-center ">
-                <a href="/index.php?query=7&problem='.$_GET["problem"].'&reiteratiu=1&usuario='.$datt["Usuario"].'" class="w3-bar-item  w3-button">'.$datt["Usuario"].'</a>
-                <a href="/index.php?query=7&problem='.$_GET["problem"].'&reiteratiu=2&usuario='.$datt["Usuario"].'" class="btn btn-success btn-sm rounded-0" title="Veure" ><i class="fa fa-eye"></i></a>
+                <a href="/index.php?query=7&problem='.$_GET["problem"].'&reiteratiu=1&usuario='.$datt["user"].'" class="w3-bar-item  w3-button">'.$datt["user"].'</a>
+                <a href="/index.php?query=7&problem='.$_GET["problem"].'&reiteratiu=2&usuario='.$datt["user"].'" class="btn btn-success btn-sm rounded-0" title="Veure" ><i class="fa fa-eye"></i></a>
                 </li>';
        
       }
@@ -55,13 +55,8 @@
         echo '<a class="w3-button w3-teal w3-xlarge w3-right" href="/index.php?query=7&problem='.$_GET["problem"].'">Tornar enrere</a>';
         ?>
     <script>
-        // Warning before leaving the page (back button, or outgoinglink)
         window.onbeforeunload = function() {
-            //console.log("PRUEBA BETA");
             changeState();
-        //return "Estas editant un estudiant";
-        //if we return nothing here (just calling return;) then there will be no pop-up question at all
-        //return "se va el professor";
         };
     </script>
 
@@ -73,11 +68,8 @@
 
 <?php }?>
 <!-- Final Sidebar Professor -->
-
-
-
 <br>
-    <?php if ($sol["Edited"]==1) {?>
+    <?php if ($sol["edited"]==1) {?>
             <div class="container">
                 <p class="alert alert-info " id="edition_mssg"> <strong> Vols obtenir els canvis del professor  </strong>
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -99,11 +91,11 @@
     </div>
     <div class="container bg-dark ">
     
-    <p class="text-center text-white font-weight-bold"><?php echo $data["Title"];?></p>
+    <p class="text-center text-white font-weight-bold"><?php echo $data["title"];?></p>
 
     <button type="button" class="collapsible bg-dark"><i class="fas fa-expand"></i> Descripció </button>
     <div class="content bg-dark text-white">
-        <p><?php echo htmlspecialchars($data["Descripcio"]);?></p>
+        <p><?php echo htmlspecialchars($data["description"]);?></p>
     </div>
     <script>
         var coll = document.getElementsByClassName("collapsible");
@@ -139,7 +131,7 @@
 
     
     <script type="text/javascript" language="JavaScript">
-        var lenguaje = <?php echo(json_encode($data["Llenguatge"])); //Sera $pegar la variable de la carpeta del alumno ?>;
+        var lenguaje = <?php echo(json_encode($data["language"])); //Sera $pegar la variable de la carpeta del alumno ?>;
         setLanguage(lenguaje);
     </script>
 

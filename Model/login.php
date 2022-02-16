@@ -1,62 +1,47 @@
 <?php
 
-function logInEstudiante($connexio,$mail,$password)
+function logInEstudiante($connexio, $mail, $password)
 {
-    try{
+    try {
+        $stmt = $connexio->prepare("SELECT * FROM student WHERE email= :mail");
+        $stmt->execute(array(":mail" => $mail));
+        $data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
 
-        $stmt = $connexio->prepare("SELECT * FROM Estudiant WHERE Email= :mail");
-        $stmt->execute(array(":mail"=>$mail));
-        $data=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $connexio = null;
-
-        $resspass=$data['Pass'];
-        $ress=password_verify($password,$resspass);
-        if ($ress==true) {
-            $_SESSION['usuario']=$data['Nom'];
-            $_SESSION['mail']=$mail;
-            $_SESSION['tipo']=1;
+        $resspass = $data['password'];
+        $ress = password_verify($password, $resspass);
+        if ($ress == true) {
+            $_SESSION['usuario'] = $data['name'];
+            $_SESSION['mail'] = $mail;
+            $_SESSION['tipo'] = 1;
         }
-        
-        echo $data['Nom'] . " ";
-        
-
-    }catch (PDOException $e) {
-
+        echo $data['name'] . " ";
+    } catch (PDOException $e) {
         echo 'Error al fer log-in' . $e->getMessage();
     }
-return $ress;
+    return $ress;
 
 }
 
 
-function logInProfesor($connexio,$mail,$password)
+function logInProfesor($connexio, $mail, $password)
 {
-    try{
+    try {
+        $stmt = $connexio->prepare("SELECT * FROM professor WHERE email= :mail");
+        $stmt->execute(array(":mail" => $mail));
+        $data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
 
-        $stmt = $connexio->prepare("SELECT * FROM profesor WHERE Email= :mail");
-        $stmt->execute(array(":mail"=>$mail));
-        $data=$stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $connexio = null;
-
-        $resspass=$data['Pass'];
-        $ress=password_verify($password,$resspass);
-        if ($ress==true) {
-            $_SESSION['usuario']=$data['Nom'];
-            $_SESSION['mail']=$mail;
-            $_SESSION['tipo']=0;
+        $resspass = $data['password'];
+        $ress = password_verify($password, $resspass);
+        if ($ress == true) {
+            $_SESSION['usuario'] = $data['name'];
+            $_SESSION['mail'] = $mail;
+            $_SESSION['tipo'] = 0;
         }
-        
-        echo $data['Nom'] . " ";
-        
-
-    }catch (PDOException $e) {
-
+        echo $data['name'] . " ";
+    } catch (PDOException $e) {
         echo 'Error al fer log-in' . $e->getMessage();
     }
-return $ress;
-
+    return $ress;
 
 
 }
-
-?>

@@ -11,19 +11,15 @@ $connexio = connectaBD();
 
 $id = $_POST['id'];
 try {
-
-    $stmt = $connexio->prepare("SELECT * FROM problema WHERE Id= :mail");
+    $stmt = $connexio->prepare("SELECT * FROM problem WHERE id= :mail");
     $stmt->execute(array(":mail" => $id));
     $data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data
 
-    $stmt = $connexio->prepare('DELETE FROM problema WHERE Id = :mail');
+    $stmt = $connexio->prepare('DELETE FROM problem WHERE id = :mail');
     $stmt->execute(array(":mail" => $id));
 
-
     $connexio = null;
-
 } catch (PDOException $e) {
-
     echo 'Error al fer log-in' . $e->getMessage();
 }
 

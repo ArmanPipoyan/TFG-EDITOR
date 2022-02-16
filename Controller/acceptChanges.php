@@ -9,14 +9,14 @@ $id=$_POST["id"];
 echo "El email es " . $mail . " y el problema es ". $id ."<br>";
 
 $data=getProblemToSolve($id);
-$asignatura=$data["AsignaturaID"];
-$ruta=$data["Ruta"];
+$asignatura=$data["subject_id"];
+$ruta=$data["route"];
 $dir = str_replace('\\', '/', realpath(__DIR__ . $ruta));
 $files = scandir($dir);
 
 echo $dir;
 
-$pegar=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/".$_SESSION['mail']."/".$data["Title"])); //modificar para cada alumno
+$pegar=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/".$_SESSION['mail']."/".$data["title"])); //modificar para cada alumno
 
 echo "<br>".$pegar;
 updateSolucionActualziada($id,$mail);

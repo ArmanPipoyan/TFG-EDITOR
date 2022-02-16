@@ -1,16 +1,16 @@
 <?php
 session_start();
 
-function rrmdir($src) {
+function rrmdir($src)
+{
     echo "Entramos a borrar";
     $dir = opendir($src);
-    while(false !== ( $file = readdir($dir)) ) {
-        if (( $file != '.' ) && ( $file != '..' )) {
+    while (false !== ($file = readdir($dir))) {
+        if (($file != '.') && ($file != '..')) {
             $full = $src . '/' . $file;
-            if ( is_dir($full) ) {
+            if (is_dir($full)) {
                 rrmdir($full);
-            }
-            else {
+            } else {
                 unlink($full);
             }
         }
@@ -21,11 +21,8 @@ function rrmdir($src) {
 
 
 $id = $_POST['id'];
-if ( is_dir($id) ) {
+if (is_dir($id)) {
     echo -1;
-}
-else {
+} else {
     unlink($id);
 }
-
-?>

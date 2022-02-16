@@ -9,7 +9,6 @@ $connexio = connectaBD();
 
 $comprobacion = logInEstudiante($connexio, $mail, $password);
 if ($comprobacion == true) {
-
     echo "has iniciado sesion correctamente";
     echo $_SESSION['usuario'] . " " . $_SESSION['mail'];
 

@@ -22,8 +22,8 @@ if (isset($_GET["reiteratiu"]) && isset($_GET["usuario"])) {
     }
 }
 $data = getProblemToSolve($query);
-$asignatura = $data["AsignaturaID"];
-$ruta = $data["Ruta"];
+$asignatura = $data["subject_id"];
+$ruta = $data["route"];
 $dir = str_replace('\\', '/', realpath(__DIR__ . $ruta));
 $files = scandir($dir);
 
@@ -44,9 +44,9 @@ if (!file_exists(__DIR__ . $variable)) {
 }
 
 if ($copiar == True) {
-    $variable = './../app/solucions/' . $usuarioCopiar . "/" . $data["Title"];
+    $variable = './../app/solucions/' . $usuarioCopiar . "/" . $data["title"];
 } else {
-    $variable = './../app/solucions/' . $_SESSION['mail'] . "/" . $data["Title"];
+    $variable = './../app/solucions/' . $_SESSION['mail'] . "/" . $data["title"];
 }
 
 if (!file_exists(__DIR__ . $variable)) {
@@ -58,9 +58,9 @@ if (!file_exists(__DIR__ . $variable)) {
 
 //Variale para cargar ruta del archivo
 if ($copiar == True) {
-    $pegar = str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/" . $usuarioCopiar . "/" . $data["Title"])); //modificar para cada alumno
+    $pegar = str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/" . $usuarioCopiar . "/" . $data["title"])); //modificar para cada alumno
 } else {
-    $pegar = str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/" . $_SESSION['mail'] . "/" . $data["Title"])); //modificar para cada alumno
+    $pegar = str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/" . $_SESSION['mail'] . "/" . $data["title"])); //modificar para cada alumno
 }
 
 //Si no existe la carpeta con el problema se crea aqui
