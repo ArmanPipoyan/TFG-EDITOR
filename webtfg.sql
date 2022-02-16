@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-01-2022 a las 10:30:42
--- Versión del servidor: 10.4.17-MariaDB
--- Versión de PHP: 7.3.26
+-- Tiempo de generación: 16-02-2022 a las 16:43:31
+-- Versión del servidor: 10.4.22-MariaDB
+-- Versión de PHP: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,83 +24,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `assignatura`
+-- Estructura de tabla para la tabla `problem`
 --
 
-CREATE TABLE `assignatura` (
-  `Id` int(11) NOT NULL,
-  `Titol` varchar(255) NOT NULL,
-  `Descripcio` varchar(255) NOT NULL,
-  `Curs` varchar(255) NOT NULL
+CREATE TABLE `problem` (
+  `id` int(11) NOT NULL,
+  `route` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `visibility` varchar(255) NOT NULL,
+  `memory` varchar(255) NOT NULL,
+  `time` varchar(255) NOT NULL,
+  `language` varchar(50) NOT NULL,
+  `subject_id` int(11) NOT NULL,
+  `edited` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `assignatura`
+-- Volcado de datos para la tabla `problem`
 --
 
-INSERT INTO `assignatura` (`Id`, `Titol`, `Descripcio`, `Curs`) VALUES
-(0, 'Laboratori de programació', 'Programacio interactiva per estudiants', '3'),
-(2, 'Metodologia de la programació', 'Programacio interactiva per estudiants', '2'),
-(5, 'pRUEBA', 'pRUEBA KANDSAD', '12'),
-(6, 'assignatura nova', 'Aquesta és una assignatura de prova', '1');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `estudiant`
---
-
-CREATE TABLE `estudiant` (
-  `Id` int(11) NOT NULL,
-  `Nom` varchar(30) NOT NULL,
-  `Cognom` varchar(30) NOT NULL,
-  `Email` varchar(50) NOT NULL,
-  `Pass` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `estudiant`
---
-
-INSERT INTO `estudiant` (`Id`, `Nom`, `Cognom`, `Email`, `Pass`) VALUES
-(1, 'Assbaghi', 'iksajklasd', 'youssef.assbaghi@e-campus.uab.cat', '$2y$10$wmqxL/WbZ.VxpCBXnGUzHONRS63r0TGemZcxxqTx/7DRCURZhAxFu'),
-(3, 'Assbaghi', 'iksajklasd', 'sermanker@gmail.com', '$2y$10$v1kK859Ze00Cycf/ExLNzeBAZLkH49oWtHUrDpA/1bc8wa6/BnkLm'),
-(4, 'Juan', 'Perez', 'localhost@gmail.com', '$2y$10$YnMM19UwnDIF1JZBX4t7HeOB4pxdr7MSBMBkgkiizuJJ3hdOaW082'),
-(5, 'asAssbaghi', 'iksajklasd', 'asas@gmail.com', '$2y$10$MhmvoB2q7/k/K9jt8jsrveKXwZV7IOn1ELEn8SYyq1IVbgDdqKYtS'),
-(6, 'asAssbaghi', 'iksajklasd', 'asass@gmail.com', '$2y$10$Jt4Dla8Awfytyjpt9SEiyedF4J3zu9nRBQ0ac4/xC5EM68l10udnG'),
-(7, 'asdasd', 'asdasd', 'sermansker@gmail.com', '$2y$10$QhhDcNBAAh4lAqwZ5qI7g.nXJSnOeW5WCX6ZQyvNsp7SpasztF5.m'),
-(8, 'Assbaghi', 'iksajklasd', 'sermankasder@gmail.com', '$2y$10$705LiEPcbcwdBVLHWeAMROc/q1QkXpHiOFnZ/EIaEZfYC1IxXgKf6'),
-(9, 'hgh', 'hgfhfg', 'hgfhgf@gmail.com', '$2y$10$Dmcf6CyWhKasX3SGK.NeueL8w1I4mSd2F/3jYRQRNbzvDqPrDRWw6'),
-(10, 'Ernest', 'Valveny', 'Ernest.Valveny@uab.cat', '$2y$10$3ejx5cmcxA4Xr3vlKCelpu.LpB//GZidFR/O9qq2.i6yiQ7YnyrrW');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `problema`
---
-
-CREATE TABLE `problema` (
-  `Id` int(11) NOT NULL,
-  `Ruta` varchar(255) DEFAULT NULL,
-  `Title` varchar(255) NOT NULL,
-  `Descripcio` text NOT NULL,
-  `Visio` varchar(255) NOT NULL,
-  `Memoria` varchar(255) NOT NULL,
-  `Tiempo` varchar(255) NOT NULL,
-  `Llenguatge` varchar(50) NOT NULL,
-  `AsignaturaID` int(11) NOT NULL,
-  `Edited` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `problema`
---
-
-INSERT INTO `problema` (`Id`, `Ruta`, `Title`, `Descripcio`, `Visio`, `Memoria`, `Tiempo`, `Llenguatge`, `AsignaturaID`, `Edited`) VALUES
+INSERT INTO `problem` (`id`, `route`, `title`, `description`, `visibility`, `memory`, `time`, `language`, `subject_id`, `edited`) VALUES
 (46, './../app/problemes/Progamació de classes i headers', 'Progamació de classes i headers', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'Public', '50', '5', 'C++', 0, 0),
 (47, './../app/problemes/Llibreria numpy', 'Llibreria numpy', 'NumPy es una librería de Python especializada en el cálculo numérico y el análisis de datos, especialmente para un gran volumen de datos. asuojkdhg\r\n\r\nIncorpora una nueva clase de objetos llamados arrays que permite representar colecciones de datos de un mismo tipo en varias dimensiones, y funciones muy eficientes para su manipulación.', 'Public', '50', '5', 'Python', 0, 0),
-(48, './../app/problemes/Classes de Python', 'Classes de Python', 'Creación de arrays\r\nPara crear un array se utiliza la siguiente función de NumPy\r\n\r\nnp.array(lista) : Crea un array a partir de la lista o tupla lista y devuelve una referencia a él. El número de dimensiones del array dependerá de las listas o tuplas anidadas en lista:\r\n\r\nPara una lista de valores se crea un array de una dimensión, también conocido como vector.\r\nPara una lista de listas de valores se crea un array de dos dimensiones, también conocido como matriz.\r\nPara una lista de listas de listas de valores se crea un array de tres dimensiones, también conocido como cubo.\r\nY así sucesivamente. No hay límite en el número de dimensiones del array más allá de la memoria disponible en el sistema.\r\n Los elementos de la lista o tupla deben ser del mismo tipo.', 'Public', '50', '5', 'Python', 2, 0),
-(55, './../app/problemes/pROBLEMA PARA PROGTAMAR', 'pROBLEMA PARA PROGTAMAR', 'SADFSADF\r\nASDF\r\nASD\r\nF\r\nASD\r\nF\r\nSADF\r\nASDFASDFASDFASDFASD ADSF DASF ASDFSAD F\r\nHabia una vez una descripcion editada', 'Public', '50', '10', 'Python', 5, 0),
+(48, './../app/problemes/Classes de Python', 'Classes de Python', 'Creación de arrays\nPara crear un array se utiliza la siguiente función de NumPy\n\nnp.array(lista) : Crea un array a partir de la lista o tupla lista y devuelve una referencia a él. El número de dimensiones del array dependerá de las listas o tuplas anidadas en lista:\n\nPara una lista de valores se crea un array de una dimensión, también conocido como vector.\nPara una lista de listas de valores se crea un array de dos dimensiones, también conocido como matriz.\nPara una lista de listas de listas de valores se crea un array de tres dimensiones, también conocido como cubo.\nY así sucesivamente. No hay límite en el número de dimensiones del array más allá de la memoria disponible en el sistema.\n Los elementos de la lista o tupla deben ser del mismo tipo.', 'Public', '50', '5', 'Python', 2, 0),
+(55, './../app/problemes/pROBLEMA PARA PROGTAMAR', 'pROBLEMA PARA PROGTAMAR', 'SADFSADF\nASDF\nASD\nF\nASD\nF\nSADF\nASDFASDFASDFASDFASD ADSF DASF ASDFSAD F\nHabia una vez una descripcion editada', 'Public', '50', '10', 'Python', 5, 0),
 (67, './../app/problemes/Clearly a test good', 'Clearly a test good', 'Descipcion coeta', 'Public', '50', '5', 'Python', 0, 0),
 (69, './../app/problemes/problema de prova', 'problema de prova', 'Això és una prova', 'Public', '50', '5', 'C++', 6, 0),
 (75, './../app/problemes/Problema de ficheros en c++', 'Problema de ficheros en c++', 'Este es un test de ficheros de c++', 'Public', '50', '5', 'C++', 0, 0);
@@ -108,23 +56,23 @@ INSERT INTO `problema` (`Id`, `Ruta`, `Title`, `Descripcio`, `Visio`, `Memoria`,
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `profesor`
+-- Estructura de tabla para la tabla `professor`
 --
 
-CREATE TABLE `profesor` (
-  `Id` int(11) NOT NULL,
-  `Nom` varchar(255) NOT NULL,
-  `Cognom` varchar(255) NOT NULL,
-  `Pass` varchar(255) NOT NULL,
-  `Email` varchar(255) NOT NULL
+CREATE TABLE `professor` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `surname` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `profesor`
+-- Volcado de datos para la tabla `professor`
 --
 
-INSERT INTO `profesor` (`Id`, `Nom`, `Cognom`, `Pass`, `Email`) VALUES
-(1, 'Pepe', 'Viyuela', '$2y$10$L2BWKcuFEJzGj/3tKMqaMOgQGuFekmzOhTz5JjR.zUS88NMwpjcx2', 'punyetazo@gmail.com'),
+INSERT INTO `professor` (`id`, `name`, `surname`, `password`, `email`) VALUES
+(1, 'Pepe', 'Viyuela', '$2y$10$eNxpgdh1Qk5r5HQdo7DzeeF.lhNjJsEmPAwfnsPSTgt7wlc9xOfpy', 'punyetazo@gmail.com'),
 (3, 'as', 'Youssef', '$2y$10$oaTlGuc4RZSFpvi9KpbHu.slYt25h/0Zf4n4/S.5rNSbHY1QuQJju', 'punyetsazo@gmail.com'),
 (4, 'Assbaghi', 'iksajklasd', '$2y$10$McYjqkQjFZMuwUNtVTZ4MO5Wxt3B4TF5N5ZlmryX4p7Uk0pg6rN.q', 'sermankerwe@gmail.com'),
 (5, 'asAssbaghi', 'iksajklasd', '$2y$10$nOmfkPG4fN3r8uJeBaRlwe2qgLDOci/dqKJcTHF0mE2u3SagWJtBa', 'sermankersd@gmail.com'),
@@ -135,37 +83,98 @@ INSERT INTO `profesor` (`Id`, `Nom`, `Cognom`, `Pass`, `Email`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `solucio`
+-- Estructura de tabla para la tabla `solution`
 --
 
-CREATE TABLE `solucio` (
-  `Id` int(11) NOT NULL,
-  `Ruta` varchar(255) NOT NULL,
-  `Id_problema` int(11) NOT NULL,
-  `Id_asignatura` int(11) NOT NULL,
-  `Usuario` varchar(255) NOT NULL,
-  `Editing` int(11) NOT NULL DEFAULT 0,
-  `Edited` int(11) NOT NULL DEFAULT 0
+CREATE TABLE `solution` (
+  `id` int(11) NOT NULL,
+  `route` varchar(255) NOT NULL,
+  `problem_id` int(11) NOT NULL,
+  `subject_id` int(11) NOT NULL,
+  `user` varchar(255) NOT NULL,
+  `editing` int(11) NOT NULL DEFAULT 0,
+  `edited` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `solucio`
+-- Volcado de datos para la tabla `solution`
 --
 
-INSERT INTO `solucio` (`Id`, `Ruta`, `Id_problema`, `Id_asignatura`, `Usuario`, `Editing`, `Edited`) VALUES
-(32, 'C:/xampp/htdocs/app/solucions/sermanker@gmail.com/Classes de Python', 48, 2, 'sermanker@gmail.com', 0, 0),
-(33, 'C:/xampp/htdocs/app/solucions/sermanker@gmail.com/Progamació de classes i headers', 46, 0, 'sermanker@gmail.com', 1, 0),
-(34, 'C:/xampp/htdocs/app/solucions/sermanker@gmail.com/Llibreria numpy', 47, 0, 'sermanker@gmail.com', 0, 0),
-(38, 'C:/xampp/htdocs/app/solucions/sermansker@gmail.com/Progamació de classes i headers', 46, 0, 'sermansker@gmail.com', 0, 0),
-(50, 'C:/xampp/htdocs/app/solucions/sermanker@gmail.com/Clearly a test good', 67, 0, 'sermanker@gmail.com', 0, 0),
-(51, 'C:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/Classes de Python', 48, 2, 'Ernest.Valveny@uab.cat', 0, 1),
-(52, 'C:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/Progamació de classes i headers', 46, 0, 'Ernest.Valveny@uab.cat', 1, 0),
-(53, 'C:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/Clearly a test good', 67, 0, 'Ernest.Valveny@uab.cat', 0, 0),
-(54, 'C:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/pROBLEMA PARA PROGTAMAR', 55, 5, 'Ernest.Valveny@uab.cat', 0, 0),
-(55, 'C:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/Llibreria numpy', 47, 0, 'Ernest.Valveny@uab.cat', 0, 0),
-(61, 'C:/xampp/htdocs/app/solucions/sermanker@gmail.com/problema de prova', 69, 6, 'sermanker@gmail.com', 0, 0),
-(70, 'C:/xampp/htdocs/app/solucions/sermanker@gmail.com/Problema de ficheros en c++', 75, 0, 'sermanker@gmail.com', 0, 0),
-(73, 'C:/xampp/htdocs/app/solucions/sermanker@gmail.com/pROBLEMA PARA PROGTAMAR', 55, 5, 'sermanker@gmail.com', 0, 0);
+INSERT INTO `solution` (`id`, `route`, `problem_id`, `subject_id`, `user`, `editing`, `edited`) VALUES
+(32, 'D:/xampp/htdocs/app/solucions/sermanker@gmail.com/Classes de Python', 48, 2, 'sermanker@gmail.com', 0, 0),
+(33, 'D:/xampp/htdocs/app/solucions/sermanker@gmail.com/Progamació de classes i headers', 46, 0, 'sermanker@gmail.com', 1, 0),
+(34, 'D:/xampp/htdocs/app/solucions/sermanker@gmail.com/Llibreria numpy', 47, 0, 'sermanker@gmail.com', 0, 0),
+(38, 'D:/xampp/htdocs/app/solucions/sermansker@gmail.com/Progamació de classes i headers', 46, 0, 'sermansker@gmail.com', 1, 0),
+(50, 'D:/xampp/htdocs/app/solucions/sermanker@gmail.com/Clearly a test good', 67, 0, 'sermanker@gmail.com', 0, 0),
+(51, 'D:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/Classes de Python', 48, 2, 'Ernest.Valveny@uab.cat', 0, 1),
+(52, 'D:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/Progamació de classes i headers', 46, 0, 'Ernest.Valveny@uab.cat', 1, 0),
+(53, 'D:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/Clearly a test good', 67, 0, 'Ernest.Valveny@uab.cat', 0, 0),
+(54, 'D:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/pROBLEMA PARA PROGTAMAR', 55, 5, 'Ernest.Valveny@uab.cat', 0, 0),
+(55, 'D:/xampp/htdocs/app/solucions/Ernest.Valveny@uab.cat/Llibreria numpy', 47, 0, 'Ernest.Valveny@uab.cat', 0, 0),
+(61, 'D:/xampp/htdocs/app/solucions/sermanker@gmail.com/problema de prova', 69, 6, 'sermanker@gmail.com', 0, 0),
+(70, 'D:/xampp/htdocs/app/solucions/sermanker@gmail.com/Problema de ficheros en c++', 75, 0, 'sermanker@gmail.com', 0, 0),
+(73, 'D:/xampp/htdocs/app/solucions/sermanker@gmail.com/pROBLEMA PARA PROGTAMAR', 55, 5, 'sermanker@gmail.com', 0, 0),
+(75, 'D:/xampp/htdocs/app/solucions/mail@gmail.com/Llibreria numpy', 47, 0, 'mail@gmail.com', 0, 0),
+(76, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/Progamació de classes i headers', 46, 0, 'namesurname@mail.com', 0, 0),
+(77, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/problema de prova', 69, 6, 'namesurname@mail.com', 0, 0),
+(78, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/Problema de ficheros en c++', 75, 0, 'namesurname@mail.com', 0, 0),
+(79, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/Clearly a test good', 67, 0, 'namesurname@mail.com', 0, 0),
+(80, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/Llibreria numpy', 47, 0, 'namesurname@mail.com', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `student`
+--
+
+CREATE TABLE `student` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `surname` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `student`
+--
+
+INSERT INTO `student` (`id`, `name`, `surname`, `email`, `password`) VALUES
+(1, 'Assbaghi', 'iksajklasd', 'youssef.assbaghi@e-campus.uab.cat', '$2y$10$wmqxL/WbZ.VxpCBXnGUzHONRS63r0TGemZcxxqTx/7DRCURZhAxFu'),
+(3, 'Assbaghi', 'iksajklasd', 'sermanker@gmail.com', '$2y$10$v1kK859Ze00Cycf/ExLNzeBAZLkH49oWtHUrDpA/1bc8wa6/BnkLm'),
+(4, 'Juan', 'Perez', 'localhost@gmail.com', '$2y$10$YnMM19UwnDIF1JZBX4t7HeOB4pxdr7MSBMBkgkiizuJJ3hdOaW082'),
+(5, 'asAssbaghi', 'iksajklasd', 'asas@gmail.com', '$2y$10$MhmvoB2q7/k/K9jt8jsrveKXwZV7IOn1ELEn8SYyq1IVbgDdqKYtS'),
+(6, 'asAssbaghi', 'iksajklasd', 'asass@gmail.com', '$2y$10$Jt4Dla8Awfytyjpt9SEiyedF4J3zu9nRBQ0ac4/xC5EM68l10udnG'),
+(7, 'asdasd', 'asdasd', 'sermansker@gmail.com', '$2y$10$QhhDcNBAAh4lAqwZ5qI7g.nXJSnOeW5WCX6ZQyvNsp7SpasztF5.m'),
+(8, 'Assbaghi', 'iksajklasd', 'sermankasder@gmail.com', '$2y$10$705LiEPcbcwdBVLHWeAMROc/q1QkXpHiOFnZ/EIaEZfYC1IxXgKf6'),
+(9, 'hgh', 'hgfhfg', 'hgfhgf@gmail.com', '$2y$10$Dmcf6CyWhKasX3SGK.NeueL8w1I4mSd2F/3jYRQRNbzvDqPrDRWw6'),
+(10, 'Ernest', 'Valveny', 'Ernest.Valveny@uab.cat', '$2y$10$3ejx5cmcxA4Xr3vlKCelpu.LpB//GZidFR/O9qq2.i6yiQ7YnyrrW'),
+(11, 'Pepecito', 'Vinyuelita', 'mail@gmail.com', '$2y$10$eNxpgdh1Qk5r5HQdo7DzeeF.lhNjJsEmPAwfnsPSTgt7wlc9xOfpy'),
+(12, 'name', 'surname', 'namesurname@mail.com', '$2y$10$wQBwkcJvXRj7uEGjtPUcpudHwRaYDsZp37vFb2KyiDw06.Oi7Aavm');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `subject`
+--
+
+CREATE TABLE `subject` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `course` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `subject`
+--
+
+INSERT INTO `subject` (`id`, `title`, `description`, `course`) VALUES
+(0, 'Laboratori de programació', 'Programacio interactiva per estudiants', '3'),
+(2, 'Metodologia de la programació', 'Programacio interactiva per estudiants', '2'),
+(5, 'pRUEBA', 'pRUEBA KANDSAD', '12'),
+(6, 'assignatura nova', 'Aquesta és una assignatura de prova', '1'),
+(7, '13', '232131', '31231');
 
 -- --------------------------------------------------------
 
@@ -174,16 +183,16 @@ INSERT INTO `solucio` (`Id`, `Ruta`, `Id_problema`, `Id_asignatura`, `Usuario`, 
 --
 
 CREATE TABLE `tokens` (
-  `Id` int(11) NOT NULL,
-  `Valor` varchar(255) NOT NULL,
-  `Uso` int(11) NOT NULL DEFAULT 0
+  `id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  `usage` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `tokens`
 --
 
-INSERT INTO `tokens` (`Id`, `Valor`, `Uso`) VALUES
+INSERT INTO `tokens` (`id`, `value`, `usage`) VALUES
 (1, '52f8af023bc9b1707006c496352e312f5bbf9fc1a98b84bddf371a0ab51f9a1819b202ba7f5d5671e21ddfdd337534568463965f35a419c906096cc509a73fad938908e3e599fd7dac8eebfbb2ce905f7042bcae48ef27e9948f7d6376c63decc23c5cb03224b5b16bf56940cc5e5389b394df937e59ff4cdcbe3cfbab050e0', 1),
 (7, 'f5f050b5902c3818639ee84b4b666b20d8b6ab8fdac88e8377a75fdc748dc3c840a3108c5774191962c8abc7b514a85dc9f09768dedf622b1c6f0e0f08e5aa7e304c4cef10e4bddc80fbe683cfcb08100a2051c44703881df0244994fb7eb598951afcad84434a3944118c6ac1bb579adbb07e6a7c5ae90e34193cd5e2e9d2e', 1),
 (8, '73adca3336b576fda430e443185888003bd148c012cd0706271298356e2e098af5a27a3a125e13e729b0f0c49ebd88a6d8242c21c3818a8441a8f375ed23388466f753828d57cb013208cacb703dad230aba4a23c1994f2b9a9622ca63f6105c6217f15b77ab01429093087e6132a9db023ba93fae18d45f9bcfb1576ffaf36', 1),
@@ -219,112 +228,115 @@ INSERT INTO `tokens` (`Id`, `Valor`, `Uso`) VALUES
 (38, '950f9be66835253c1fcfde91ba64352f168d3d1543b217333edb8336e42810fc', 0),
 (39, '621627d3c728d9b395b2573567612749cb711e0b1036041ef18843729f51d2f7', 1),
 (40, 'a4e8cbdf84330e2078bea1e55008751789c9d19a4f79ce9364661fdfeb2f70de', 0),
-(41, '73fd45732b5a2f9b79ef3da7adca4da179505ac292127cd0bdb1daeaf749773a', 0);
+(41, '73fd45732b5a2f9b79ef3da7adca4da179505ac292127cd0bdb1daeaf749773a', 0),
+(42, '8d8bd66417f22c8db16ce3e09761c0951d64f1df3b2ee17b60e408dc23b3082d', 0),
+(43, '45bb0dd716a35766be8a166376805f336a086d397e8edd1fa20b7486034451f8', 0),
+(44, '344c0195489e89d4a4661188537a364c07db49a71c651106929bef8eb9487876', 0);
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `assignatura`
+-- Indices de la tabla `problem`
 --
-ALTER TABLE `assignatura`
-  ADD PRIMARY KEY (`Id`);
+ALTER TABLE `problem`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `AsignaturaID` (`subject_id`);
 
 --
--- Indices de la tabla `estudiant`
+-- Indices de la tabla `professor`
 --
-ALTER TABLE `estudiant`
-  ADD PRIMARY KEY (`Id`),
-  ADD UNIQUE KEY `Email` (`Email`);
+ALTER TABLE `professor`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Email` (`email`);
 
 --
--- Indices de la tabla `problema`
+-- Indices de la tabla `solution`
 --
-ALTER TABLE `problema`
-  ADD PRIMARY KEY (`Id`),
-  ADD KEY `AsignaturaID` (`AsignaturaID`);
+ALTER TABLE `solution`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Id_asignatura` (`subject_id`),
+  ADD KEY `Usuario` (`user`),
+  ADD KEY `Id_problema` (`problem_id`) USING BTREE;
 
 --
--- Indices de la tabla `profesor`
+-- Indices de la tabla `student`
 --
-ALTER TABLE `profesor`
-  ADD PRIMARY KEY (`Id`),
-  ADD UNIQUE KEY `Email` (`Email`);
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Email` (`email`);
 
 --
--- Indices de la tabla `solucio`
+-- Indices de la tabla `subject`
 --
-ALTER TABLE `solucio`
-  ADD PRIMARY KEY (`Id`),
-  ADD KEY `Id_asignatura` (`Id_asignatura`),
-  ADD KEY `Usuario` (`Usuario`),
-  ADD KEY `Id_problema` (`Id_problema`) USING BTREE;
+ALTER TABLE `subject`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `tokens`
 --
 ALTER TABLE `tokens`
-  ADD PRIMARY KEY (`Id`),
-  ADD UNIQUE KEY `Valor` (`Valor`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Valor` (`value`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `assignatura`
+-- AUTO_INCREMENT de la tabla `problem`
 --
-ALTER TABLE `assignatura`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `problem`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
--- AUTO_INCREMENT de la tabla `estudiant`
+-- AUTO_INCREMENT de la tabla `professor`
 --
-ALTER TABLE `estudiant`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+ALTER TABLE `professor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT de la tabla `problema`
+-- AUTO_INCREMENT de la tabla `solution`
 --
-ALTER TABLE `problema`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+ALTER TABLE `solution`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
--- AUTO_INCREMENT de la tabla `profesor`
+-- AUTO_INCREMENT de la tabla `student`
 --
-ALTER TABLE `profesor`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+ALTER TABLE `student`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT de la tabla `solucio`
+-- AUTO_INCREMENT de la tabla `subject`
 --
-ALTER TABLE `solucio`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+ALTER TABLE `subject`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `tokens`
 --
 ALTER TABLE `tokens`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `problema`
+-- Filtros para la tabla `problem`
 --
-ALTER TABLE `problema`
-  ADD CONSTRAINT `problema_ibfk_1` FOREIGN KEY (`AsignaturaID`) REFERENCES `assignatura` (`Id`);
+ALTER TABLE `problem`
+  ADD CONSTRAINT `problem_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`Id`);
 
 --
--- Filtros para la tabla `solucio`
+-- Filtros para la tabla `solution`
 --
-ALTER TABLE `solucio`
-  ADD CONSTRAINT `solucio_ibfk_1` FOREIGN KEY (`Id_asignatura`) REFERENCES `assignatura` (`Id`),
-  ADD CONSTRAINT `solucio_ibfk_2` FOREIGN KEY (`Id_problema`) REFERENCES `problema` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `solucio_ibfk_3` FOREIGN KEY (`Usuario`) REFERENCES `estudiant` (`Email`);
+ALTER TABLE `solution`
+  ADD CONSTRAINT `solution_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`Id`),
+  ADD CONSTRAINT `solution_ibfk_2` FOREIGN KEY (`problem_id`) REFERENCES `problem` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `solution_ibfk_3` FOREIGN KEY (`user`) REFERENCES `student` (`Email`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
