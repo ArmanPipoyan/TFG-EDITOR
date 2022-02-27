@@ -128,13 +128,11 @@ function updateProblemSolve($id)
 {
     try {
         $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE solution SET edited=1 WHERE subject_id= :dato");
+        $stmt = $conn->prepare("UPDATE solution SET edited=1 WHERE problem_id= :dato");
         $stmt->execute(array(":dato" => $id));
         $data3 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
         $conn = null;
-
     } catch (PDOException $e) {
-
         echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
     }
     return $data3;

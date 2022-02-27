@@ -109,7 +109,6 @@ $token = bin2hex($token);
 
                 </div>
             </div>
-
         </div>
     </div>
 </div>
