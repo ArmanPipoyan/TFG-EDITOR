@@ -7,7 +7,6 @@
 
 
     $random = substr(md5(mt_rand()), 0, 7);
-    //$filePath = "temp/" . $random . "." . $language;
     $filePath=$ruta."/".$ejecutable;
     $bloqueo = "
     import sys
@@ -23,7 +22,7 @@
 
     if($language == "python") {
       //echo $filePath;
-        $output = shell_exec("C:\Python39\python.exe $filePath 2>&1");
+        $output = shell_exec("py $filePath 2>&1");
         echo "<pre>";
           print_r($output);
         echo "</pre>";
