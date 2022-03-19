@@ -6,12 +6,10 @@ $token = openssl_random_pseudo_bytes(32);
 //Convert the binary data into hexadecimal representation.
 $token = bin2hex($token);
 
+$connection = connectDB();
+$statement = $connection->prepare("INSERT INTO tokens(value) VALUES (:token)");
+$statement->execute(array(":token" => $token));
+
+$statement->closeCursor();
+$connection = null;
 echo $token;
-
-$conne = connectaBD();
-
-$sql = "INSERT INTO tokens(valor) VALUES (:valor)";
-
-$resultado = $conne->prepare($sql);
-$resultado->execute(array(":valor" => $token));
-$resultado->closeCursor();

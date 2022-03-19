@@ -3,31 +3,22 @@ session_start();
 include_once __DIR__ . "/../Model/connection.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 
-$mail=$_SESSION['mail'];
-$id=$_POST["id"];
+$mail = $_SESSION['mail'];
+$problem_id = $_POST["id"];
 
-echo "El email es " . $mail . " y el problema es ". $id ."<br>";
+$problem = getProblemToSolve($problem_id);
+$route=$problem["route"];
+$full_route = str_replace('\\', '/', realpath(__DIR__ . $route));
+$files = scandir($full_route);
 
-$data=getProblemToSolve($id);
-$asignatura=$data["subject_id"];
-$ruta=$data["route"];
-$dir = str_replace('\\', '/', realpath(__DIR__ . $ruta));
-$files = scandir($dir);
 
-echo $dir;
-
-$pegar=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/".$_SESSION['mail']."/".$data["title"])); //modificar para cada alumno
-
-echo "<br>".$pegar;
-updateSolucionActualziada($id,$mail);
+$new_route=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/".$_SESSION['mail']."/".$problem["title"]));
+unsetSolutionEdited($problem_id, $mail);
 foreach($files as $file) {
     if($file === '.' || $file === "..") {continue;}
-    $path = $dir .'/'. $file;
-    $peg=$pegar. '/' .$file;
+    $path = $full_route .'/'. $file;
+    $peg=$new_route. '/' .$file;
     if(is_file($path)) {
       copy($path, $peg);
     }
   }
-
-
-?>

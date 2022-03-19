@@ -7,7 +7,7 @@
 // For tips to get started see http://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
 session_start();
 include_once __DIR__ . "/connection.php";
-$connexio = connectaBD();
+$connexio = connectDB();
 
 $id = $_POST['id'];
 try {

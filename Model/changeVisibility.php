@@ -1,18 +1,11 @@
 <?php
-
 include_once __DIR__ . "/connection.php";
-$connexio = connectaBD();
-$id = $_POST['cosas'];
-$visibilidad = $_POST['code'];
+$connection = connectDB();
 
-foreach ($_POST as $key => $value) {
-    echo "Field " . htmlspecialchars($key) . " is " . htmlspecialchars($value) . "<br>";
-}
-echo $id;
-echo $visibilidad;
-$stmt = $connexio->prepare("UPDATE problem SET visibility=:vis WHERE id= :dato");
-$stmt->bindParam(':vis', $visibilidad);
-$stmt->bindParam(':dato', $id);
-$stmt->execute();
-$data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-$connexio = null;
+$problem_id = $_POST['problem_id'];
+$new_visibility = $_POST['new_visibility'];
+
+$statement = $connection->prepare("UPDATE problem SET visibility=:visibility WHERE id= :problem_id");
+$statement->execute(array(':problem_id'=>$problem_id, ':visibility'=>$new_visibility));
+$data = $statement->fetch(PDO::FETCH_ASSOC);
+$connection = null;

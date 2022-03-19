@@ -1,18 +1,16 @@
 <?php
-function connectaBD()
+function connectDB(): ?PDO
 {
+    $connection = null;
     $username = "root";
     $password = "";
     try {
-        $conn = new PDO('mysql:host=localhost;dbname=webtfg', $username, $password);
+        $connection = new PDO('mysql:host=localhost;dbname=webtfg', $username, $password);
         if (mysqli_connect_errno()) {
             echo mysqli_connect_error();
         }
-
-        return ($conn);
     } catch (PDOException $e) {
-        echo 'La connexio falla' . $e->getMessage();
+        echo 'The connection failed: ' . $e->getMessage() . "\n";
     }
-
-    echo "La connexio connected succefully";
+    return $connection;
 }

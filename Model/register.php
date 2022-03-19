@@ -1,88 +1,100 @@
 <?php
 
-function registrar_estudiant($name, $apellido, $email, $hash_password, $reg)
+function registerStudent($name, $surname, $email, $hash_password) : bool
 {
+    $created = false;
     try {
-        $conne = connectaBD();
+        $connection = connectDB();
 
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $valid = true;
-            $sql = "INSERT INTO student(name, surname, email, password) VALUES (:nombre, :apellido, :mail, :password)";
-
-            $resultado = $conne->prepare($sql);
-
-            //comprobar si el usuario en cuestion ya existe
-            $resultado->execute(array(":nombre" => $name, ":apellido" => $apellido, ":mail" => $email, ":password" => $hash_password));
-            $resultado->closeCursor();
-            #echo "Insertado todo";
-
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "Mail not valid";
+            return false;
         }
+
+        $statement = $connection->prepare(
+            "INSERT INTO student(name, surname, email, password) 
+            VALUES (:student_name, :surname, :email, :password)"
+        );
+
+        $statement->execute(array(":student_name" => $name, ":surname" => $surname, ":email" => $email,
+            ":password" => $hash_password));
+
+        $statement->closeCursor();
+        $connection = null;
+        $created = true;
     } catch (Exception $e) {
-        echo "Linea del error:" . $e->getLine();
+        echo "Student not created: " . $e->getMessage();
+    }
+    return $created;
+}
+
+function setTokenUsed($token) : bool
+{
+    $valid = false;
+    try {
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT * FROM tokens WHERE value= :email and usage = 0");
+        $statement->execute(array(":email" => $token));
+        $token_row = $statement->fetchColumn();
+        // The token doesn't exist, or it's no longer available
+        if (!$token_row) {
+            return false;
+        }
+
+        $stmt = $connection->prepare("UPDATE tokens SET usage=1 WHERE value= :email and usage = 0");
+        $stmt->execute(array(":email" => $token));
+
+        $valid = true;
+        $connection = null;
+    } catch (Exception $e) {
+        echo "Couldn't set the token as used: " . $e->getMessage();
     }
     return $valid;
 }
 
-function checkToken($token)
+function isEmailTaken($email) : bool
 {
+    $taken = true;
     try {
-        $conne = connectaBD();
-        $valid = false;
-        $stmt1 = $conne->prepare("SELECT * FROM tokens WHERE value= :mail and usage = 0");
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT COUNT(*) FROM student WHERE email= :email");
+        $statement->execute(array(":email" => $email));
+        $students_count = $statement->fetchColumn();
 
-        $stmt1->execute(array(":mail" => $token));
-        $val = $stmt1->fetchColumn();
-        #echo "El id de la columna de ete token es " . $val. "<br>";
-        if ($val != "") {
-            $sql = "UPDATE tokens  SET usage=1 WHERE value= :mail and usage = 0";
-            $stmt = $conne->prepare($sql);
-            $stmt->execute(array(":mail" => $token));
-        }
+        $statement = $connection->prepare("SELECT COUNT(*) FROM professor WHERE email= :email");
+        $statement->execute(array(":email" => $email));
+        $professors_count = $statement->fetchColumn();
+
+        $taken = ($students_count + $professors_count) != 0;
     } catch (Exception $e) {
         echo "Linea del error:" . $e->getLine();
     }
-    return $val;
+    return $taken;
 }
 
-function get_users($email)
+function registerProfessor($name, $surname, $email, $hash_password) : bool
 {
-
+    $created = false;
     try {
-        $conne = connectaBD();
-        $stmt1 = $conne->prepare("SELECT COUNT(*) FROM student WHERE email= :mail");
+        $connection = connectDB();
 
-        $stmt1->execute(array(":mail" => $email));
-        $val1 = $stmt1->fetchColumn();
-
-        $stmt1 = $conne->prepare("SELECT COUNT(*) FROM professor WHERE email= :mail");
-
-        $stmt1->execute(array(":mail" => $email));
-        $val2 = $stmt1->fetchColumn();
-        $numero = $val1 + $val2;
-    } catch (Exception $e) {
-        echo "Linea del error:" . $e->getLine();
-    }
-    return $numero;
-
-}
-
-function registrar_professor($name, $apellido, $email, $hash_password, $reg)
-{
-
-    try {
-        $conne = connectaBD();
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $valid = true;
-            $sql = "INSERT INTO professor(name, surname, email, password) VALUES (:nombre, :apellido, :mail, :password)";
-            $resultado = $conne->prepare($sql);
-
-            //comprobar si el usuario en cuestion ya existe
-            $resultado->execute(array(":nombre" => $name, ":apellido" => $apellido, ":mail" => $email, ":password" => $hash_password));
-            $resultado->closeCursor();
-            #echo "Insertado todo";
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "Mail not valid";
+            return false;
         }
+
+        $statement = $connection->prepare(
+            "INSERT INTO professor(name, surname, email, password)
+            VALUES (:professor_name, :surname, :email, :password)");
+
+        $statement->execute(array(":professor_name" => $name, ":surname" => $surname, ":email" => $email,
+            ":password" => $hash_password));
+
+        $statement->closeCursor();
+        $connection = null;
+        $created = true;
     } catch (Exception $e) {
-        echo "Linea del error:" . $e->getLine();
+        echo "Professor not created: " . $e->getMessage();
     }
-    return $valid;
+    return $created;
 }

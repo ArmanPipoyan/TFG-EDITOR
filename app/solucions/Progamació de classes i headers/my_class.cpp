@@ -6,5 +6,5 @@ using namespace std;
 
 void my_class::do_something()
 {
-    cout << "Doing something! pAA EL NUVEOI USER ESTO DEBE SER DIFERENTE" << endl;
+    cout << "Doing something!" << endl;
 }

@@ -1,167 +1,104 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="View/js/lib/ace.js"></script>
-<script src="View/js/lib/theme-monokai.js"></script>
-<script src="View/js/ide.js"></script>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>TFG - Editor</title>
 
-<?php if ($_SESSION['tipo'] == 0 && isset($_GET["edit"])) { ?>
-    <script type="text/javascript" language="JavaScript">
-        var myVariable = <?php echo json_encode($ruta); //Sera $pegar la variable de la carpeta del alumno ?>;
-        openFolder(myVariable);
-        //var myVar2 = setInterval(save, 1000);
-    </script>
-    <?php
-// echo "Cambios enteros en problema";
-} else {
-    // echo "Cambios en mi solucion";?>
-    <script type="text/javascript" language="JavaScript">
+    <link rel="stylesheet" href="/View/css/style.css"/>
+    <link rel="stylesheet" href="/View/css/editor.css"/>
+    <link rel="stylesheet" href="/View/css/external/w3.css">
+    <link rel="stylesheet" href="/View/css/external/bootstrap.min.css">
+    <link rel="stylesheet" href="/View/css/external/all.css">
+    <link rel="shortcut icon" href="/View/images/favicon.png">
+    
+    <script src="/View/js/external/jquery.min.js"></script>
+    <script src="/View/js/external/popper.min.js"></script>
+    <script src="/View/js/external/bootstrap.min.js"></script>
+    <script src="/View/js/external/all.min.js"></script>
+    <script src="/View/js/external/editor/ace.js"></script>
+    <script src="/View/js/external/editor/theme-monokai.js"></script>
+    <script src="/View/js/editor.js"></script>
+    <script src="/View/js/global.js"></script>
+</head>
 
-        var myVariable = <?php echo json_encode($pegar); //Sera $pegar la variable de la carpeta del alumno ?>;
-        openFolder(myVariable);
-        //var myVar2 = setInterval(save, 1000);
-    </script>
+<body>
+<?php include_once(__DIR__ . '/header.php') ?>
+<p id="user_type" hidden><?php echo $_SESSION['user_type'] ?></p>
+<p id="view_mode" hidden><?php echo $_SESSION['view_mode'] ?></p>
+<?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]) && !empty($cleaned_problem_route)) { ?>
+    <p id="folder_route" hidden><?php echo $cleaned_problem_route ?></p>
+<?php } else if (!empty($cleaned_user_solution_route)) { ?>
+    <p id="folder_route" hidden><?php echo $cleaned_user_solution_route ?></p>
 <?php } ?>
 
-<?php if ($_SESSION['tipo'] == 0) { ?>
-
-    <!-- Inicio Sidebar Professor 
-    display:none; 
-    en Style si quiero que empieze oculto-->
-    <div class="w3-sidebar w3-bar-block w3-card  w3-animate-right mt-5" style="right:0;width:12%;" id="rightMenu">
-        <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-hover-black w3-large">Tancar &times;</button>
-        <?php
-
-
-        echo '<ul class="list-group list-group-flush">';
-        foreach ($datas as $datt) {
-
-            echo '
-                <li class="list-group-item d-flex justify-content-between align-items-center ">
-                <a href="/index.php?query=7&problem=' . $_GET["problem"] . '&reiteratiu=1&usuario=' . $datt["user"] . '" class="w3-bar-item  w3-button">' . $datt["user"] . '</a>
-                <a href="/index.php?query=7&problem=' . $_GET["problem"] . '&reiteratiu=2&usuario=' . $datt["user"] . '" class="btn btn-success btn-sm rounded-0" title="Veure" ><i class="fa fa-eye"></i></a>
-                </li>';
-
-        }
-        echo '</ul>';
-
-        ?>
-
-
-    </div>
+<?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
+    <!-- Student sidebar used for the professors -->
     <div class="w3-teal ">
-        <button class="w3-button w3-teal w3-xlarge w3-right" onclick="openRightMenu()">Estudiants &#9776;</button>
-        <?php if (isset($_GET["reiteratiu"])) {
-            echo '<a class="w3-button w3-teal w3-xlarge w3-right" href="/index.php?query=7&problem=' . $_GET["problem"] . '">Tornar enrere</a>';
-            ?>
-            <script>
-                window.onbeforeunload = function () {
-                    changeState();
-                };
-            </script>
-
-        <?php }
-        ?>
+        <button id="menu-button" class="w3-button w3-teal w3-xlarge w3-right">Estudiants &#9776;</button>
+        <?php if (isset($_GET["view-mode"])) { ?>
+            <a class="w3-button w3-teal w3-xlarge w3-right"
+               href="/index.php?query=7&problem=<?php echo $_GET["problem"] ?>">Tornar enrere</a>
+        <?php } ?>
     </div>
 
-
+    <div class="w3-sidebar w3-bar-block w3-card  w3-animate-right mt-5" id="student-menu">
+        <ul class="list-group list-group-flush">
+            <?php if (!empty($students)) {
+                foreach ($students as $student) { ?>
+                    <li class="list-group-item d-flex justify-content-between align-items-center ">
+                        <a href="/index.php?query=7&problem=<?php echo $_GET["problem"] ?>&view-mode=1&user=<?php echo $student["user"] ?>"
+                           class="w3-bar-item  w3-button"><?php echo $student["user"] ?></a>
+                        <a href="/index.php?query=7&problem=<?php echo $_GET["problem"] ?>&view-mode=2&user=<?php echo $student["user"] ?>"
+                           class="btn btn-success btn-sm rounded-0" title="Veure"><i class="fas fa-eye"></i></a>
+                    </li>
+                <?php }
+            } ?>
+        </ul>
+    </div>
 <?php } ?>
-<!-- Final Sidebar Professor -->
-<br>
-<?php if ($sol["edited"] == 1) { ?>
+
+<?php if ((!empty($solution)) && ($solution["edited"] == 1)) { ?>
     <div class="container">
-        <p class="alert alert-info " id="edition_mssg"><strong> Vols obtenir els canvis del professor </strong>
+        <p class="alert alert-info " id="edition_msg"><strong> Vols obtenir els canvis del professor </strong>
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <button type="button" class="close" data-toggle="modal" data-target="#my-modal3">Si</button>
     </div>
 <?php } ?>
-<?php if ($_SESSION['tipo'] == 0 && isset($_GET["edit"])) {
-    echo '<div class="container">
-        <p class="alert alert-warning " id="error_mssg"> <strong> Estas modificant el problema arrel  </strong>
-            </div>';
-} ?>
+
+<?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"])) { ?>
+    <div class="container">
+        <p class="alert alert-warning" id="error_msg"><strong> Estas modificant el problema arrel </strong>
+    </div>
+<?php } ?>
+
 <div class="container">
-    <p class="alert alert-warning hide" id="error_mssg"><strong>El professor esta editant </strong>
+    <p class="alert alert-warning hide" id="root_modified"><strong>El professor esta editant </strong>
 </div>
 
 <div class="container">
-    <p class="alert alert-danger hide" id="error_mssg2"><strong>Les llibreries que s'estan utilitzant no estan
+    <p class="alert alert-danger hide" id="error_msg_libraries"><strong>Les llibreries que s'estan utilitzant no estan
             soportades </strong>
         <button type="button" class="close" data-dismiss="alert">&times;</button>
     </p>
 </div>
 <div class="container bg-dark ">
-
-    <p class="text-center text-white font-weight-bold"><?php echo $data["title"]; ?></p>
-
-    <button type="button" class="collapsible bg-dark"><i class="fas fa-expand"></i> Descripció</button>
-    <div class="content bg-dark text-white">
-        <p><?php echo htmlspecialchars($data["description"]); ?></p>
-    </div>
-    <script>
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        }
-    </script>
+    <?php if (!empty($problem)) { ?>
+        <p class="text-center text-white font-weight-bold"><?php echo $problem["title"]; ?></p>
+        <p id="programming_language" hidden><?php echo $problem["language"]; ?></p>
+        <button type="button" class="collapsible bg-dark"><i class="fas fa-expand"></i>Descripció</button>
+        <div class="content bg-dark text-white"><p><?php echo htmlspecialchars($problem["description"]); ?></p></div>
+    <?php } ?>
 
     <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#my-modal2">New file <i
                 class="fas fa-file"></i></button>
-    <img id="save" class="mr-0" onclick="save()" src="/View/imagenes/save.svg"/>
-    <button class="btn btn-primary ml-5 btn-sm" onclick="executeCode()"> Executa <i class="fa fa-play"
+    <img id="save" class="mr-0" onclick="save()" src="/View/images/save.svg" alt=""/>
+    <button class="btn btn-primary ml-5 btn-sm" onclick="executeCode()"> Executa <i class="fas fa-play"
                                                                                     aria-hidden="true"></i></button>
-    <img id="save" class="mr-0" onclick="upload_github()" src="/View/imagenes/save.svg"/>
-
     <div id="files" class="mt-1"></div>
-    <div id="editor" contenteditable="true">Selecciona un fitxer per començar a treballar :)</div>
+    <div id="editor" contenteditable="true"></div>
 
-    <br>
-
-
-    <div class="output bg-light" id="respuesta"></div>
-    <br>
+    <div class="output bg-light" id="answer"></div>
 </div>
-
-
-<script type="text/javascript" language="JavaScript">
-    var lenguaje = <?php echo(json_encode($data["language"])); //Sera $pegar la variable de la carpeta del alumno ?>;
-    setLanguage(lenguaje);
-</script>
-
-<?php
-//Estudiante nunca podra estar en modo reiterativo por ende no se puede hacer asi
-if (isset($_GET["reiteratiu"])) {
-    if ($_GET["reiteratiu"] == 1) {
-        if ($_SESSION['tipo'] == 0) { ?>
-            <script>
-                //editor.setReadOnly(true);
-                var myVar = setInterval(save, 4000);
-            </script>
-        <?php }
-    } elseif ($_GET["reiteratiu"] == 2) { ?>
-        <script>
-            editor.setReadOnly(true);
-        </script>
-    <?php }
-} ?>
-
-<?php
-if ($_SESSION['tipo'] == 1) { ?>
-    <script>
-        var myVar = setInterval(checkChanges, 3000);
-    </script>
-<?php } ?>
-<br>
-
 
 <!--  MODALS -->
 <div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -224,21 +161,25 @@ if ($_SESSION['tipo'] == 1) { ?>
                                 </div>
                                 <input type="file" name="file[]" style="display:none;" id="my_file" multiple>
                                 <div class="form-group">
-                                    <input type="hidden" name="token" value="<?php echo $pegar; ?>"/>
+                                    <input type="hidden" name="token"
+                                           value="<?php if (!empty($cleaned_user_solution_route))
+                                               echo $cleaned_user_solution_route; ?>"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="hidden" name="problem" value="<?php echo $_GET['problem']; ?>"/>
                                 </div>
-                                <?php if ($_SESSION['tipo'] == 0 && isset($_GET["edit"])) { ?>
+                                <?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"])) { ?>
                                     <div class="form-group">
                                         <input type="hidden" name="edit" value="1"/>
                                     </div>
                                     <div class="form-group">
-                                        <input type="hidden" name="token" value="<?php echo $ruta; ?>"/>
+                                        <input type="hidden" name="token"
+                                               value="<?php if (!empty($cleaned_problem_route))
+                                                   echo $cleaned_problem_route; ?>"/>
                                     </div>
                                 <?php } ?>
                             </form>
-                            <?php if ($_SESSION['tipo'] == 0 && isset($_GET["edit"])) { ?>
+                            <?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"])) { ?>
                                 <div class="col-auto">
                                     <button type="button" class="btn btn-danger px-4"
                                             onclick="newFile(1,<?php echo $_GET['problem']; ?>)" data-dismiss="modal">
@@ -285,7 +226,8 @@ if ($_SESSION['tipo'] == 1) { ?>
                             </div>
                             <div class="col-auto">
                                 <button type="button" class="btn btn-danger px-4"
-                                        id=<?php echo $_GET['problem']; ?> onclick="acceptChanges(<?php echo $_GET['problem']; ?>)"
+                                        id="<?php echo $_GET['problem']; ?>"
+                                        onclick="acceptChanges(<?php echo $_GET['problem']; ?>)"
                                         data-dismiss="modal">Obtenir canvis
                                 </button>
                             </div>
@@ -296,3 +238,6 @@ if ($_SESSION['tipo'] == 1) { ?>
         </div>
     </div>
 </div>
+
+<?php include_once(__DIR__ . '/footer.html') ?>
+</body>

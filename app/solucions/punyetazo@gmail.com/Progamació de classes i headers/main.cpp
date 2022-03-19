@@ -1,11 +1,15 @@
-#include "my_class.h"
+#include <iostream>
 
-using namespace N;
+using namespace std;
+
+void do_something()
+{
+    cout << "Doing something! dE VERDAD" << endl;
+    cout << "Doing something! dE VERDAD2" << endl;
+}
 
 int main()
 {
-    my_class mc;
-    mc.do_something();
-    
+    do_something();
     return 0;
 }

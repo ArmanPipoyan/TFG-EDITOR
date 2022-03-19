@@ -1,62 +1,65 @@
 <?php
 
-function verificar_problema($titol)
+function problemTitleExists($title): bool
 {
+    $exists = True;
     try {
-        $connexio = connectaBD();
-        $stmt = $connexio->prepare("SELECT COUNT(*) FROM problem WHERE title= :titol");
-        $stmt->execute(array(":titol" => $titol));
-        $val = $stmt->fetchColumn();
-        $connexio = null;
-        if ($val > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT COUNT(*) FROM problem WHERE title= :title");
+        $statement->execute(array(":title" => $title));
+        $count = $statement->fetchColumn();
+        $connection = null;
 
-
+        $exists = $count != 0;
     } catch (PDOException $e) {
-
-        echo 'Error al fer log-in' . $e->getMessage();
+        echo 'Error looking for the problem with the specified title: ' . $e->getMessage();
     }
-    return $ress;
+
+    return $exists;
 }
 
-function crear_problema($ruta, $titol, $descripcio, $memoria, $visio, $execucio, $problema, $asignatura)
+function createProblem($route, $title, $description, $max_memory_usage, $visibility, $max_execution_time,
+                       $language, $subject) : bool
 {
+    $created = false;
     try {
-        $conne = connectaBD();
+        $connection = connectDB();
 
-        $stmt1 = $conne->prepare("INSERT INTO problem (route,title,description,visibility,time,memory,language,subject_id) 
-        VALUES (:ruta, :tit, :descripcio,:visio,:tiempo,:memoria,:programacio,:asignatura)");
-        $stmt1->execute(array(":ruta" => $ruta, ":tit" => $titol, ":descripcio" => $descripcio,
-            ":visio" => $visio, ":tiempo" => $execucio, ":memoria" => $memoria, ":programacio" => $problema, ":asignatura" => $asignatura));
-        echo "<br> Insertado todo " . " <br>";
-        $valid = 1;
+        $statement = $connection->prepare(
+            "INSERT INTO problem (route, title, description, visibility, memory, time, language, subject_id,
+                     edited)
+            VALUES (:route, :title, :description, :visibility, :max_memory_usage, :max_execution_time,
+                    :programming_language, :subject, :edited)"
+        );
 
+        $statement->execute(array(":route" => $route, ":title" => $title, ":description" => $description,
+            ":visibility" => $visibility, ":max_memory_usage" => $max_memory_usage, ":edited" => 0,
+            ":max_execution_time" => $max_execution_time, ":programming_language" => $language, ":subject" => $subject)
+        );
 
+        $connection = null;
+        $created = true;
     } catch (Exception $e) {
-        echo "Linea del error:" . $e->getLine();
-        $valid = 0;
+        echo "Error creating the problem: " . $e->getMessage();
     }
-    return $valid;
+    return $created;
 }
 
-function crear_asignatura($titol, $descripcio, $curs)
+function createSubject($title, $description, $course) : bool
 {
+    $created = false;
     try {
-        $conne = connectaBD();
+        $connection = connectDB();
 
-        $stmt1 = $conne->prepare("INSERT INTO subject (title,description,course) 
-        VALUES (:tit, :descripcio,:curs)");
+        $statement = $connection->prepare(
+            "INSERT INTO subject (title, description, course) VALUES (:title, :description,:course)"
+        );
+        $statement->execute(array(":title" => $title, ":description" => $description, ":course" => $course));
 
-        $stmt1->execute(array(":tit" => $titol, ":descripcio" => $descripcio, ":curs" => $curs));
-
-        echo "<br> Insertado todo " . " <br>";
-        $valid = 1;
+        $connection = null;
+        $created = true;
     } catch (Exception $e) {
-        echo "Linea del error:" . $e->getLine();
-        $valid = 0;
+        echo "Error creating the subject: " . $e->getMessage();
     }
-    return $valid;
+    return $created;
 }

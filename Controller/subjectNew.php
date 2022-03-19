@@ -5,7 +5,15 @@ session_start();
 include_once __DIR__ . "/../Model/connection.php";
 include_once __DIR__ . "/../Model/problemNew.php";
 
-$s = crear_asignatura($_POST["titol"], $_POST["descripcio"], $_POST["curs"]);
+$title = $_POST["title"];
+$description = $_POST["description"];
+$course = $_POST["course"];
 
-echo $_POST["titol"] . " " . $_POST["descripcio"] . " " . $_POST["curs"] . " ";
+$created = createSubject($title, $description, $course);
+
+if (!$created) {
+    echo "Error creating the subject";
+    return;
+}
+
 header("Location:/../index.php");

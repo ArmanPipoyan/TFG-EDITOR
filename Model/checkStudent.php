@@ -2,13 +2,14 @@
 session_start();
 
 include_once __DIR__ . "/connection.php";
-$connexio = connectaBD();
-$carpeta = $_POST['carpeta'];
+$connection = connectDB();
+$route = $_POST['route'];
 $variable = 1;
 
-$stmt = $connexio->prepare("SELECT * FROM solution WHERE route=:carpeta");
-$stmt->execute(array(":carpeta" => $carpeta));
-$data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-$connexio = null;
+$statement = $connection->prepare("SELECT * FROM solution WHERE route=:route");
+$statement->execute(array(":route" => $route));
+$solutions = $statement->fetch(PDO::FETCH_ASSOC);
+$connection = null;
 
-echo $data['editing'];
+echo $solutions['editing'];
+return;

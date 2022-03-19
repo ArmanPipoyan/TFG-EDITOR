@@ -1,47 +1,50 @@
 <?php
 
-function logInEstudiante($connexio, $mail, $password)
-{
-    try {
-        $stmt = $connexio->prepare("SELECT * FROM student WHERE email= :mail");
-        $stmt->execute(array(":mail" => $mail));
-        $data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-
-        $resspass = $data['password'];
-        $ress = password_verify($password, $resspass);
-        if ($ress == true) {
-            $_SESSION['usuario'] = $data['name'];
-            $_SESSION['mail'] = $mail;
-            $_SESSION['tipo'] = 1;
-        }
-        echo $data['name'] . " ";
-    } catch (PDOException $e) {
-        echo 'Error al fer log-in' . $e->getMessage();
+function logIn($password, $user): bool {
+    $user_password = $user['password'];
+    if (password_verify($password, $user_password)) {
+        $_SESSION['user'] = $user['name'];
+        $_SESSION['email'] = $user['email'];
+        return true;
     }
-    return $ress;
+    return false;
+}
 
+function logInStudent($email, $password): bool
+{
+    $loggedIn = false;
+    try {
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT * FROM student WHERE email= :email");
+        $statement->execute(array(":email" => $email));
+        $student = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if (logIn($password, $student)) {
+            $_SESSION['user_type'] = STUDENT;
+            $loggedIn = true;
+        }
+    } catch (PDOException $e) {
+        echo 'Error logging in as student: ' . $e->getMessage();
+    }
+    return $loggedIn;
 }
 
 
-function logInProfesor($connexio, $mail, $password)
+function logInProfessor($email, $password)
 {
+    $loggedIn = false;
     try {
-        $stmt = $connexio->prepare("SELECT * FROM professor WHERE email= :mail");
-        $stmt->execute(array(":mail" => $mail));
-        $data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT * FROM professor WHERE email= :email");
+        $statement->execute(array(":email" => $email));
+        $professor = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $resspass = $data['password'];
-        $ress = password_verify($password, $resspass);
-        if ($ress == true) {
-            $_SESSION['usuario'] = $data['name'];
-            $_SESSION['mail'] = $mail;
-            $_SESSION['tipo'] = 0;
+        if (logIn($password, $professor)) {
+            $_SESSION['user_type'] = PROFESSOR;
+            $loggedIn = true;
         }
-        echo $data['name'] . " ";
     } catch (PDOException $e) {
-        echo 'Error al fer log-in' . $e->getMessage();
+        echo 'Error logging in as professor: ' . $e->getMessage();
     }
-    return $ress;
-
-
+    return $loggedIn;
 }

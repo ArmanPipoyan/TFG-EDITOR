@@ -1,194 +1,176 @@
 <?php
 
-function getProblems()
+function getProblems($subject_id): array
 {
-
+    $problems = [];
     try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM problem");
-        $stmt->execute();
-        $data = $stmt->fetchAll(); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
-
-
+        $connection = connectDB();
+        $statement =
+            $connection->prepare("SELECT id, title, visibility FROM problem WHERE subject_id=:subject_id");
+        $statement->bindParam(":subject_id", $subject_id);
+        $statement->execute();
+        $problems = $statement->fetchAll();
+        $connection = null;
     } catch (PDOException $e) {
-
-        echo 'Error al fer log-in' . $e->getMessage();
+        echo 'Error obtaining the problems: ' . $e->getMessage();
     }
-    return $data;
+    return $problems;
 }
 
-function getProblemToSolve($id)
+function getProblemToSolve($problem_id)
 {
+    $problem = null;
     try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM problem WHERE id= :dato");
-        $stmt->execute(array(":dato" => $id));
-        $data = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
-
-
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT * FROM problem WHERE id= :problem_id");
+        $statement->execute(array(":problem_id" => $problem_id));
+        $problem = $statement->fetch(PDO::FETCH_ASSOC);
+        $connection = null;
     } catch (PDOException $e) {
-
-        echo 'Error al recuperar el problema algo ha fallado' . $e->getMessage();
+        echo 'Error obtaining the problem: ' . $e->getMessage();
     }
-    return $data;
+    return $problem;
 }
 
-function getSubjects()
+function getSubjects(): array
 {
+    $subjects = [];
     try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM subject");
-        $stmt->execute();
-        $data = $stmt->fetchAll(); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
-
-
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT id, title, course, description FROM subject");
+        $statement->execute();
+        $subjects = $statement->fetchAll();
+        $connection = null;
     } catch (PDOException $e) {
-
-        echo 'Error al fer log-in' . $e->getMessage();
+        echo 'Error obtaining the subjects: ' . $e->getMessage();
     }
-    return $data;
+    return $subjects;
 }
 
-function insert_Solution($pegar, $query, $asignatura, $usuario)
+function createSolution($problem_route, $problem_id, $subject_id, $user_email) : bool
 {
+    $created = false;
     try {
-        $conne = connectaBD();
-        $valid = true;
-        $sql = "INSERT INTO solution(route, problem_id, subject_id, user) VALUES (:nombre, :apellido, :mail, :password)";
-        $resultado = $conne->prepare($sql);
-        //comprobar si el usuario en cuestion ya existe
-        $resultado->execute(array(":nombre" => $pegar, ":apellido" => $query, ":mail" => $asignatura, ":password" => $usuario));
-        $resultado->closeCursor();
-        #echo "Insertado todo";
-
+        $connection = connectDB();
+        $statement = $connection->prepare(
+            "INSERT INTO solution(route, problem_id, subject_id, user)
+            VALUES (:route, :problem_id, :subject_id, :user_email)"
+        );
+        
+        $statement->execute(array(":route" => $problem_route, ":problem_id" => $problem_id,
+            ":subject_id" => $subject_id, ":user_email" => $user_email));
+        
+        $connection = null;
+        $statement->closeCursor();
+        $created = true;
     } catch (Exception $e) {
-        echo "Linea del error:" . $e->getLine();
+        echo "Error creating the solution: " . $e->getMessage();
     }
-    return $valid;
+    return $created;
 }
 
-function getAlumnos($query)
+function getStudents($problem_id) : array
 {
-
+    $students = [];
     try {
-        $connexio = connectaBD();
-        $stmt = $connexio->prepare("SELECT * FROM solution WHERE problem_id= :mail");
-        $stmt->execute(array(":mail" => $query));
-        $datas = $stmt->fetchAll(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $connexio = null;
-        //echo $data["Usuario"];
-
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT * FROM solution WHERE problem_id= :problem_id");
+        $statement->execute(array(":problem_id" => $problem_id));
+        $students = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $connection = null;
     } catch (PDOException $e) {
-
-        echo 'Error al fer log-in' . $e->getMessage();
+        echo 'Error retrieving the students: ' . $e->getMessage();
     }
-    return $datas;
-
-
+    return $students;
 }
 
-
-function getSolucionToSolve($id, $usuarioCopiar)
+function setSolutionAsEditing($problem_id, $student_email, $editing_before, $editing_after) : void
 {
     try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM solution WHERE problem_id= :dato and user = :usuario");
-        $stmt->execute(array(":dato" => $id, ":usuario" => $usuarioCopiar));
-        $data2 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
+        $connection = connectDB();
+        $statement = $connection->prepare(
+            "UPDATE solution SET editing= :editing_after 
+            WHERE problem_id= :problem_id and editing = :editing_before and user = :student_email"
+        );
+        $statement->execute(array(":problem_id" => $problem_id, "editing_after"=> $editing_after,
+            ":editing_before" => $editing_before, ":student_email" => $student_email));
+        $statement->fetch(PDO::FETCH_ASSOC);
 
+        $connection = null;
     } catch (PDOException $e) {
-
-        echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
+        echo "Couldn't set the solution as being edited: " . $e->getMessage();
     }
-    return $data2;
 }
 
-function modifySolucionToSolve($id, $usuarioCopiar, $estado, $segundoEstado)
+function setSolutionAsEdited($problem_id): bool
 {
+    $result = False;
     try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE solution SET editing=$estado WHERE problem_id= :dato and editing = :segundoEstado and user = :usuario");
-        $stmt->execute(array(":dato" => $id, ":segundoEstado" => $segundoEstado, ":usuario" => $usuarioCopiar));
-        $data3 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
+        $connection = connectDB();
+        $statement = $connection->prepare("UPDATE solution SET edited=1 WHERE problem_id= :problem_id");
+        $statement->execute(array(":problem_id" => $problem_id));
+        $statement->fetch(PDO::FETCH_ASSOC);
+        $connection = null;
 
+        $result = True;
     } catch (PDOException $e) {
-
-        echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
+        echo 'Error setting the solutions as edited: ' . $e->getMessage();
     }
-    return $data3;
+    return $result;
 }
 
-
-function updateProblemSolve($id)
+function getSolution($problem_id, $user_email)
 {
+    $solution = null;
     try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE solution SET edited=1 WHERE problem_id= :dato");
-        $stmt->execute(array(":dato" => $id));
-        $data3 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
+        $connection = connectDB();
+        $statement = $connection->prepare(
+            "SELECT * FROM solution WHERE problem_id= :problem_id and user= :user_email"
+        );
+        $statement->execute(array(":problem_id" => $problem_id, ":user_email" => $user_email));
+        $solution = $statement->fetch(PDO::FETCH_ASSOC);
+        $connection = null;
     } catch (PDOException $e) {
-        echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
+        echo 'Error retrieving the solution: ' . $e->getMessage();
     }
-    return $data3;
-}
-
-
-function getSolucion($id, $mail)
-{
-    try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("SELECT * FROM solution WHERE problem_id= :dato and user= :mail");
-        $stmt->execute(array(":dato" => $id, ":mail" => $mail));
-        $sol = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
-    } catch (PDOException $e) {
-        echo 'Error al recuperar el problema algo ha fallado' . $e->getMessage();
-    }
-    return $sol;
+    return $solution;
 }
 
 
-function updateSolucionActualziada($id, $mail)
+function unsetSolutionEdited($id, $mail) : bool
 {
+    $updated = False;
     try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE solution SET edited=0 WHERE problem_id= :dato and user= :mail");
-        $stmt->execute(array(":dato" => $id, ":mail" => $mail));
-        $data3 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
-
+        $connection = connectDB();
+        $statement = $connection->prepare("UPDATE solution SET edited=0 WHERE problem_id= :id and user= :mail");
+        $statement->execute(array(":id" => $id, ":mail" => $mail));
+        $statement->fetch(PDO::FETCH_ASSOC);
+        $connection = null;
+        $updated = True;
     } catch (PDOException $e) {
 
-        echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
+        echo 'Error setting the solution as not edited' . $e->getMessage();
     }
-    return $data3;
+    return $updated;
 }
 
 
-function updateProblem($descripcio, $memory, $time, $id)
+function updateProblem($problem_id, $description, $max_memory_usage, $max_execution_time) : bool
 {
+    $updated = false;
     try {
-        $conn = connectaBD();
-        $stmt = $conn->prepare("UPDATE problem SET  description=:descripcion, memory=:memoria, time=:tiempo WHERE id= :mail");
-        $stmt->bindParam(':descripcion', $descripcio);
-        $stmt->bindParam(':memoria', $memory);
-        $stmt->bindParam(':tiempo', $time);
-        $stmt->bindParam(':mail', $id);
+        $connection = connectDB();
+        $statement = $connection->prepare("UPDATE problem SET description=:description, memory=:max_memory_usage,
+                   time=:max_execution_time WHERE id= :problem_id");
 
-        $stmt->execute();
-        $data3 = $stmt->fetch(PDO::FETCH_ASSOC); //guardamos en la variable data nuestro usuario su ID
-        $conn = null;
-        print_r($data3);
+        $statement->execute(array(':description'=>$description, ':max_memory_usage'=>$max_memory_usage,
+            ':max_execution_time'=>$max_execution_time, ':problem_id'=>$problem_id));
+        $statement->fetch();
+        $connection = null;
 
+        $updated = true;
     } catch (PDOException $e) {
-
-        echo 'Error al recuperar al solucion algo ha fallado' . $e->getMessage();
+        echo 'Error updating the problem: ' . $e->getMessage();
     }
-
+    return $updated;
 }

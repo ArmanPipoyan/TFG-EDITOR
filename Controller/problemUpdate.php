@@ -4,18 +4,12 @@ include_once __DIR__ . "/../Model/connection.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 
 
-$descripcio = $_POST['descripcio'];
-$memory = $_POST['memory'];
-$time = $_POST['time'];
-$id = $_POST['assignatura'];
+$description = $_POST['description'];
+$max_memory_usage = $_POST['max_memory_usage'];
+$max_execution_time = $_POST['max_execution_time'];
+$problem_id = $_POST["problem_id"];
 
-echo $id . "<br>";
-
-echo $descripcio . "<br>";
-echo $time . "<br>";
-echo $memory . "<br>";
-
-$s = updateProblem($descripcio, $memory, $time, $id);
-
+updateProblem(problem_id: $problem_id,description: $description, max_memory_usage: $max_memory_usage,
+    max_execution_time: $max_execution_time);
 
 header("Location:/../index.php");
