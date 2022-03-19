@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/View/css/external/bootstrap.min.css">
     <link rel="stylesheet" href="/View/css/external/all.css">
     <link rel="shortcut icon" href="/View/images/favicon.png">
-    
+
     <script src="/View/js/external/jquery.min.js"></script>
     <script src="/View/js/external/popper.min.js"></script>
     <script src="/View/js/external/bootstrap.min.js"></script>
