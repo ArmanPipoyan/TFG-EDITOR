@@ -1,5 +1,6 @@
 <?php
 session_start();
 session_destroy();
+include_once __DIR__ . "/../Model/redirectionUtils.php";
 
-header("Location:/../index.php");
+redirect_location();

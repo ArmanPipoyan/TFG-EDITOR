@@ -33,22 +33,27 @@
 
 <?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
     <!-- Student sidebar used for the professors -->
-    <div class="w3-teal ">
-        <button id="menu-button" class="w3-button w3-teal w3-xlarge w3-right">Estudiants &#9776;</button>
-        <?php if (isset($_GET["view-mode"])) { ?>
-            <a class="w3-button w3-teal w3-xlarge w3-right"
-               href="/index.php?query=7&problem=<?php echo $_GET["problem"] ?>">Tornar enrere</a>
-        <?php } ?>
-    </div>
+    <?php if (!empty($students)) { ?>
+        <div class="w3-teal ">
+            <button id="menu-button" class="w3-button w3-teal w3-xlarge w3-right">Estudiants &#9776;</button>
+            <?php if (isset($_GET["view-mode"])) { ?>
+                <a class="w3-button w3-teal w3-xlarge w3-right"
+                   href=<?php echo"/index.php?query=7&problem=".$_GET["problem"]."&session=".$_GET['session']?>>
+                    Tornar enrere</a>
+            <?php } ?>
+        </div>
+    <?php } ?>
 
     <div class="w3-sidebar w3-bar-block w3-card  w3-animate-right mt-5" id="student-menu">
         <ul class="list-group list-group-flush">
             <?php if (!empty($students)) {
                 foreach ($students as $student) { ?>
                     <li class="list-group-item d-flex justify-content-between align-items-center ">
-                        <a href="/index.php?query=7&problem=<?php echo $_GET["problem"] ?>&view-mode=1&user=<?php echo $student["user"] ?>"
+                        <a href=<?php echo "/index.php?query=7&problem=".$_GET["problem"]."&view-mode=1&user=".
+                            $student["user"]."&session=".$_GET['session'] ?>
                            class="w3-bar-item  w3-button"><?php echo $student["user"] ?></a>
-                        <a href="/index.php?query=7&problem=<?php echo $_GET["problem"] ?>&view-mode=2&user=<?php echo $student["user"] ?>"
+                        <a href=<?php echo "/index.php?query=7&problem=".$_GET["problem"]."&view-mode=2&user=".
+                            $student["user"]."&session=".$_GET['session'] ?>
                            class="btn btn-success btn-sm rounded-0" title="Veure"><i class="fas fa-eye"></i></a>
                     </li>
                 <?php }

@@ -1,6 +1,6 @@
 <?php
 
-function getProblems($subject_id): array
+function getProblemsWithSubject($subject_id): array
 {
     $problems = [];
     try {
@@ -12,7 +12,32 @@ function getProblems($subject_id): array
         $problems = $statement->fetchAll();
         $connection = null;
     } catch (PDOException $e) {
-        echo 'Error obtaining the problems: ' . $e->getMessage();
+        echo 'Error obtaining the problems of the subject: ' . $e->getMessage();
+    }
+    return $problems;
+}
+
+function getProblemsWithSession(int $session_id): array
+{
+    $problems = [];
+    try {
+        $connection = connectDB();
+        // Get all the problem ids of the session
+        $statement = $connection->prepare("SELECT problem_id FROM session_problems WHERE session_id=:session_id");
+        $statement->bindParam(":session_id", $session_id);
+        $statement->execute();
+        $problem_ids = $statement->fetchAll(PDO::FETCH_COLUMN);
+
+        // Get all the data of the problems
+        $statement = $connection->prepare("SELECT id, title FROM problem WHERE id=:problem_id");
+        foreach ($problem_ids as $problem_id) {
+            $statement->bindParam(":problem_id", $problem_id);
+            $statement->execute();
+            $problems[] = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        $connection = null;
+    } catch (PDOException $e) {
+        echo 'Error obtaining the problems of the session: ' . $e->getMessage();
     }
     return $problems;
 }
@@ -69,13 +94,17 @@ function createSolution($problem_route, $problem_id, $subject_id, $user_email) :
     return $created;
 }
 
-function getStudents($problem_id) : array
+function getStudentsWithSessionAndProblem(int $session_id, int $problem_id)
 {
     $students = [];
     try {
         $connection = connectDB();
-        $statement = $connection->prepare("SELECT * FROM solution WHERE problem_id= :problem_id");
-        $statement->execute(array(":problem_id" => $problem_id));
+        $statement = $connection->prepare(
+            "SELECT solution.user FROM solution 
+            JOIN student ON (student.session_id = :session_id AND student.email= solution.user)
+            WHERE solution.problem_id= :problem_id"
+        );
+        $statement->execute(array(":problem_id" => $problem_id, ":session_id" => $session_id));
         $students = $statement->fetchAll(PDO::FETCH_ASSOC);
         $connection = null;
     } catch (PDOException $e) {

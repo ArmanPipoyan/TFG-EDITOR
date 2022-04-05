@@ -24,7 +24,7 @@ For running each sample code:
 
 - <a href="https://numpy.org/install/">Visual Studio Code</a>
 
-- Phpmyadmin
+- Phpmyadmin with PHP 8.1
 - G++
 
 - Python
@@ -51,3 +51,4 @@ For running each sample code:
 
 # Authors <a name="6"></a>
 Youssef Assbaghi 1493477 UAB
+Arman Pipoyan Paronyan 1530274 UAB

@@ -4,10 +4,10 @@ function uploadFile(string $fileExtension, int $i, string $route, mixed $tmpFile
 {
     if ($fileExtension != "cpp" && $fileExtension != "h" && $fileExtension != "py" && $fileExtension != "python"
         && $fileExtension != "txt") {
-        header("Location:/../index.php?query=6");
+        redirect_location(query:VIEW_PROBLEM_ERROR_CREATING);
     }
     if ($files["file"]["size"][$i] > 500000) {
-        header("Location:/../index.php?query=6");
+        redirect_location(query:VIEW_PROBLEM_ERROR_CREATING);
     }
 
     //Set up our new file path

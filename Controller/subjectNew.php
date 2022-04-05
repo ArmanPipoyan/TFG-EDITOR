@@ -3,6 +3,7 @@
 session_start();
 
 include_once __DIR__ . "/../Model/connection.php";
+include_once __DIR__ . "/../Model/redirectionUtils.php";
 include_once __DIR__ . "/../Model/problemNew.php";
 
 $title = $_POST["title"];
@@ -16,4 +17,4 @@ if (!$created) {
     return;
 }
 
-header("Location:/../index.php");
+redirect_location();

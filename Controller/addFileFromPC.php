@@ -1,5 +1,7 @@
 <?php
 include_once __DIR__ . "/../Model/connection.php";
+include_once __DIR__ . "/../Model/constants.php";
+include_once __DIR__ . "/../Model/redirectionUtils.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/addFilesToProblem.php";
 session_start();
@@ -14,8 +16,11 @@ if (isset($_POST['edit'])) {
 
 uploadFiles($route, $_FILES);
 
+$params = array(
+    "problem" => $_POST['problem'],
+);
 if (isset($_POST['edit'])) {
-    header("Location:/../index.php?query=7&edit=1&problem=" . $_POST['problem']);
-} else {
-    header("Location:/../index.php?query=7&problem=" . $_POST['problem']);
+    $params += ["edit" => 1];
 }
+
+redirect_location(query:VIEW_EDITOR, params: $params);

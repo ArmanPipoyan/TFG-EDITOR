@@ -1,14 +1,21 @@
 <?php
 include_once __DIR__ . "/../Model/connection.php";
+include_once __DIR__ . "/../Model/redirectionUtils.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/constants.php";
 
 # If only the query is set without indicating a problem return to the homepage
 if (!isset($_GET["problem"])) {
-    header("Location:/../index.php");
+    redirect_location();
+}
+$problem_id = $_GET["problem"];
+
+// Get the session id if it's set
+$session_id = null;
+if (isset($_GET["session"])) {
+    $session_id = $_GET["session"];
 }
 
-$problem_id = $_GET["problem"];
 # The email will be the user's, unless the user is a professor spectating a student
 $email = $_SESSION["email"];
 
@@ -16,7 +23,7 @@ if (isset($_GET["view-mode"]) && isset($_GET["user"])) {
     # If the view_mode doesn't exist redirect to the homepage
     $view_mode = $_GET["view-mode"];
     if (!in_array($view_mode, [VIEW_MODE_EDIT, VIEW_MODE_READ_ONLY])) {
-        header("Location:/../index.php");
+        redirect_location();
     }
 
     $email = $_GET["user"];
@@ -74,8 +81,9 @@ if (!file_exists(__DIR__ . $user_solution_route)) {
 }
 
 $cleaned_user_solution_route = str_replace('\\', '/', realpath(__DIR__ . $user_solution_route));
-if ($_SESSION['user_type'] == PROFESSOR) {
-    $students = getStudents($problem_id);
+
+if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
+    $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
 }
 
 $solution = getSolution($problem_id, $_SESSION['mail']);

@@ -36,5 +36,3 @@ $route = $problem['route'];
 if (is_dir($problem['route'])) {
     remove_dir($route);
 }
-
-return;

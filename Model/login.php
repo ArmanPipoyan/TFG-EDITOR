@@ -30,7 +30,7 @@ function logInStudent($email, $password): bool
 }
 
 
-function logInProfessor($email, $password)
+function logInProfessor($email, $password): bool
 {
     $loggedIn = false;
     try {
