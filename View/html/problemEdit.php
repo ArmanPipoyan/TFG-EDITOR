@@ -33,13 +33,17 @@
                         <form id="msform" action="/Controller/problemUpdate.php" method="post"
                               onsubmit="return validateProblem();" enctype="multipart/form-data">
                             <fieldset>
+                                <legend>Information to edit</legend>
                                 <div class="form-card">
                                     <h2 class="fs-title">Detalls</h2>
 
                                     <label for="description">Descripcio</label>
                                     <textarea type="text" name="description" id="description"
                                               placeholder="Descripció del problema"
-                                              rows="3"><?php if (!empty($description)) echo $description ?></textarea>
+                                              rows="3"><?php if (!empty($description)) {
+                                                            echo $description;
+                                                        } ?>
+                                    </textarea>
                                     <div class="form-group">
                                         <label for="max_execution_time">Temps execució en segons</label>
                                         <select class="form-control" name="max_execution_time" id="max_execution_time">

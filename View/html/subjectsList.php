@@ -23,7 +23,7 @@
 <div class="container">
     <h1 class="font-weight-bold text-center text-uppercase h-25">Assignatures</h1>
 
-    <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == 0) { ?>
+    <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) { ?>
         <a href="/index.php?query=10" class="btn btn-light btn-sm  mb-1 "> Crear Asignatua </a>
     <?php } ?>
 
@@ -41,7 +41,15 @@
                     <h5 class="card-title"> <?php echo $subject['title'] ?> </h5>
                     <p class="card-text"> <?php echo $subject['description'] ?></p>
                     <a href="<?php echo "/index.php?query=1&subject=" . $subject['id'] ?>"
-                       class="btn btn-primary">Accedeix</a>
+                       class="btn btn-primary">Problemes</a>
+                    <?php if ($subject['has_active_sessions']) { ?>
+                        <a href="<?php echo "/index.php?query=14&subject=" . $subject['id'] ?>"
+                           class="btn btn-primary">Sessions actives</a>
+                    <?php }
+                    if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) { ?>
+                        <a href="<?php echo "/index.php?query=13&subject=" . $subject['id']?>"
+                           class="btn btn-primary"> Crear sessió </a>
+                    <?php } ?>
                 </div>
             </div>
         <?php }

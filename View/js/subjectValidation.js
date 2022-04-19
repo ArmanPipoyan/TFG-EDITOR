@@ -1,12 +1,12 @@
 function validateSubject() {
-    titol = document.getElementById("titol").value;
-    descripcio = document.getElementById("descripcio").value;
-    curs = document.getElementById("curs").value;
-    error = document.getElementById("error_mssg");
+    let title = document.getElementById("title").value;
+    let description = document.getElementById("description").value;
+    let course = document.getElementById("course").value;
+    let error = document.getElementById("error_msg");
 
-    if (titol == "" || descripcio == "" || curs == "") {
+    if (title === "" || description === "" || course === "") {
         error.classList.remove('hide');
-        error.innerHTML = "Hay campos vacios ";
+        error.innerHTML = "Hi ha camps buits.";
         return false;
     }
     return true;

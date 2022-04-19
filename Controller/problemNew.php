@@ -1,6 +1,8 @@
 <?php
 session_start();
 include_once __DIR__ . "/../Model/connection.php";
+include_once __DIR__ . "/../Model/constants.php";
+include_once __DIR__ . "/../Model/redirectionUtils.php";
 include_once __DIR__ . "/../Model/problemNew.php";
 include_once __DIR__ . "/../Model/addFilesToProblem.php";
 
@@ -16,8 +18,7 @@ $subject = $_POST['subject'];
 
 # If the title already exists redirect the user to the error view.
 if (problemTitleExists($title)) {
-    header("Location:/../index.php?query=6");
-    return;
+    redirect_location(query: VIEW_PROBLEM_ERROR_CREATING);
 }
 
 $created = createProblem(route: $route, title: $title, description: $description, max_memory_usage: $max_memory_usage,
@@ -25,13 +26,13 @@ $created = createProblem(route: $route, title: $title, description: $description
 
 # If any problem arises when creating the problem redirect the user to the error view
 if (!$created) {
-    header("Location:/../index.php?query=6");
+    redirect_location(query: VIEW_PROBLEM_ERROR_CREATING);
     return;
 }
 
 # Create the folder of the problem, by default with 0777 permission
 mkdir($route);
 
-uploadFiles($route);
+uploadFiles($route, $_FILES);
 
-header("Location:/../index.php?query=5");
+redirect_location(query: VIEW_PROBLEM_CREATED);

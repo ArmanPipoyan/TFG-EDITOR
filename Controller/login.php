@@ -1,8 +1,9 @@
 <?php
 session_start();
-include_once __DIR__ . "/../Model/connection.php";
-include_once __DIR__ . "/../Model/login.php";
 include_once __DIR__ . "/../Model/constants.php";
+include_once __DIR__ . "/../Model/connection.php";
+include_once __DIR__ . "/../Model/redirectionUtils.php";
+include_once __DIR__ . "/../Model/login.php";
 
 $email = $_POST['email'];
 $password = $_POST['password'];
@@ -16,4 +17,4 @@ if (!$logged_in) {
     }
 }
 
-header("Location:/../index.php");
+redirect_location();

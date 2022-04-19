@@ -12,4 +12,3 @@ $solutions = $statement->fetch(PDO::FETCH_ASSOC);
 $connection = null;
 
 echo $solutions['editing'];
-return;

@@ -62,15 +62,17 @@ window.onload = function () {
 
     // Set the auto check options depending on the user and his actions
     userType = document.getElementById("user_type").innerText;
+    // User type 1 is student and 0 professor
     if (userType === "1") {
         setInterval(checkChanges, 3000);
     } else if (userType === "0") {
         let viewMode = document.getElementById("view_mode");
+        // View mode 1 is edit mode and 2 read only
         if (viewMode) {
-            let viewModeText = viewMode.innerText;
-            if (viewModeText === "1") {
+            let viewModeValue = viewMode.innerText;
+            if (viewModeValue === "1") {
                 setInterval(save, 4000);
-            } else if (viewModeText === "2") {
+            } else if (viewModeValue === "2") {
                 editor.setReadOnly(true);
             }
         }

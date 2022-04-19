@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once __DIR__ . "/Model/constants.php";
+include_once __DIR__ . "/Model/redirectionUtils.php";
 
 if (isset($_GET["code"])) {
     $_SESSION["code"] = $_GET["code"];
@@ -51,6 +52,15 @@ switch ($query) {
         break;
     case VIEW_PROBLEM_EDIT:
         include __DIR__ . "/Controller/problemEdit.php";
+        break;
+    case VIEW_SESSION_FORM:
+        include __DIR__ . "/Controller/sessionCreationForm.php";
+        break;
+    case VIEW_SESSION_LIST:
+        include __DIR__ . "/Controller/sessionList.php";
+        break;
+    case VIEW_SESSION_PROBLEMS_LIST:
+        include __DIR__ . "/Controller/sessionProblemsList.php";
         break;
     default:
         include __DIR__ . "/Controller/subjectList.php";

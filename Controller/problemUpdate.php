@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once __DIR__ . "/../Model/connection.php";
+include_once __DIR__ . "/../Model/redirectionUtils.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 
 
@@ -12,4 +13,4 @@ $problem_id = $_POST["problem_id"];
 updateProblem(problem_id: $problem_id,description: $description, max_memory_usage: $max_memory_usage,
     max_execution_time: $max_execution_time);
 
-header("Location:/../index.php");
+redirect_location();
