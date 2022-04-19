@@ -2,7 +2,7 @@
 <html lang="es" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>TFG - Sessió</title>
+    <title>TFG - Sessions actives</title>
 
     <link rel="stylesheet" href="/View/css/style.css"/>
     <link rel="stylesheet" href="/View/css/subjectsList.css"/>
@@ -38,16 +38,47 @@
                                        class="text-dark">
                                         <?php echo $session['name'] ?>
                                     </a>
-                                    <button class="btn btn-danger btn-sm rounded-0 float-right" type="button"
-                                            data-placement="top" title="Delete"
-                                            onclick="deleteSession(<?php echo $session['id'] ?>)">
-                                        <i class="fas fa-trash"></i></button>
+                                    <?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
+                                        <button class="btn btn-secondary btn-sm rounded-0 float-right" type="button"
+                                                data-placement="top" title="Duplicate"
+                                                data-toggle="modal" data-target="#duplicate_session_modal">
+                                            <em class="fas fa-clone"></em></button>
+                                        <button class="btn btn-danger btn-sm rounded-0 float-right" type="button"
+                                                data-placement="top" title="Delete"
+                                                onclick="deleteSession(<?php echo $session['id'] ?>)">
+                                            <em class="fas fa-trash"></em></button>
+                                    <?php } ?>
                                 </td>
                             </tr>
                         <?php }
                     } ?>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- duplicate modal -->
+<div class="modal fade" id="duplicate_session_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content col-12">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Indica el nom de la sessió</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <label hidden for="new_session_name"></label>
+                <input class="col-10 ur" type="text" id="new_session_name" placeholder="Nom"
+                       aria-describedby="inputGroup-sizing-default" size="30" style="height: 40px;">
+                <?php if (!empty($session)) { ?>
+                    <button class="btn btn-success btn-sm rounded-0 float-right" type="button"
+                            data-placement="top" title="Duplicate"
+                            onclick="duplicateSession(<?php echo $session['id'] ?>)">
+                        <em class="fas fa-check"></em></button>
+                <?php } ?>
             </div>
         </div>
     </div>

@@ -62,9 +62,13 @@ function getSubjects(): array
     $subjects = [];
     try {
         $connection = connectDB();
-        $statement = $connection->prepare("SELECT id, title, course, description FROM subject");
+        // Get all the subjects and append add a field to know whether it has active sessions or not
+        $statement = $connection->prepare("
+            SELECT id, title, course, description, 
+                   (SELECT EXISTS(SELECT * from session WHERE subject_id=subject.id))as has_active_sessions
+            FROM subject");
         $statement->execute();
-        $subjects = $statement->fetchAll();
+        $subjects = $statement->fetchAll(PDO::FETCH_ASSOC);
         $connection = null;
     } catch (PDOException $e) {
         echo 'Error obtaining the subjects: ' . $e->getMessage();

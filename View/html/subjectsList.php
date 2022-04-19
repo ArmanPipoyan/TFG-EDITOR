@@ -40,11 +40,13 @@
                 <div class="card-body">
                     <h5 class="card-title"> <?php echo $subject['title'] ?> </h5>
                     <p class="card-text"> <?php echo $subject['description'] ?></p>
-                    <a href="<?php echo "/index.php?query=14&subject=" . $subject['id'] ?>"
-                       class="btn btn-primary">Sessions actives</a>
                     <a href="<?php echo "/index.php?query=1&subject=" . $subject['id'] ?>"
                        class="btn btn-primary">Problemes</a>
-                    <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) { ?>
+                    <?php if ($subject['has_active_sessions']) { ?>
+                        <a href="<?php echo "/index.php?query=14&subject=" . $subject['id'] ?>"
+                           class="btn btn-primary">Sessions actives</a>
+                    <?php }
+                    if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) { ?>
                         <a href="<?php echo "/index.php?query=13&subject=" . $subject['id']?>"
                            class="btn btn-primary"> Crear sessió </a>
                     <?php } ?>

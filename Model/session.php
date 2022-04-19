@@ -61,3 +61,45 @@ function getActiveSessions(int $subject_id) : array
     }
     return $sessions;
 }
+
+function addStudentToSession(int $session_id, string $email) : bool
+{
+    $added = false;
+    try {
+        $connection = connectDB();
+        $statement = $connection->prepare("UPDATE student SET session_id=:session_id WHERE email=:email");
+        $statement->execute(array(":session_id" => $session_id, ":email" => $email));
+
+        $added = true;
+        $connection = null;
+    } catch (PDOException $e) {
+        echo 'Error retrieving the sessions: ' . $e->getMessage();
+    }
+    return $added;
+}
+
+function duplicateSession(string $session_name, int $session_id)
+{
+    $duplicated = false;
+    try {
+        $connection = connectDB();
+
+        // Get the data of the session that we want to duplicate
+        $statement = $connection->prepare("SELECT professor_id, subject_id FROM session WHERE id=:session_id");
+        $statement->execute(array(":session_id" => $session_id));
+        $session = $statement->fetch();
+
+        $statement = $connection->prepare("SELECT problem_id FROM session_problems WHERE session_id=:session_id");
+        $statement->execute(array(":session_id" => $session_id));
+        $problem_ids = $statement->fetchAll(PDO::FETCH_COLUMN);
+
+        // Use the data to create the new session
+        createSession($session_name, $session["professor_id"], $session["subject_id"], $problem_ids);
+
+        $connection = null;
+        $duplicated = True;
+    } catch (PDOException $e) {
+        echo 'Error duplicating the session: ' . $e->getMessage();
+    }
+    return $duplicated;
+}

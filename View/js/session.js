@@ -22,6 +22,26 @@ function deleteSession(session_id) {
         },
         success: function () {
             location.reload();
+        },
+        fail: function (response) {
+            console.log(response);
         }
     })
+}
+
+function duplicateSession(session_id) {
+    let session_name = document.getElementById("new_session_name").value;
+    if (session_name !== "") {
+        $.ajax({
+            url: "/Controller/sessionDuplicate.php",
+            method: "POST",
+            data: {
+                session_name: session_name,
+                session_id: session_id,
+            },
+            success: function () {
+                location.reload();
+            },
+        })
+    }
 }

@@ -21,11 +21,11 @@
 <?php include_once(__DIR__ . "/header.php") ?>
 
 <div class="jumbotron text-center">
-    <h1 class="display-3">Hi ha hagut un error amb el problema.</h1>
-    <p class="lead"><strong>El problema no s'ha creat </strong> verifica que el tamany dels arxius es adecuat i que les
-        extensions dels fichers son correctes.</p>
+    <h1 class="display-3">Hi ha hagut un error creant el problema.</h1>
+    <p class="lead"><strong>El problema no s'ha creat </strong> verifica que el tamany dels arxius és adecuat i que les
+        extensions dels fichers són correctes.</p>
     <p class="lead">
-        <a class="btn btn-primary btn-sm" href="/" role="button">Anar a la pagina principal</a>
+        <a class="btn btn-primary btn-sm" href="/" role="button">Anar a la pàgina principal</a>
     </p>
 </div>
 

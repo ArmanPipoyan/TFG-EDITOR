@@ -2,7 +2,7 @@
 <html lang="es" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>TFG - Sessió</title>
+    <title>TFG - Problemes de la sessió</title>
 
     <link rel="stylesheet" href="/View/css/style.css"/>
     <link rel="stylesheet" href="/View/css/subjectsList.css"/>
