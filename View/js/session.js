@@ -1,16 +1,20 @@
-function validateSession() {
-    let name = document.getElementById("name").value;
-    let subject = document.getElementById("subject").value;
-    let problems = document.getElementById("problems");
-    problems = $(problems).val();
-    let error = document.getElementById("error_msg");
+window.onload = function(){
+    $("#msform").on('submit', function () {
+        let name = document.getElementById("name").value;
+        let subject = document.getElementById("subject").value;
+        let problems = document.getElementById("problems");
+        problems = $(problems).val();
+        let error = document.getElementById("error_msg");
 
-    if (name === "" || subject === "" || problems.length === 0) {
-        error.classList.remove('hide');
-        error.innerHTML = "Hi ha camps buits.";
-        return false;
-    }
-    return true;
+        if (name === "" || subject === "" || problems.length === 0) {
+            error.classList.remove('hide');
+            error.innerHTML = "Hi ha camps buits.";
+            return false;
+        }
+
+        this.next.disabled = true;
+        return true;
+    })
 }
 
 function deleteSession(session_id) {
