@@ -24,8 +24,6 @@ function validateProblem() {
     return true;
 }
 
-
-
 function validateProblemAndFiles() {
     validateProblem();
 
