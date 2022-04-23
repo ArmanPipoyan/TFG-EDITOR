@@ -27,6 +27,8 @@
     <?php if (isset($_SESSION['user_type']) && ($_SESSION['user_type'] == 0)) { ?>
         <a href="<?php echo "/index.php?query=4&subject=" . $_GET['subject']; ?>"
            class="btn btn-light btn-sm mb-1 ">Crear problema </a>
+        <a href="<?php echo "/index.php?query=16&subject=" . $_GET['subject']; ?>"
+           class="btn btn-light btn-sm mb-1 ">Importar problema desde Github </a>
     <?php } ?>
     <div class="card border-0 shadow">
         <div class="card-body p-0">
