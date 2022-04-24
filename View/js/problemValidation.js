@@ -25,8 +25,11 @@ function validateProblem() {
 }
 
 function validateProblemAndFiles() {
-    validateProblem();
+    if (!validateProblem()) {
+        return false;
+    }
 
+    let error = document.getElementById("error_msg");
     let customFile = document.getElementById("customFile");
     let fileLength = customFile.files.length;
     if (fileLength === 0) {

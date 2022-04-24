@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/libs/Github/vendor/autoload.php';
-use Github\Client, Github\AuthMethod;
+use Github\Client;
 $client = new Client();
 $client->authenticate('', null,'access_token_header');
 $path = 'getFileContent.php';

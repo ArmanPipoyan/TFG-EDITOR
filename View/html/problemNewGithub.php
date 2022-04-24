@@ -36,8 +36,7 @@
                             <fieldset>
                                 <div class="form-card">
                                     <h2 class="fs-title">Detalls</h2>
-                                    <input type="url" name="repo_link" id="repo_link" placeholder="Link de la carpeta del repositori"
-                                    value="https://github.com/ArmanPipoyan/TQSproject/tree/master/src/test/java/Othello"/>
+                                    <input type="url" name="repo_link" id="repo_link" placeholder="Link de la carpeta del repositori"/>
                                     <div class="form-group">
                                         <label for="max_execution_time">Temps execució en segons</label>
                                         <select class="form-control" name="max_execution_time" id="max_execution_time">
