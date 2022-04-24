@@ -93,6 +93,15 @@ window.onload = function () {
     if (rightMenu) {
         rightMenu.addEventListener("click", openCloseStudentMenu);
     }
+
+    // Add additional fields to the upload files to GitHub form
+    $("#upload-to-github-form").submit( function(eventObj) {
+        $("<input />").attr("type", "hidden")
+            .attr("name", "solution_path")
+            .attr("value", folder_route)
+            .appendTo("#upload-to-github-form");
+        return true;
+    });
 }
 
 function setSolutionEditingFalse() {
@@ -203,22 +212,6 @@ function executeCode() {
             answer.innerHTML = response;
         }
     })
-}
-
-function upload_github() {
-    // Look if the code is still usable
-    if (document.cookie.search("github_logged=yes") === -1) {
-        // Set the cookie to expire in 10 minutes (like the github code)
-        let currentDate = new Date();
-        let expirationDate = new Date(currentDate.getTime() + 10 * 60000);
-        document.cookie = 'github_logged=yes;expires=' + expirationDate.toUTCString() + ';path=/';
-        location.href = "https://github.com/login/oauth/authorize?client_id=8f808ec545de8d67461f&scope=repo%20user";
-    } else {
-        $.ajax({
-            url: "/Model/githubUpload.php",
-            method: "POST",
-        })
-    }
 }
 
 function openFile(fileName) {

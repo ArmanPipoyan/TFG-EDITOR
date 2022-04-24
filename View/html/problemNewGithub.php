@@ -32,7 +32,7 @@
                 <h2><strong>Formulari per crear problema</strong></h2>
                 <div class="row">
                     <div class="col-md-12 mx-0">
-                        <form id="msform" action="/Controller/problemNewGithub.php" method="post" enctype="multipart/form-data">
+                        <form id="msform" action="/Controller/githubProblemNew.php" method="post" enctype="multipart/form-data">
                             <fieldset>
                                 <div class="form-card">
                                     <h2 class="fs-title">Detalls</h2>
