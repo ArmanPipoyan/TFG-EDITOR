@@ -9,7 +9,7 @@ class GitHubFileDoesNotExist extends RuntimeException {
 
 class SpecifiedUrlNotADirectory extends RuntimeException {
     public function __construct($url, $code = 0) {
-        $message = "La url no apunta a un directori: $url";
+        $message = "L'URL no apunta a un directori: $url";
         return parent::__construct($message, $code);
     }
 }
@@ -23,14 +23,14 @@ class DirectoryAlreadyExists extends RuntimeException {
 
 class FileTooLarge extends RuntimeException {
     public function __construct($file, $size, $maxSize, $code = 0) {
-        $message = "El tamany del fitxer '$file' supera el màxim ($size > $maxSize)";
+        $message = "La mida del fitxer '$file' supera el màxim ($size > $maxSize)";
         return parent::__construct($message, $code);
     }
 }
 
 class WrongFileExtension extends RuntimeException {
     public function __construct($file, $code = 0) {
-        $message = "La extensio del fitxer '$file' no és vàlida";
+        $message = "L'extensio del fitxer '$file' no és vàlida";
         return parent::__construct($message, $code);
     }
 }

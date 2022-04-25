@@ -1,21 +1,5 @@
 <?php
 
-function getProblemWithId($problem_id): array
-{
-    $problem = null;
-    try {
-        $connection = connectDB();
-        $statement = $connection->prepare("SELECT * FROM problem WHERE id=:problem_id");
-        $statement->bindParam(":problem_id", $problem_id);
-        $statement->execute();
-        $problem = $statement->fetch();
-        $connection = null;
-    } catch (PDOException $e) {
-        echo 'Error obtaining the problem: ' . $e->getMessage();
-    }
-    return $problem;
-}
-
 function getProblemsWithSubject($subject_id): array
 {
     $problems = [];

@@ -16,10 +16,28 @@ function retrieveOwnerRepoAndPathFromLink($repoLink): array {
     $returnData['repository'] = array_shift($explodedRepoLink);
     if ($explodedRepoLink != "") {
         unset($explodedRepoLink[0], $explodedRepoLink[1]);
-        $returnData['path'] = implode("/", $explodedRepoLink);
+        $returnData['path'] = urldecode(implode("/", $explodedRepoLink));
     }
 
     return $returnData;
+}
+
+function getPathContent(Client $client, String $owner, String $repository, String $path) {
+    // Check if the specified url is valid
+    $fileExists = $client->api('repo')->contents()->exists($owner, $repository, $path);
+    if (!$fileExists) {
+        throw new GitHubFileDoesNotExist($path);
+    }
+
+    return $client->api('repo')->contents()->show($owner, $repository, $path);
+}
+
+function createProblemFileWithoutException($route, $fileName, $fileContentBase64) {
+    try {
+        createProblemFile($route, $fileName, $fileContentBase64);
+    } catch(WrongFileExtension) {
+        return;
+    }
 }
 
 function downloadDirectoryFromGithub(Client $client, string $repoLink): array {
@@ -29,14 +47,7 @@ function downloadDirectoryFromGithub(Client $client, string $repoLink): array {
     $repository = $repositoryInformation['repository'];
     $path = $repositoryInformation['path'];
 
-    // Check if the specified url is valid
-    $fileExists = $client->api('repo')->contents()->exists($owner, $repository, $path);
-    if (!$fileExists) {
-        throw new GitHubFileDoesNotExist($path);
-    }
-
-    // Check if the path is a directory or a file
-    $pathContent = $client->api('repo')->contents()->show($owner, $repository, $path);
+    $pathContent = getPathContent($client, $owner, $repository, $path);
     if (isset($pathContent['type'])) {
         throw new SpecifiedUrlNotADirectory($path);
     }
@@ -57,7 +68,7 @@ function downloadDirectoryFromGithub(Client $client, string $repoLink): array {
         if ($fileName == 'readme.md') {
             $returnData['description'] = base64_decode($fileContentBase64);
         } else {
-            createProblemFile($route, $fileName, $fileContentBase64);
+            createProblemFileWithoutException($route, $fileName, $fileContentBase64);
         }
     }
 
@@ -97,4 +108,33 @@ function uploadDirectoryToGithub(Client $client, string $repoLink, string $userN
         }
     }
     return true;
+}
+
+function addFilesFromGithub(Client $client, string $repoLink, string $route) {
+    // Retrieve the relevant information from the link
+    $repositoryInformation = retrieveOwnerRepoAndPathFromLink($repoLink);
+    $owner = $repositoryInformation['owner'];
+    $repository = $repositoryInformation['repository'];
+    $path = $repositoryInformation['path'];
+
+    $pathContent = getPathContent($client, $owner, $repository, $path);
+    if (isset($pathContent['type'])) {
+        // A particular file url is given
+        $fileName = $pathContent['name'];
+        $fileContentBase64 = $pathContent['content'];
+        createProblemFileWithoutException($route, $fileName, $fileContentBase64);
+    } else {
+        // A directory url is given
+        foreach ($pathContent as $item) {
+            // The solutions do not contain directories
+            if ($item['type'] == 'dir') {
+                continue;
+            }
+
+            $fileContent = $client->api('repo')->contents()->show($owner, $repository, $item['path']);
+            $fileName = $fileContent['name'];
+            $fileContentBase64 = $fileContent['content'];
+            createProblemFileWithoutException($route, $fileName, $fileContentBase64);
+        }
+    }
 }

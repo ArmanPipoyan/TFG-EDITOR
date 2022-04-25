@@ -94,16 +94,35 @@ window.onload = function () {
         rightMenu.addEventListener("click", openCloseStudentMenu);
     }
 
+    // Customize the form modal depending on the button opening it
+    $("#github-form-modal").on('shown.bs.modal', function (event) {
+        let title, submitText, action;
+        if (event.relatedTarget.id === 'github-upload') {
+            title = "Pujar a GitHub";
+            submitText = "Pujar";
+        } else {
+            title = "Afegir fitxers desde GitHub";
+            submitText = "Afegir";
+        }
+        $('#github-from-modal-title').text(title);
+        $('#github-form-submit-input').attr('value', submitText);
+    });
     // Add additional fields to the upload files to GitHub form
-    $("#upload-to-github-form").submit( function(eventObj) {
+    $("#github-form").submit( function(eventObj) {
+        save();
         $("<input />").attr("type", "hidden")
             .attr("name", "solution_path")
             .attr("value", folder_route)
-            .appendTo("#upload-to-github-form");
+            .appendTo(this);
         $("<input />").attr("type", "hidden")
             .attr("name", "problem_id")
             .attr("value", problem_id)
-            .appendTo("#upload-to-github-form");
+            .appendTo(this);
+        let uploadFiles = $('#github-form-submit-input').attr('value') === "Pujar";
+        $("<input />").attr("type", "hidden")
+            .attr("name", "upload_files")
+            .attr("value", uploadFiles)
+            .appendTo(this);
         return true;
     });
 }
@@ -223,6 +242,7 @@ function openFile(fileName) {
         post("getFileContent.php", {file: encodeURIComponent(fileName)}, function (data) {
             // Set the previous file as not selected, the first time it will be ""
             if (current_document_path !== "") {
+                save();
                 document.getElementById(current_document_path).style.color = 'black';
                 document.getElementById(current_document_path).style.fontWeight = 'normal';
             }

@@ -1,11 +1,11 @@
 <?php
 
 include_once __DIR__ . '/exceptions.php';
+include_once __DIR__ . '/constants.php';
 
 function uploadFile(string $fileExtension, int $i, string $route, mixed $tmpFilePath, array $files): void
 {
-    $allowedExtensions = ["cpp", "h", "py", "python", "txt"];
-    if (!in_array($fileExtension, $allowedExtensions)) {
+    if (!in_array($fileExtension, ALLOWED_FILE_EXTENSIONS)) {
         throw new WrongFileExtension($files['file']['name'][$i]);
     } else if ($files["file"]["size"][$i] > 500000) {
         throw new FileTooLarge($files['file']['name'][$i], $files["file"]["size"][$i],500000);

@@ -1,5 +1,6 @@
 <?php
 include_once __DIR__ . '/exceptions.php';
+include_once __DIR__ . '/constants.php';
 
 function createProblemDirectory(string $directoryName): string {
     $directory = "./../app/problemes/$directoryName";
@@ -11,6 +12,11 @@ function createProblemDirectory(string $directoryName): string {
 }
 
 function createProblemFile(string $directory, string $fileName, string $content) {
+    $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+    if (!in_array($extension, ALLOWED_FILE_EXTENSIONS)) {
+        throw new WrongFileExtension($fileName);
+    }
+
     $filePath = "$directory/$fileName";
     $file = fopen($filePath, 'w');
     fwrite($file, base64_decode($content));
