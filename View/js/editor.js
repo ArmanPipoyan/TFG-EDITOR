@@ -100,6 +100,10 @@ window.onload = function () {
             .attr("name", "solution_path")
             .attr("value", folder_route)
             .appendTo("#upload-to-github-form");
+        $("<input />").attr("type", "hidden")
+            .attr("name", "problem_id")
+            .attr("value", problem_id)
+            .appendTo("#upload-to-github-form");
         return true;
     });
 }

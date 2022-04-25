@@ -76,6 +76,13 @@
     </div>
 <?php } ?>
 
+<?php if (isset($_GET["uploaded"])) { ?>
+    <?php $string = $_GET["uploaded"]? "s'ha": "no s'ha"; ?>
+    <div class="container">
+        <p class="alert alert-warning"><strong> <?php echo "El problema $string pujat a GitHub." ?> </strong>
+    </div>
+<?php } ?>
+
 <div class="container">
     <p class="alert alert-warning hide" id="root_modified"><strong>El professor esta editant </strong>
 </div>
