@@ -112,8 +112,9 @@
 
     <div id="files" class="mt-1"></div>
     <div id="editor" contenteditable="true"></div>
+    <div id="notebook"></div>
 
-    <div class="output bg-light" id="answer"></div>
+    <div class="bg-light" id="answer"></div>
 </div>
 
 <!--  MODALS -->
@@ -139,7 +140,7 @@
                                 </button>
                             </div>
                             <div class="col-auto">
-                                <button type="button" class="btn btn-danger px-4" onclick="deleteArchivo()"
+                                <button type="button" class="btn btn-danger px-4" onclick="deleteFile()"
                                         data-dismiss="modal">Eliminar
                                 </button>
                             </div>
@@ -171,7 +172,7 @@
                         <div class="row justify-content-end no-gutters">
                             <form action="/Controller/addFileFromPC.php" method="post" enctype="multipart/form-data">
                                 <div class="col-auto mr-1">
-                                    <button type="submit" onclick="recibirFichero()" class="btn btn-light text-muted"
+                                    <button type="submit" onclick="receiveFile()" class="btn btn-light text-muted"
                                             data-dismiss="modal">Importar desde l'ordinador
                                     </button>
                                 </div>

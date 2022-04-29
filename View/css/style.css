@@ -44,15 +44,6 @@ body {
     border-radius: 13px
 }
 
-.output {
-    padding: 4px;
-    border: 2px solid black;
-    min-height: 100px;
-    width: 99%;
-    resize: none;
-
-}
-
 .image-parent {
     max-width: 40px;
 }

@@ -39,7 +39,7 @@ function validateProblemAndFiles() {
     }
 
     // Check if all the files extensions ar allowed
-    let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt)$/i;
+    let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt|\.ipynb)$/i;
     for (let i = 0; i < customFile.files.length; i++) {
         let fileName = customFile.files[i].name;
         let fileExt = fileName.substr(fileName.lastIndexOf('.'));

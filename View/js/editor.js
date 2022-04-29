@@ -1,13 +1,12 @@
 let editor;
-let current_document_path = "";
-let current_document_name = "";
-let programming_language;
-let folder_route;
+let currentDocumentPath = "";
+let programmingLanguage;
+let folderRoute;
 let checkChangesInterval;
 let readOnly = false;
-let rutaArchivoBorrar;
+let toDeleteFileRoute;
 let editing = 0;
-let problem_id;
+let problemId;
 let studentMenuClosed = true;
 let userType;
 
@@ -26,7 +25,7 @@ window.onload = function () {
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    problem_id = urlParams.get('problem');
+    problemId = urlParams.get('problem');
 
     const editInGet = urlParams.get('edit');
     if (editInGet !== null) {
@@ -43,8 +42,8 @@ window.onload = function () {
     });
 
     // Load the files from the disk
-    folder_route = document.getElementById("folder_route").innerText;
-    openFolder(folder_route);
+    folderRoute = document.getElementById("folder_route").innerText;
+    openFolder(folderRoute);
 
     // Add event listener to the description collapsible
     let collapsible = document.getElementsByClassName("collapsible");
@@ -81,10 +80,10 @@ window.onload = function () {
     // Set the programming language
     let language = document.getElementById("programming_language").innerText;
     if (language === 'C++') {
-        programming_language = "cpp";
+        programmingLanguage = "cpp";
         editor.session.setMode("ace/mode/c_cpp");
     } else if (language === 'Python') {
-        programming_language = "python";
+        programmingLanguage = "python";
         editor.session.setMode("ace/mode/python");
     }
 
@@ -112,11 +111,11 @@ window.onload = function () {
         save();
         $("<input />").attr("type", "hidden")
             .attr("name", "solution_path")
-            .attr("value", folder_route)
+            .attr("value", folderRoute)
             .appendTo(this);
         $("<input />").attr("type", "hidden")
             .attr("name", "problem_id")
-            .attr("value", problem_id)
+            .attr("value", problemId)
             .appendTo(this);
         let uploadFiles = $('#github-form-submit-input').attr('value') === "Pujar";
         $("<input />").attr("type", "hidden")
@@ -133,7 +132,7 @@ function setSolutionEditingFalse() {
         url: "/Model/solutionSetEditingFalse.php",
         method: "POST",
         data: {
-            folder: folder_route,
+            folder: folderRoute,
             user_type: userType
         }
     })
@@ -181,8 +180,8 @@ function openCloseStudentMenu() {
 }
 
 function openFiler() {
-    if (current_document_path !== "") {
-        openFile(current_document_path);
+    if (currentDocumentPath !== "") {
+        openFile(currentDocumentPath);
     }
 }
 
@@ -191,7 +190,7 @@ function checkChanges() {
         url: "/Model/checkStudent.php",
         method: "POST",
         data: {
-            route: folder_route,
+            route: folderRoute,
         },
         success: function (response) {
             // Check if the professor is editing the solution
@@ -218,18 +217,19 @@ function executeCode() {
         document.getElementById("error_msg_libraries").classList.remove('hide');
         return false;
     }
-    if (current_document_name === "") {
-        $(".output").text("Selecciona el fitxer per executar");
+    let currentDocumentName = currentDocumentPath.split('/').pop();
+    if (currentDocumentName === "") {
+        $("#output").text("Selecciona el fitxer per executar");
         return false;
     }
     $.ajax({
         url: "/app/compiler.php",
         method: "POST",
         data: {
-            language: programming_language,
+            language: programmingLanguage,
             code: editor.getSession().getValue(),
-            route: folder_route,
-            file_to_execute: current_document_name
+            route: folderRoute,
+            file_to_execute: currentDocumentName
         },
         success: function (response) {
             answer.innerHTML = response;
@@ -238,33 +238,55 @@ function executeCode() {
 }
 
 function openFile(fileName) {
-    if (fileName !== "" && fileName !== current_document_path) {
-        post("getFileContent.php", {file: encodeURIComponent(fileName)}, function (data) {
-            // Set the previous file as not selected, the first time it will be ""
-            if (current_document_path !== "") {
-                save();
-                document.getElementById(current_document_path).style.color = 'black';
-                document.getElementById(current_document_path).style.fontWeight = 'normal';
-            }
-            current_document_path = fileName;
-            // Set the new file as selected
-            document.getElementById(current_document_path).style.color = 'grey';
-            document.getElementById(current_document_path).style.fontWeight = 'bold';
-            current_document_name = current_document_path.split('/').pop();
+    if (fileName !== "" && fileName !== currentDocumentPath) {
+        // Set the previous file as not selected, the first time it will be ""
+        if (currentDocumentPath !== "") {
+            save();
+            document.getElementById(currentDocumentPath).style.color = 'black';
+            document.getElementById(currentDocumentPath).style.fontWeight = 'normal';
+        }
+        currentDocumentPath = fileName;
+        // Set the new file as selected
+        document.getElementById(currentDocumentPath).style.color = 'grey';
+        document.getElementById(currentDocumentPath).style.fontWeight = 'bold';
 
-            let fileExtension = current_document_path.split('.').pop();
-            editor.setValue(data, -1);
+        let fileExtension = currentDocumentPath.split('.').pop();
+        // If the file is a notebook embed an iframe, otherwise get the file content from the backend
+        let notebookContainer = document.getElementById("notebook");
+        let editorContainer = document.getElementById("editor");
+        let outputContainer = document.getElementById("answer");
+        if (fileExtension === 'ipynb') {
+            // Remove the editor and the output views
+            editorContainer.style.display = "none";
+            outputContainer.style.display = "none";
+            // Create a new iframe with the src of the file and append it to its container
+            let iframe = document.createElement("iframe");
+            let fileLocation = fileName.split("/").slice(-3).join("/");
+            iframe.setAttribute("src", `http://localhost:8888/tree/${fileLocation}`);
+            iframe.setAttribute("height", "500px");
+            iframe.setAttribute("width", "100%");
+            notebookContainer.appendChild(iframe);
+        } else {
+            // Clear the notebooks container
+            if (notebookContainer.hasChildNodes()) {
+                notebookContainer.removeChild(notebookContainer.lastElementChild);
+                editorContainer.style.display = "block";
+                outputContainer.style.display = "block";
+            }
             if (fileExtension === "cpp") {
                 editor.session.setMode("ace/mode/c_cpp");
             } else {
                 editor.session.setMode("ace/mode/python");
             }
-        });
+            post("getFileContent.php", {file: encodeURIComponent(fileName)}, function (data) {
+                editor.setValue(data, -1);
+            });
+        }
     }
 }
 
 function openFolder() {
-    post("dir.php", {folder: encodeURIComponent(folder_route)}, function (data) {
+    post("dir.php", {folder: encodeURIComponent(folderRoute)}, function (data) {
         document.getElementById('files').innerHTML = data;
 
         // Open the first file of the folder's available files
@@ -274,12 +296,12 @@ function openFolder() {
     });
 }
 
-function newFile(edited, problema) {
+function newFile(edited, problem) {
     let filename = prompt("Enter the file/folder name");
     if (filename) {
-        post("newFile.php", {filename, dir: encodeURIComponent(folder_route), edited, problema}, function (data) {
+        post("newFile.php", {filename, dir: encodeURIComponent(folderRoute), edited, problem}, function (data) {
             if (data === true) {
-                openFolder(folder_route);
+                openFolder(folderRoute);
             }
         });
         location.reload();
@@ -287,17 +309,17 @@ function newFile(edited, problema) {
 }
 
 function save() {
-    if (current_document_path === undefined) {
+    if (currentDocumentPath === undefined || currentDocumentPath.split('.').pop() === "ipynb") {
         return false;
     }
     $.ajax({
         url: "/Model/save.php",
         method: "POST",
         data: {
-            file: current_document_path,
+            file: currentDocumentPath,
             code: editor.getSession().getValue(),
             editing: editing,
-            problem: problem_id,
+            problem: problemId,
         },
         success: function (response) {
             if (response === 'true') {
@@ -307,24 +329,24 @@ function save() {
     })
 }
 
-function setBorrarArchivo(rutaArchivo) {
-    rutaArchivoBorrar = rutaArchivo;
+function setFileToDelete(fileRoute) {
+    toDeleteFileRoute = fileRoute;
 }
 
-function deleteArchivo() {
+function deleteFile() {
     $.ajax({
         url: "/Model/fileDelete.php",
         method: "POST",
         data: {
-            id: rutaArchivoBorrar,
+            id: toDeleteFileRoute,
         },
-        success: function (response) {
+        success: function () {
             location.reload();
         }
     })
 }
 
-function recibirFichero() {
+function receiveFile() {
     let control = document.getElementById('my_file')
     control.click();
     control.onchange = function (event) {
@@ -332,8 +354,8 @@ function recibirFichero() {
         if (fileList.length === 0) {
             return false;
         }
-        let filelength = control.files.length;
-        if (filelength === 0) {
+        let fileLength = control.files.length;
+        if (fileLength === 0) {
             alert("Selecciona els arxius del problema");
             return false;
         }
@@ -341,7 +363,7 @@ function recibirFichero() {
             let file = control.files[i];
             let FileName = file.name;
             let FileExt = FileName.substr(FileName.lastIndexOf('.'));
-            let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt)$/i;
+            let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt|\.ipynb)$/i;
             let isAllowed = allowedExtensionsRegx.test(FileExt);
             if (!isAllowed) {
                 return false;

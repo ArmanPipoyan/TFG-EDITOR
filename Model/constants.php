@@ -30,4 +30,4 @@ const VIEW_MODE_EDIT = 1;
 const VIEW_MODE_READ_ONLY = 2;
 
 # Allowed file extensions
-const ALLOWED_FILE_EXTENSIONS = ["cpp", "h", "py", "python", "txt"];
+const ALLOWED_FILE_EXTENSIONS = ["cpp", "h", "py", "python", "txt", "ipynb"];
