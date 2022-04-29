@@ -93,6 +93,38 @@ window.onload = function () {
     if (rightMenu) {
         rightMenu.addEventListener("click", openCloseStudentMenu);
     }
+
+    // Customize the form modal depending on the button opening it
+    $("#github-form-modal").on('shown.bs.modal', function (event) {
+        let title, submitText, action;
+        if (event.relatedTarget.id === 'github-upload') {
+            title = "Pujar a GitHub";
+            submitText = "Pujar";
+        } else {
+            title = "Afegir fitxers desde GitHub";
+            submitText = "Afegir";
+        }
+        $('#github-from-modal-title').text(title);
+        $('#github-form-submit-input').attr('value', submitText);
+    });
+    // Add additional fields to the upload files to GitHub form
+    $("#github-form").submit( function(eventObj) {
+        save();
+        $("<input />").attr("type", "hidden")
+            .attr("name", "solution_path")
+            .attr("value", folder_route)
+            .appendTo(this);
+        $("<input />").attr("type", "hidden")
+            .attr("name", "problem_id")
+            .attr("value", problem_id)
+            .appendTo(this);
+        let uploadFiles = $('#github-form-submit-input').attr('value') === "Pujar";
+        $("<input />").attr("type", "hidden")
+            .attr("name", "upload_files")
+            .attr("value", uploadFiles)
+            .appendTo(this);
+        return true;
+    });
 }
 
 function setSolutionEditingFalse() {
@@ -205,27 +237,12 @@ function executeCode() {
     })
 }
 
-function upload_github() {
-    // Look if the code is still usable
-    if (document.cookie.search("github_logged=yes") === -1) {
-        // Set the cookie to expire in 10 minutes (like the github code)
-        let currentDate = new Date();
-        let expirationDate = new Date(currentDate.getTime() + 10 * 60000);
-        document.cookie = 'github_logged=yes;expires=' + expirationDate.toUTCString() + ';path=/';
-        location.href = "https://github.com/login/oauth/authorize?client_id=8f808ec545de8d67461f&scope=repo%20user";
-    } else {
-        $.ajax({
-            url: "/Model/githubUpload.php",
-            method: "POST",
-        })
-    }
-}
-
 function openFile(fileName) {
     if (fileName !== "" && fileName !== current_document_path) {
         post("getFileContent.php", {file: encodeURIComponent(fileName)}, function (data) {
             // Set the previous file as not selected, the first time it will be ""
             if (current_document_path !== "") {
+                save();
                 document.getElementById(current_document_path).style.color = 'black';
                 document.getElementById(current_document_path).style.fontWeight = 'normal';
             }

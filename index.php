@@ -3,11 +3,6 @@ session_start();
 include_once __DIR__ . "/Model/constants.php";
 include_once __DIR__ . "/Model/redirectionUtils.php";
 
-if (isset($_GET["code"])) {
-    $_SESSION["code"] = $_GET["code"];
-    print_r($_SESSION);
-}
-
 $query = $_GET["query"] ?? VIEW_SUBJECT_LIST;
 
 if (isset($_SESSION["email"])) {
@@ -61,6 +56,9 @@ switch ($query) {
         break;
     case VIEW_SESSION_PROBLEMS_LIST:
         include __DIR__ . "/Controller/sessionProblemsList.php";
+        break;
+    case VIEW_PROBLEM_CREATE_GIT:
+        include __DIR__ . "/View/html/problemNewGithub.php";
         break;
     default:
         include __DIR__ . "/Controller/subjectList.php";

@@ -98,7 +98,7 @@ function createSolution($problem_route, $problem_id, $subject_id, $user_email) :
     return $created;
 }
 
-function getStudentsWithSessionAndProblem(int $session_id, int $problem_id)
+function getStudentsWithSessionAndProblem(int $session_id, int $problem_id): array
 {
     $students = [];
     try {

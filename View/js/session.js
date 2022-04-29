@@ -1,4 +1,4 @@
-window.onload = function(){
+window.onload = function() {
     $("#msform").on('submit', function () {
         let name = document.getElementById("name").value;
         let subject = document.getElementById("subject").value;

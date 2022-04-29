@@ -14,7 +14,17 @@ if (isset($_POST['edit'])) {
     setSolutionAsEdited($_POST['problem']);
 }
 
-uploadFiles($route, $_FILES);
+try {
+    uploadFiles($route, $_FILES);
+} catch (WrongFileExtension | FileTooLarge $e) {
+    $_SESSION['error'] = $e->getMessage();
+    redirect_location(query: VIEW_PROBLEM_ERROR_CREATING);
+    return;
+} catch (Exception) {
+    $_SESSION['error'] = "Error desconegut";
+    redirect_location(query: VIEW_PROBLEM_ERROR_CREATING);
+    return;
+}
 
 $params = array(
     "problem" => $_POST['problem'],

@@ -76,8 +76,17 @@
     </div>
 <?php } ?>
 
+<?php if (isset($_GET["uploaded"])) { ?>
+    <?php $negation = $_GET["uploaded"]? "": "no"; ?>
+    <div class="container">
+        <p class="alert alert-warning"><strong> <?php echo "El problema $negation s'ha pujat a GitHub." ?> </strong>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </p>
+    </div>
+<?php } ?>
+
 <div class="container">
-    <p class="alert alert-warning hide" id="root_modified"><strong>El professor esta editant </strong>
+    <p class="alert alert-warning hide" id="root_modified"><strong>El professor esta editant </strong></p>
 </div>
 
 <div class="container">
@@ -94,11 +103,13 @@
         <div class="content bg-dark text-white"><p><?php echo htmlspecialchars($problem["description"]); ?></p></div>
     <?php } ?>
 
-    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#my-modal2">New file <i
-                class="fas fa-file"></i></button>
+    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#my-modal2">New file <i class="fas fa-file"></i></button>
+    <button class="btn btn-primary btn-sm" onclick="executeCode()"> Executa <i class="fas fa-play" aria-hidden="true"></i></button>
+
+    <button id="github-upload" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#github-form-modal"><i class="fas fa-arrow-up"></i></button>
+    <button id="github-add-file" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#github-form-modal"><i class="fas fa-arrow-down"></i></button>
     <img id="save" class="mr-0" onclick="save()" src="/View/images/save.svg" alt=""/>
-    <button class="btn btn-primary ml-5 btn-sm" onclick="executeCode()"> Executa <i class="fas fa-play"
-                                                                                    aria-hidden="true"></i></button>
+
     <div id="files" class="mt-1"></div>
     <div id="editor" contenteditable="true"></div>
 
@@ -244,5 +255,39 @@
     </div>
 </div>
 
+
+<div id="github-form-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-body p-0">
+                <div class="card border-0 p-sm-3 p-2 justify-content-center">
+                    <div class="card-header pb-0 bg-white border-0 ">
+                        <div class="row">
+                            <div class="col ml-auto">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                <p id="github-from-modal-title" class="font-weight-bold mb-2"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
+                        <form id="github-form" class="form" method="post" action="/Controller/githubAddOrUploadFiles.php">
+                            <input type="url" name="repo_link" id="repo_link" placeholder="Link del repository github"/>
+                            <div class="row justify-content-end no-gutters">
+                                <div class="col-auto mr-1">
+                                    <button type="button" class="btn btn-light text-muted" data-dismiss="modal">Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-auto">
+                                    <input id="github-form-submit-input" type="submit" class="btn btn-success px-4"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php include_once(__DIR__ . '/footer.html') ?>
 </body>

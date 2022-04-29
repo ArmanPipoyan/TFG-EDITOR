@@ -1,13 +1,14 @@
 <?php
 
+include_once __DIR__ . '/exceptions.php';
+include_once __DIR__ . '/constants.php';
+
 function uploadFile(string $fileExtension, int $i, string $route, mixed $tmpFilePath, array $files): void
 {
-    if ($fileExtension != "cpp" && $fileExtension != "h" && $fileExtension != "py" && $fileExtension != "python"
-        && $fileExtension != "txt") {
-        redirect_location(query:VIEW_PROBLEM_ERROR_CREATING);
-    }
-    if ($files["file"]["size"][$i] > 500000) {
-        redirect_location(query:VIEW_PROBLEM_ERROR_CREATING);
+    if (!in_array($fileExtension, ALLOWED_FILE_EXTENSIONS)) {
+        throw new WrongFileExtension($files['file']['name'][$i]);
+    } else if ($files["file"]["size"][$i] > 500000) {
+        throw new FileTooLarge($files['file']['name'][$i], $files["file"]["size"][$i],500000);
     }
 
     //Set up our new file path
@@ -18,9 +19,9 @@ function uploadFile(string $fileExtension, int $i, string $route, mixed $tmpFile
     }
 }
 
-# Count the number of uploaded files in array
-function uploadFiles(string $route, array $files): void
+function uploadFiles(string $route, array $files)
 {
+    # Count the number of uploaded files in array
     $files_count = count($files['file']['name']);
 
     for ($i = 0; $i < $files_count; $i++) {
@@ -29,7 +30,6 @@ function uploadFiles(string $route, array $files): void
         //A file path needs to be present
         $tmpFileName = basename($files["file"]["name"][$i]);
         $fileExtension = strtolower(pathinfo($tmpFileName, PATHINFO_EXTENSION));
-
         uploadFile($fileExtension, $i, $route, $tmpFilePath, $files);
     }
 }
