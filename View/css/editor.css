@@ -4,6 +4,10 @@
     display: none;
 }
 
+#editor {
+    height: 400px;
+}
+
 #answer {
     padding: 4px;
     border: 2px solid black;
