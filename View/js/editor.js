@@ -10,7 +10,7 @@ let problemId;
 let studentMenuClosed = true;
 let userType;
 
-window.onload = function () {
+$(document).ready(function () {
     if (ace === undefined) {
         return false;
     }
@@ -45,35 +45,20 @@ window.onload = function () {
     folderRoute = document.getElementById("folder_route").innerText;
     openFolder(folderRoute);
 
-    // Add event listener to the description collapsible
-    let collapsible = document.getElementsByClassName("collapsible");
-    for (let i = 0; i < collapsible.length; i++) {
-        collapsible[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            let content = this.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
-        });
-    }
-
     // Set the auto check options depending on the user and his actions
     userType = document.getElementById("user_type").innerText;
     // User type 1 is student and 0 professor
     if (userType === "1") {
         setInterval(checkChanges, 3000);
     } else if (userType === "0") {
-        let viewMode = document.getElementById("view_mode");
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let viewMode = urlParams.get('view-mode');
         // View mode 1 is edit mode and 2 read only
-        if (viewMode) {
-            let viewModeValue = viewMode.innerText;
-            if (viewModeValue === "1") {
+        if (viewMode === "1") {
                 setInterval(save, 4000);
-            } else if (viewModeValue === "2") {
-                editor.setReadOnly(true);
-            }
+        } else if (viewMode === "2") {
+            editor.setReadOnly(true);
         }
     }
 
@@ -124,7 +109,7 @@ window.onload = function () {
             .appendTo(this);
         return true;
     });
-}
+});
 
 function setSolutionEditingFalse() {
     // Set the solution's editing field as false before leaving the page
@@ -255,6 +240,12 @@ function openFile(fileName) {
         let notebookContainer = document.getElementById("notebook");
         let editorContainer = document.getElementById("editor");
         let outputContainer = document.getElementById("answer");
+
+        // Clear the notebooks container
+        if (notebookContainer.hasChildNodes()) {
+            notebookContainer.removeChild(notebookContainer.lastElementChild);
+        }
+
         if (fileExtension === 'ipynb') {
             // Remove the editor and the output views
             editorContainer.style.display = "none";
@@ -267,12 +258,8 @@ function openFile(fileName) {
             iframe.setAttribute("width", "100%");
             notebookContainer.appendChild(iframe);
         } else {
-            // Clear the notebooks container
-            if (notebookContainer.hasChildNodes()) {
-                notebookContainer.removeChild(notebookContainer.lastElementChild);
-                editorContainer.style.display = "block";
-                outputContainer.style.display = "block";
-            }
+            editorContainer.style.display = "block";
+            outputContainer.style.display = "block";
             if (fileExtension === "cpp") {
                 editor.session.setMode("ace/mode/c_cpp");
             } else {
@@ -280,6 +267,8 @@ function openFile(fileName) {
             }
             post("getFileContent.php", {file: encodeURIComponent(fileName)}, function (data) {
                 editor.setValue(data, -1);
+                // Clear undo history when changing a file
+                editor.session.setUndoManager(new ace.UndoManager());
             });
         }
     }

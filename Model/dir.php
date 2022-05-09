@@ -22,8 +22,8 @@ foreach ($files as $file) {
             $ext = pathinfo($path)['extension'] ?? "";
             echo '<li id="' . $path . '" onclick="openFile(this.id)" class="list-group-item file" >
         <div class="row">
-         ' . $file . ' <div class="image-parent"> <img src="View/images/' . $ext . '.svg" class="img-fluid "style="height: 30px;" ></div>
-          <button id="close" name="' . $path . '" data-toggle="modal" data-target="#my-modal" onclick="setBorrarArchivo(this.name);" >close</button>
+         ' . $file . ' <div class="image-parent"> <img src="View/images/extensions/' . $ext . '.svg" class="img-fluid "style="height: 30px;" ></div>
+          <button id="close" name="' . $path . '" data-toggle="modal" data-target="#my-modal" onclick="setFileToDelete(this.name);" >close</button>
          </div>
          </li>';
         }

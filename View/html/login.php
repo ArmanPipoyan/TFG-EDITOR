@@ -53,7 +53,7 @@
     </div>
 </div>
 <div class="container">
-    <p class="alert alert-danger hide" id="error_mssg">
+    <p class="alert alert-danger hide" id="error_msg">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
     </p>
 </div>

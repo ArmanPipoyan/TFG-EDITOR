@@ -1,39 +1,273 @@
-* {
+:root {
+    --iconSize: 36px;
+
+    /* Colors used in the dark theme */
+    --themeDarkCollapseIcon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3e%3cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    --themeDarkFormBorderColor: rgb(250, 250, 250);
+    --themeDarkFormFieldBGColor: rgb(255, 255, 255);
+    --themeDarkFormTextColor: rgb(150, 150, 150);
+    --themeDarkTextColor: rgb(255, 255, 255);
+    --themeDarkHeaderBGColor: rgb(35, 35, 35);
+    --themeDarkButtonBGColor: rgb(35, 35, 35);
+    --themeDarkButtonBorderColor: rgb(180, 180, 180);
+    --themeDarkButtonHoverColor: rgb(70, 70, 70);
+    --themeDarkFooterBGColor: rgb(35, 35, 35);
+    --themeDarkBGColor: rgb(25, 25, 25);
+    --themeDarkCollapsibleBGColor: rgb(55, 55, 55);
+    --themeDarkCollapsibleHoverColor: rgb(70, 70, 70);
+    --themeDarkCollapsibleContentColor: rgb(70, 70, 70);
+    --themeDarkCardBDColor: rgb(35, 35, 35);
+
+    /* Colors used in the light theme */
+    --themeLightCollapseIcon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    --themeLightFormBorderColor: rgb(50, 50, 50);
+    --themeLightFormFieldBGColor: rgb(20, 20, 20);
+    --themeLightFormTextColor: rgb(130, 130, 130);
+    --themeLightTextColor: rgb(0, 0, 0);
+    --themeLightHeaderBGColor: rgb(255, 255, 255);
+    --themeLightButtonBGColor: rgb(255, 255, 255);
+    --themeLightButtonBorderColor: rgb(180, 180, 180);
+    --themeLightButtonHoverColor: rgb(230, 230, 230);
+    --themeLightFooterBGColor: rgb(255, 255, 255);
+    --themeLightBGColor: rgb(245, 245, 245);
+    --themeLightCollapsibleBGColor: rgb(215, 215, 215);
+    --themeLightCollapsibleHoverColor: rgb(190, 190, 190);
+    --themeLightCollapsibleContentColor: rgb(190, 190, 190);
+    --themeLightCardBDColor: rgb(255, 255, 255);
+
+    /* Colors of the active active theme, initially light */
+    --invertIconColor: 0;
+    --themeActiveCollapseIcon: var(--themeLightCollapseIcon);
+    --themeActiveFormBorderColor: var(--themeLightFormBorderColor);
+    --themeActiveFormFieldBGColor: var(--themeLightFormFieldBGColor);
+    --themeActiveFormTextColor: var(--themeLightFormTextColor);
+    --themeActiveTextColor: var(--themeLightTextColor);
+    --themeActiveButtonBGColor: var(--themeLightButtonBGColor);
+    --themeActiveHeaderBGColor: var(--themeLightHeaderBGColor);
+    --themeActiveButtonBorderColor: var(--themeLightButtonBorderColor);
+    --themeActiveButtonHoverColor: var(--themeLightButtonHoverColor);
+    --themeActiveFooterBGColor: var(--themeLightFooterBGColor);
+    --themeActiveBGColor: var(--themeLightBGColor);
+    --themeActiveCollapsibleBGColor: var(--themeLightCollapsibleBGColor);
+    --themeActiveCollapsibleHoverColor: var(--themeLightCollapsibleHoverColor);
+    --themeActiveCollapsibleContentColor: var(--themeLightCollapsibleContentColor);
+    --themeActiveCardBDColor: var(--themeLightCardBDColor);
+}
+
+.dark-theme {
+    /* Change the theme to black */
+    --invertIconColor: 1;
+    --themeActiveCollapseIcon: var(--themeDarkCollapseIcon);
+    --themeActiveFormBorderColor: var(--themeDarkFormBorderColor);
+    --themeActiveFormFieldBGColor: var(--themeDarkFormFieldBGColor);
+    --themeActiveFormTextColor: var(--themeDarkFormTextColor);
+    --themeActiveTextColor: var(--themeDarkTextColor);
+    --themeActiveButtonBGColor: var(--themeDarkButtonBGColor);
+    --themeActiveHeaderBGColor: var(--themeDarkHeaderBGColor);
+    --themeActiveButtonBorderColor: var(--themeDarkButtonBorderColor);
+    --themeActiveButtonHoverColor: var(--themeDarkButtonHoverColor);
+    --themeActiveFooterBGColor: var(--themeDarkFooterBGColor);
+    --themeActiveBGColor: var(--themeDarkBGColor);
+    --themeActiveCollapsibleBGColor: var(--themeDarkCollapsibleBGColor);
+    --themeActiveCollapsibleHoverColor: var(--themeDarkCollapsibleHoverColor);
+    --themeActiveCollapsibleContentColor: var(--themeDarkCollapsibleContentColor);
+    --themeActiveCardBDColor: var(--themeDarkCardBDColor);
+}
+
+/*** Style of generic elements ***/
+/* Body style */
+body {
+    color: var(--themeActiveTextColor);
+    background-color: var(--themeActiveBGColor) !important;
+}
+
+/* Basic items style */
+
+
+.icon {
+    -webkit-filter: invert(calc(var(--invertIconColor) * 100%));
+    filter: invert(calc(var(--invertIconColor) * 100%));
+    cursor: pointer;
+    height: var(--iconSize);
+}
+
+/* Header style */
+header {
+    margin-bottom: 30px;
+    background: var(--themeActiveHeaderBGColor);
+}
+
+.nav-item {
+    padding: 2px;
+    display: flex;
+    margin-left: 10px;
+    justify-content: center;
+}
+
+.nav-link, .btn{
+    background-color: var(--themeActiveButtonBGColor);
+    color: var(--themeActiveTextColor);
+    border: 1px solid var(--themeActiveButtonBorderColor);
+    text-align: center;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.nav-link {
+    width: 100%;
+}
+
+.nav-link:hover, .btn:hover {
+    background-color: var(--themeActiveButtonHoverColor);
+    color: var(--themeActiveTextColor);
+    border: 1px solid var(--themeActiveButtonBorderColor);
+}
+
+.navbar-toggler {
+    margin-right: auto;
+}
+
+.navbar-toggler-icon {
+    background-image: var(--themeActiveCollapseIcon);
+}
+
+#logo {
+    height: 48px;
+}
+
+/* Toggle style */
+.dark-mode-div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#toggle-dark-mode {
+    display: none;
+}
+
+.label-dark-mode {
+    user-select: none;
+    display: block;
+    width: 80px;
+    height: 31px;
+    border: 2px solid var(--themeActiveButtonBorderColor);
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    align-self: center;
+}
+
+.label-dark-mode:hover {
+    background-color: var(--themeActiveButtonHoverColor);
+}
+
+#toggle-ball {
+    position: absolute;
+    top: 50%;transform: translateY(-50%);
+}
+
+#toggle-ball {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-color: var(--themeActiveTextColor);
+    border-radius: 50%;
+    left: 1px;
+    z-index: 10;
+    transition: transform .5s ease-in-out;
+}
+
+#toggle-dark-mode:checked + #toggle-ball {
+    transform: translate(49px, -50%);
+}
+
+/* Footer style */
+footer {
+    color: var(--themeActiveTextColor);
+    background: var(--themeActiveFooterBGColor);
+}
+
+/* Plus sign inserted before the element */
+.add-object::before {
+    content: '';
+    background: url("/View/images/plus.png");
+    background-size: cover;
+    width: calc(var(--iconSize) - 20px);
+    height: calc(var(--iconSize) - 20px);
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-filter: invert(calc(var(--invertIconColor) * 100%));
+    filter: invert(calc(var(--invertIconColor) * 100%));
+}
+
+/* Modal style */
+.modal-content {
+    background-color: var(--themeActiveBGColor);
+    color: var(--themeActiveTextColor);
+    border-radius: 13px;
+}
+
+/*** Content style ***/
+/* Content Header Style */
+.content-header {
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Collapsible style */
+.collapsible {
+    border-radius: 10px;
+    background-color: var(--themeActiveCollapsibleBGColor);
+    color: var(--themeActiveTextColor);
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.active, .collapsible:hover {
+    background-color:  var(--themeActiveCollapsibleHoverColor);
+}
+
+.content {
+    margin-top: -18px;
+    margin-bottom: 10px;
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color:  var(--themeActiveCollapsibleContentColor);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Dropdown menu style */
+.dropdown-menu {
+    top: 57px;
+    text-align: -webkit-center;
+    padding: 0.5rem;
+    position: absolute !important;
+    color: var(--themeActiveTextColor) !important;
+    background-color: var(--themeActiveHeaderBGColor);
+}
+
+.dropdown-item {
     margin: 0;
 }
 
-header {
-    margin-bottom: 30px;
+/* Card style */
+.card {
+    z-index: 0;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--themeActiveCardBDColor);
 }
-
-.control-panel {
-    background: lightgray;
-    text-align: right;
-    padding: 4px;
-    font-family: sans-serif;
-}
-
-body {
-    background-color: #9C27B0;
-    background-image: linear-gradient(120deg, #FF4081, #81D4FA);
-}
-
-.btn {
-    background: #57a958;
-    color: white;
-    padding: 8px;
-    border: 0;
-}
-
-
-.modal-content {
-    border-radius: 13px
-}
-
-.image-parent {
-    max-width: 40px;
-}
-
 
 #login .container #login-row #login-column #login-box {
     margin-top: 80px;
@@ -108,12 +342,6 @@ button:focus {
 }
 
 /*###########################################################################################*/
-
-#grad1 {
-    background-color: #9C27B0;
-    background-image: linear-gradient(120deg, #FF4081, #81D4FA);
-}
-
 #msform {
     text-align: center;
     position: relative;
@@ -225,13 +453,6 @@ select.list-dt:focus {
     border-bottom: 2px solid skyblue
 }
 
-.card {
-    z-index: 0;
-    border: none;
-    border-radius: 0.5rem;
-    position: relative
-}
-
 .fs-title {
     font-size: 25px;
     color: #2C3E50;
@@ -279,28 +500,4 @@ select.list-dt:focus {
 
 #close:after {
     transform: rotate(-45deg);
-}
-
-
-.collapsible {
-    background-color: grey;
-    color: white;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-}
-
-.active, .collapsible:hover {
-    background-color: #555;
-}
-
-.content {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: #6c757d;
 }

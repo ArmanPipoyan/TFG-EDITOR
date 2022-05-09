@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <title>TFG - Nova assignatura</title>
 
-    <link rel="stylesheet" href="/View/css/style.css"/>
     <link rel="stylesheet" href="/View/css/external/bootstrap.min.css">
     <link rel="stylesheet" href="/View/css/external/all.css">
     <link rel="shortcut icon" href="/View/images/favicon.png">
+    <link rel="stylesheet" href="/View/css/style.css"/>
 
-    <script src="/View/js/global.js"></script>
     <script src="/View/js/subjectValidation.js"></script>
     <script src="/View/js/external/jquery.min.js"></script>
     <script src="/View/js/external/popper.min.js"></script>
     <script src="/View/js/external/bootstrap.min.js"></script>
     <script src="/View/js/external/all.min.js"></script>
+    <script src="/View/js/global.js"></script>
 </head>
 
 
@@ -58,7 +58,7 @@
 </div>
 
 <div class="container">
-    <p class="alert alert-danger hide" id="error_mssg">
+    <p class="alert alert-danger hide" id="error_msg">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
     </p>
 </div>
