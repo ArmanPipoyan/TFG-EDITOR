@@ -1,4 +1,6 @@
-window.onload = function() {
+let toCloneSession;
+
+$(document).ready(function () {
     $("#msform").on('submit', function () {
         let name = document.getElementById("name").value;
         let subject = document.getElementById("subject").value;
@@ -14,15 +16,20 @@ window.onload = function() {
 
         this.next.disabled = true;
         return true;
-    })
-}
+    });
 
-function deleteSession(session_id) {
+    $('#duplicate_session_modal').on('show.bs.modal', function (e) {
+        let invoker = $(e.relatedTarget);
+        toCloneSession = parseInt(invoker.closest('.card').attr('id'));
+    });
+})
+
+function deleteSession(sessionId) {
     $.ajax({
         url: "/Controller/sessionDelete.php",
         method: "POST",
         data: {
-            session_id: session_id,
+            session_id: sessionId,
         },
         success: function () {
             location.reload();
@@ -41,7 +48,7 @@ function duplicateSession(session_id) {
             method: "POST",
             data: {
                 session_name: session_name,
-                session_id: session_id,
+                session_id: toCloneSession,
             },
             success: function () {
                 location.reload();

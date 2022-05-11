@@ -16,6 +16,11 @@ function copyInvitationLink() {
 }
 
 $(document).ready(function () {
+    if (localStorage.getItem('theme') === 'dark-theme' &&
+        document.body.getAttribute('dark-theme') === '') {
+        document.body.classList.toggle("dark-theme");
+    }
+
     // Add event listener to the collapsible items
     let collapsible = document.getElementsByClassName("collapsible");
     for (let i = 0; i < collapsible.length; i++) {
@@ -30,11 +35,31 @@ $(document).ready(function () {
         });
     }
 
-    $('#toggle-dark-mode').on('click',function () {
-        document.body.classList.toggle("dark-theme");
+    $('#dark-theme-switch').change(function () {
+        let toggled = document.body.classList.toggle("dark-theme");
+        let theme = toggled? 'dark-theme': 'light-theme';
+        localStorage.setItem('theme', theme);
+        $.ajax({
+            url: "/Model/savePreferences.php",
+            method: "POST",
+            data: {
+                theme: theme,
+            }
+        })
     })
 
-    $('.dropdown-menu').on('click', function (e) {
-        e.stopPropagation();
-    });
+    let formInputs = $('.input-container .input');
+    for (let i = 0; i < formInputs.length; i++) {
+        let formInput = $(formInputs[i]);
+        let inputCut = formInput.siblings('.cut');
+        let inputLabel = formInput.siblings('label');
+        let clone = inputLabel.clone();
+        clone.css('visibility', 'hidden');
+        $('body').append(clone);
+        inputCut.width(clone.width() + 10);
+        clone.remove();
+        if (formInput.is("textarea")) {
+            formInput.val("");
+        }
+    }
 })

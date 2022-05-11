@@ -22,10 +22,10 @@ switch ($query) {
         include __DIR__ . "/Controller/problemList.php";
         break;
     case VIEW_LOGIN_FORM:
-        include __DIR__ . "/View/html/login.php";
+        include __DIR__ . "/Controller/loginForm.php";
         break;
     case VIEW_REGISTER_FORM:
-        include __DIR__ . "/View/html/register.php";
+        include __DIR__ . "/Controller/registerForm.php";
         break;
     case VIEW_PROBLEM_CREATE:
         include __DIR__ . "/View/html/problemNew.php";
@@ -40,7 +40,7 @@ switch ($query) {
         include __DIR__ . "/Controller/editor.php";
         break;
     case VIEW_SUBJECT_CREATE:
-        include __DIR__ . "/View/html/subjectNew.php";
+        include __DIR__ . "/Controller/newSubjectForm.php";
         break;
     case VIEW_SOMETHING:
         include __DIR__ . "/Model/zipFolder.php";

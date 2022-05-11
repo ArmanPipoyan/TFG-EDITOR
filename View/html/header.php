@@ -23,7 +23,7 @@
         </ul>
     </div>
 
-    <ul class="navbar-nav mr-0">
+    <ul class="navbar-nav align-items-center">
         <?php if (isset($_SESSION['user'])) { ?>
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle" type="button" id="user-dropdown" data-toggle="dropdown"
@@ -33,13 +33,13 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-dropdown">
                     <h6 class="font-weight-bold">Hola, <?php echo $_SESSION['user']; ?>!</h6>
                     <div class="dropdown-divider"></div>
-                    <div class="dark-mode-div">
-                        <i id="dark-mode" class="fas fa-moon"></i>
-                        <label class="dropdown-item label-dark-mode">
-                            <input id="toggle-dark-mode" type="checkbox" data-toggle="toggle">
-                            <span id="toggle-ball"></span>
-                        </label>
+                    <div class="d-inline-flex">
+                        <div class="align-self-center">
+                            <label for="dark-theme-switch"><i class="fas fa-moon"></i></label>
+                        </div>
+                        <input id="dark-theme-switch" type="checkbox" data-toggle="toggle" data-on=" " data-off=" "/>
                     </div>
+
                     <div class="dropdown-divider"></div>
                     <a id="dropdown-item logout-button" class="nav-link text-capitalize" href="/Model/logout.php">
                         <i class="fas fa-sign-out-alt"></i>
@@ -48,6 +48,12 @@
                 </div>
             </div>
         <?php } else { ?>
+            <li class="nav-item">
+                <div class="align-self-center">
+                    <label for="dark-theme-switch"><i class="fas fa-moon"></i></label>
+                </div>
+                <input id="dark-theme-switch" type="checkbox" data-toggle="toggle" data-on=" " data-off=" "/>
+            </li>
             <li id="login-button" class="nav-item">
                 <a class="nav-link text-capitalize" href="/index.php?query=2">
                     <img class="icon" src="/View/images/user.png" alt="User">
@@ -59,32 +65,26 @@
 </header>
 
 <?php
+if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
 //Generate a random string.
 $token = openssl_random_pseudo_bytes(164);
-
 //Convert the binary data into hexadecimal representation.
-$token = bin2hex($token);
-
-if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) { ?>
+$token = bin2hex($token); ?>
     <div class="modal fade" id="inviteProfessorModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content col-12">
-                <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title">Enllaç per invitar un professor</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <!-- Modal body -->
                 <div class="modal-body">
                     Copia el link i passa-li a un professor!
                 </div>
-                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <label style="font-weight: 600">Link <span class="message"></span></label><br/>
+                    <label class="message" for="invitation_link">Link</label>
                     <div class="row">
-                        <label for="invitation_link"></label>
-                        <input class="col-10 ur" type="url" id="invitation_link"
-                               aria-describedby="inputGroup-sizing-default" size="30" style="height: 40px;">
+                        <input disabled class="col-10 ur" type="url" id="invitation_link" size="30"
+                               title="Link d'invitació">
                         <button class="cpy" onclick="copyInvitationLink()">
                             <i class="far fa-clone"></i>
                         </button>
@@ -94,3 +94,4 @@ if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) { ?>
         </div>
     </div>
 <?php } ?>
+

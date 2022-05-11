@@ -78,7 +78,7 @@ function addStudentToSession(int $session_id, string $email) : bool
     return $added;
 }
 
-function duplicateSession(string $session_name, int $session_id)
+function duplicateSession(string $session_name, int $session_id): bool
 {
     $duplicated = false;
     try {

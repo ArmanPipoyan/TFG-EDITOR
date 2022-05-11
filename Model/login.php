@@ -18,7 +18,6 @@ function logInStudent($email, $password): bool
         $statement = $connection->prepare("SELECT * FROM student WHERE email= :email");
         $statement->execute(array(":email" => $email));
         $student = $statement->fetch(PDO::FETCH_ASSOC);
-
         if (logIn($password, $student)) {
             $_SESSION['user_type'] = STUDENT;
             $loggedIn = true;

@@ -1,0 +1,68 @@
+<?php if(!empty($formPage)) { ?>
+    <head>
+        <meta charset="UTF-8">
+        <title>TFG - <?php echo $formPage['title'] ?></title>
+
+        <link rel="shortcut icon" href="/View/images/favicon.png">
+        <link rel="stylesheet" href="/View/css/external/bootstrap.min.css">
+        <link rel="stylesheet" href="/View/css/external/bootstrap-toggle.min.css">
+        <link rel="stylesheet" href="/View/css/external/all.css">
+        <link rel="stylesheet" href="/View/css/style.css"/>
+        <link rel="stylesheet" href="/View/css/forms.css"/>
+
+        <script src="/View/js/external/jquery.min.js"></script>
+        <script src="/View/js/external/popper.min.js"></script>
+        <script src="/View/js/external/bootstrap.min.js"></script>
+        <script src="/View/js/external/bootstrap-toggle.min.js"></script>
+        <script src="/View/js/external/all.min.js"></script>
+        <?php if(isset($formPage['validationJS'])) { ?>
+            <script src="/View/js/<?php echo $formPage['validationJS'] ?>"></script>
+        <?php } ?>
+        <script src="/View/js/global.js"></script>
+    </head>
+
+    <body class="d-flex flex-column min-vh-100" <?php echo $_SESSION['theme'] ?>>
+    <?php include_once(__DIR__ . '/header.php') ?>
+
+    <div class="container form-container">
+        <form class="form" action="<?php echo $formPage['action'] ?>" method="post"
+              onsubmit="return <?php echo $formPage['onSubmit'] ?>">
+            <p class="title"><?php echo $formPage['title'] ?></p>
+            <?php if(isset($formPage['subtitle'])) { ?>
+                <p class="subtitle"><?php echo $formPage['subtitle'] ?></p>
+            <?php } ?>
+            <?php foreach($formPage['fields'] as $field) {
+                if ($field['type'] === 'row') { ?>
+                    <div class="form-row">
+                        <?php foreach($field['fields'] as $formField) { ?>
+                        <div class="form-row-item">
+                            <?php include __DIR__ . '/formField.php'; ?>
+                        </div>
+                        <?php } ?>
+                    </div>
+                <?php } else {
+                    $formField = $field;
+                    include __DIR__ . '/formField.php';
+                }
+            } ?>
+            <div class="container">
+                <p class="alert alert-danger" <?php echo isset($formPage['error'])? "": "hidden"; ?> id="error_msg">
+                    <?php echo $formPage['error'] ?>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </p>
+            </div>
+            <div id="form-buttons-container">
+                <?php foreach($formPage['extraOptions'] as $option) { ?>
+                    <a href="<?php echo $option['href'] ?>" class="btn">
+                        <?php echo $option['optionText'] ?>
+                    </a>
+                <?php } ?>
+                <input type="submit" class="btn" value="<?php echo $formPage['submitText'] ?>">
+            </div>
+        </form>
+    </div>
+
+    <?php include_once(__DIR__ . '/footer.html') ?>
+    </body>
+<?php } ?>
+

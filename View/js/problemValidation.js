@@ -9,15 +9,15 @@ function validateProblem() {
     let error = document.getElementById("error_msg");
 
     if (title === "" || description === "") {
-        error.classList.remove('hide');
+        error.toggleAttribute('hidden');
         error.innerHTML = "Hi ha camps buits";
         return false;
     } else if (title.length < 3 || title.length > 80) {
-        error.classList.remove('hide');
+        error.toggleAttribute('hidden');
         error.innerHTML = "Títol massa curt";
         return false;
     } else if (description.length < 3) {
-        error.classList.remove('hide');
+        error.toggleAttribute('hidden');
         error.innerHTML = "Descripció massa curta";
         return false;
     }
@@ -33,7 +33,7 @@ function validateProblemAndFiles() {
     let customFile = document.getElementById("customFile");
     let fileLength = customFile.files.length;
     if (fileLength === 0) {
-        error.classList.remove('hide');
+        error.toggleAttribute('hidden');
         error.innerHTML = "Selecciona els arxius del problema";
         return false;
     }
@@ -45,7 +45,7 @@ function validateProblemAndFiles() {
         let fileExt = fileName.substr(fileName.lastIndexOf('.'));
 
         if (!allowedExtensionsRegx.test(fileExt)) {
-            error.classList.remove('hide');
+            error.toggleAttribute('hidden');
             error.innerHTML = "La extensió del fitxer " + fileName + " és incorrecte.";
             return false;
         }
