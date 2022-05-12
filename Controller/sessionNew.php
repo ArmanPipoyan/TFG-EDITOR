@@ -8,20 +8,20 @@ include_once __DIR__ . "/../Model/session.php";
 
 $user_type = $_SESSION['user_type'];
 if ($user_type != PROFESSOR) {
-    redirect_location();
+    redirectLocation();
 }
 
 $name = $_POST['name'];
-$subject_id = $_POST['subject'];
-$problem_ids = $_POST['problems'];
+$subjectId = $_POST['subject'];
+$problemIds = $_POST['problems'];
 
-$professor_email = $_SESSION['email'];
-$professor = getProfessor(professor_email: $professor_email);
-$professor_id = $professor['id'];
+$professorEmail = $_SESSION['email'];
+$professor = getProfessor(professorEmail: $professorEmail);
+$professorId = $professor['id'];
 
-$session_id = createSession(name:$name, professor_id:$professor_id, subject_id: $subject_id, problem_ids:$problem_ids);
-if (!empty($session_id)) {
-    redirect_location();
+$sessionId = createSession(name:$name, professorId:$professorId, subjectId: $subjectId, problemIds:$problemIds);
+if ($sessionId === 0) {
+    redirectLocation();
 }
 
-redirect_location(VIEW_SESSION_PROBLEMS_LIST, array("session" => $session_id));
+redirectLocation(VIEW_SESSION_PROBLEMS_LIST, array("session" => $sessionId));

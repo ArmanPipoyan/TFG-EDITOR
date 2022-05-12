@@ -6,7 +6,7 @@ include_once __DIR__ . "/../Model/problemsGet.php";
 $mail = $_SESSION['mail'];
 $problem_id = $_POST["id"];
 
-$problem = getProblemToSolve($problem_id);
+$problem = getProblemWithId($problem_id);
 $route=$problem["route"];
 $full_route = str_replace('\\', '/', realpath(__DIR__ . $route));
 $files = scandir($full_route);

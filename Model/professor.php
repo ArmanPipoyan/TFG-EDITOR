@@ -1,12 +1,12 @@
 <?php
 
-function getProfessor(string $professor_email) : array
+function getProfessor(string $professorEmail) : array
 {
     $professor = array();
     try {
         $connection = connectDB();
         $statement = $connection->prepare("SELECT * FROM professor WHERE email=:professor_email");
-        $statement->bindParam(":professor_email", $professor_email);
+        $statement->bindParam(":professor_email", $professorEmail);
         $statement->execute();
         $professor = $statement->fetch(PDO::FETCH_ASSOC);
         $connection = null;

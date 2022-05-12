@@ -6,7 +6,7 @@ include_once __DIR__ . "/../Model/constants.php";
 
 # If only the query is set without indicating a problem return to the homepage
 if (!isset($_GET["problem"])) {
-    redirect_location();
+    redirectLocation();
 }
 $problem_id = $_GET["problem"];
 
@@ -23,7 +23,7 @@ if (isset($_GET["view-mode"]) && isset($_GET["user"])) {
     # If the view_mode doesn't exist redirect to the homepage
     $view_mode = $_GET["view-mode"];
     if (!in_array($view_mode, [VIEW_MODE_EDIT, VIEW_MODE_READ_ONLY])) {
-        redirect_location();
+        redirectLocation();
     }
 
     $email = $_GET["user"];
@@ -34,7 +34,7 @@ if (isset($_GET["view-mode"]) && isset($_GET["user"])) {
 }
 
 # Get the problem files from the machine
-$problem = getProblemToSolve($problem_id);
+$problem = getProblemWithId($problem_id);
 $subject = $problem["subject_id"];
 $problem_route = $problem["route"];
 $cleaned_problem_route = str_replace('\\', '/', realpath(__DIR__ . $problem_route));

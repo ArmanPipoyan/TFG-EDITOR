@@ -18,11 +18,11 @@ try {
     uploadFiles($route, $_FILES);
 } catch (WrongFileExtension | FileTooLarge $e) {
     $_SESSION['error'] = $e->getMessage();
-    redirect_location(query: VIEW_PROBLEM_ERROR_CREATING);
+    redirectLocation(query: VIEW_PROBLEM_ERROR_CREATING);
     return;
 } catch (Exception) {
     $_SESSION['error'] = "Error desconegut";
-    redirect_location(query: VIEW_PROBLEM_ERROR_CREATING);
+    redirectLocation(query: VIEW_PROBLEM_ERROR_CREATING);
     return;
 }
 
@@ -33,4 +33,4 @@ if (isset($_POST['edit'])) {
     $params += ["edit" => 1];
 }
 
-redirect_location(query:VIEW_EDITOR, params: $params);
+redirectLocation(query:VIEW_EDITOR, params: $params);

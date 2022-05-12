@@ -58,8 +58,5 @@ $(document).ready(function () {
         $('body').append(clone);
         inputCut.width(clone.width() + 10);
         clone.remove();
-        if (formInput.is("textarea")) {
-            formInput.val("");
-        }
     }
 })

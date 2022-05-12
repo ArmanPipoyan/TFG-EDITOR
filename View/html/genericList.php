@@ -29,7 +29,7 @@
                 <div>
                     <?php if (isset($item['href'])) { ?>
                         <a href="<?php echo $item['href'] ?>">
-                            <h5><?php echo $item['name'] ?></h5>
+                            <h5><?php echo $item['title'] ?></h5>
                         </a>
                     <?php } else { ?>
                         <h5 class="card-title"> <?php echo $item['title'] ?> </h5>
@@ -45,8 +45,10 @@
                                     title="<?php echo $button['title'] ?>" data-toggle="modal"
                                     data-target="#<?php echo $button['target'] ?>">
                         <?php } else { ?>
-                            <button class="btn" type="button" data-placement="top" title="<?php echo $button['title'] ?>"
-                                    onclick="<?php echo $button['onClick'] ?>">
+                            <button <?php echo isset($button['id'])? 'id='.$button['id']: '' ?>
+                                    class="btn <?php echo $button['classes'] ?>" type="button" data-placement="top"
+                                    title="<?php echo $button['title'] ?>"
+                                    <?php echo isset($button['onClick'])? 'onclick='.$button['onClick']: '' ?>>
                         <?php } ?>
                         <img class="icon" src="/View/images/<?php echo $button['image'] ?>.png"
                              alt="<?php echo $button['alt'] ?>" title="<?php echo $button['alt'] ?>">
@@ -113,19 +115,30 @@
         <?php foreach ($listPage['modals'] as $modal) { ?>
             <div class="modal fade" id="<?php echo $modal['id'] ?>" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content col-12">
+                    <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title"><?php echo $modal['title'] ?></h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <?php $formField = $modal['field'];
-                            include __DIR__ . '/formField.php'; ?>
-                            <button class="btn float-right" type="button" data-placement="top"
-                                    title="<?php echo $modal['buttonTitle'] ?>"
-                                    onclick="<?php echo $modal['buttonOnClick'] ?>">
-                                <?php echo $modal['buttonText'] ?>
-                            </button>
+                            <?php if (isset($modal['field'])) {
+                                $formField = $modal['field'];
+                                include __DIR__ . '/formField.php';
+                            } else { ?>
+                                <p><?php echo $modal['content'] ?></p>
+                            <?php } ?>
+                            <div class="modal-buttons">
+                                <?php if (isset($modal['dismissButtonText'])) { ?>
+                                    <button type="button" class="btn" data-dismiss="modal">
+                                        <?php echo $modal['dismissButtonText'] ?>
+                                    </button>
+                                <?php } ?>
+                                <button class="btn" type="button" data-placement="top"
+                                        title="<?php echo $modal['buttonTitle'] ?>"
+                                        onclick="<?php echo $modal['buttonOnClick'] ?>">
+                                    <?php echo $modal['buttonText'] ?>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -17,4 +17,4 @@ if (!$created) {
     return;
 }
 
-redirect_location();
+redirectLocation();

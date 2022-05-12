@@ -46,11 +46,11 @@ try {
     $returnedData = downloadDirectoryFromGithub(client: $client, repoLink: $repoLink);
 } catch (GitHubFileDoesNotExist | SpecifiedUrlNotADirectory | DirectoryAlreadyExists $e){
     $_SESSION['error'] = $e->getMessage();
-    redirect_location(query: VIEW_PROBLEM_ERROR_CREATING);
+    redirectLocation(query: VIEW_PROBLEM_ERROR_CREATING);
     return;
 } catch (Exception $e){
     $_SESSION['error'] = "Error desconegut";
-    redirect_location(query: VIEW_PROBLEM_ERROR_CREATING);
+    redirectLocation(query: VIEW_PROBLEM_ERROR_CREATING);
     return;
 }
 
@@ -61,4 +61,4 @@ $description = $returnedData['description'];
 createProblem(route: $route, title: $title, description:$description, max_memory_usage: $maxMemoryUsage,
     visibility:$visibility, max_execution_time: $maxExecutionTime, language: $language, subject: $subject);
 
-redirect_location(query: VIEW_PROBLEM_CREATED);
+redirectLocation(query: VIEW_PROBLEM_CREATED);

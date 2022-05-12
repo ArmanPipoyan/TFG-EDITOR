@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../Model/constants.php';
+require_once __DIR__ . '/../../Model/constants.php';
 
 if (isset($_GET['error'])) {
     $formPage['error'] = "L'email ja està sent utilitzat";
@@ -12,14 +12,14 @@ $formPage['title'] = "Registra't";
 $formPage['subtitle'] = "Crea un compte nou. Si ets professor demana a un professor que t'enviï el link referent.";
 $formPage['fields'] = [
     array('type' => 'row', 'fields' => [
-        array('type' => 'text', 'name' => 'first_name', 'placeholder' => 'Nom', 'required' => 'required'),
-        array('type' => 'text', 'name' => 'last_name', 'placeholder' => 'Cognoms', 'required' => 'required'),
+        array('type' => 'text', 'id' => 'first_name', 'placeholder' => 'Nom', 'required' => 'required'),
+        array('type' => 'text', 'id' => 'last_name', 'placeholder' => 'Cognoms', 'required' => 'required'),
     ]),
-    array('type' => 'email', 'name' => 'email', 'placeholder' => 'Email', 'required' => 'required'),
+    array('type' => 'email', 'id' => 'email', 'placeholder' => 'Email', 'required' => 'required'),
     array('type' => 'row', 'fields' => [
-        array('type' => 'password', 'name' => 'password', 'placeholder' => 'Contrasenya', 'required' => 'required',
+        array('type' => 'password', 'id' => 'password', 'placeholder' => 'Contrasenya', 'required' => 'required',
             'minlength' => 8, 'maxlength' => 24),
-        array('type' => 'password', 'name' => 'password_confirmation', 'placeholder' => 'Confirmació contrasenya',
+        array('type' => 'password', 'id' => 'password_confirmation', 'placeholder' => 'Confirmació contrasenya',
             'required' => 'required', 'minlength' => 8, 'maxlength' => 24)
     ]),
 ];
@@ -28,4 +28,4 @@ $formPage['extraOptions'] = [
     array('href' => '/index.php?query='.VIEW_LOGIN_FORM, 'optionText' => "Iniciar sessió")
 ];
 
-require_once __DIR__ . '/../View/html/genericForm.php';
+require_once __DIR__ . '/../../View/html/genericForm.php';

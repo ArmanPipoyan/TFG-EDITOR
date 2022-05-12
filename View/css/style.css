@@ -89,6 +89,11 @@ body {
     width: 10px;
 }
 
+::-webkit-scrollbar-track {
+    background: var(--themeActiveBGColor);
+    border-radius: 10px;
+}
+
 ::-webkit-scrollbar-thumb {
     background: var(--themeActiveScrollbarColor);
     border-radius: 10px;
@@ -127,7 +132,7 @@ header {
     justify-content: center;
 }
 
-.nav-link, .btn{
+.nav-link, .btn {
     background-color: var(--themeActiveButtonBGColor);
     color: var(--themeActiveTextColor);
     border: 1px solid var(--themeActiveButtonBorderColor);
@@ -159,16 +164,26 @@ header {
 }
 
 /* Plus sign inserted before the element */
-.add-object::before {
+.add-object::before, .github::before {
     content: '';
-    background: url("/View/images/plus.png");
-    background-size: cover;
-    width: calc(var(--iconSize) - 20px);
-    height: calc(var(--iconSize) - 20px);
     display: inline-block;
     vertical-align: middle;
     -webkit-filter: invert(calc(var(--invertIconColor) * 100%));
     filter: invert(calc(var(--invertIconColor) * 100%));
+}
+
+.add-object::before {
+    width: calc(var(--iconSize) - 20px);
+    height: calc(var(--iconSize) - 20px);
+    background: url("/View/images/plus.png");
+    background-size: cover;
+}
+
+.github::before {
+    width: calc(var(--iconSize) - 10px);
+    height: calc(var(--iconSize) - 10px);
+    background: url("/View/images/github.png");
+    background-size: cover;
 }
 
 /* Modal style */
@@ -187,9 +202,9 @@ header {
     margin-bottom: 10px;
 }
 
-.header-buttons {
+.header-buttons, .modal-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     column-gap: 10px;
 }
 

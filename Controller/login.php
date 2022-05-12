@@ -13,9 +13,9 @@ $loggedIn = logInStudent($email, $password);
 if (!$loggedIn) {
     $loggedIn = logInProfessor($email, $password);
     if (!$loggedIn) {
-        redirect_location(VIEW_LOGIN_FORM, array('error' => '1'));
+        redirectLocation(VIEW_LOGIN_FORM, array('error' => '1'));
         return;
     }
 }
 
-redirect_location();
+redirectLocation();

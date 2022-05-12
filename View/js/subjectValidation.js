@@ -5,7 +5,9 @@ function validateSubject() {
     let error = document.getElementById("error_msg");
 
     if (title === "" || description === "" || course === "") {
-        error.toggleAttribute('hidden');
+        if ($(error).is(':hidden')) {
+            error.toggleAttribute('hidden');
+        }
         error.innerHTML = "Hi ha camps buits.";
         return false;
     }

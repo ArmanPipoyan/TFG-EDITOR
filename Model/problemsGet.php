@@ -33,7 +33,7 @@ function getProblemsWithSession(int $session_id): array
         foreach ($problem_ids as $problem_id) {
             $statement->bindParam(":problem_id", $problem_id);
             $statement->execute();
-            $problems[] = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $problems[] = $statement->fetch(PDO::FETCH_ASSOC);
         }
         $connection = null;
     } catch (PDOException $e) {
@@ -42,7 +42,7 @@ function getProblemsWithSession(int $session_id): array
     return $problems;
 }
 
-function getProblemToSolve($problem_id)
+function getProblemWithId($problem_id)
 {
     $problem = null;
     try {
@@ -65,7 +65,7 @@ function getSubjects(): array
         // Get all the subjects and append add a field to know whether it has active sessions or not
         $statement = $connection->prepare("
             SELECT id, title, course, description, 
-                   (SELECT EXISTS(SELECT * from session WHERE subject_id=subject.id))as has_active_sessions
+                   (SELECT EXISTS(SELECT * from session WHERE subject_id=subject.id)) as has_active_sessions
             FROM subject");
         $statement->execute();
         $subjects = $statement->fetchAll(PDO::FETCH_ASSOC);

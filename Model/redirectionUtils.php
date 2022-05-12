@@ -1,7 +1,6 @@
 <?php
 
-function redirect_location($query=null, $params=null) : void
-{
+function buildUrl($query=null, $params=null): string {
     $header = "/index.php";
     $params_string = "";
 
@@ -11,6 +10,12 @@ function redirect_location($query=null, $params=null) : void
             $params_string .= "&$param=$value";
         }
     }
+    return $header.$params_string;
+}
 
-    header("Location:$header$params_string");
+function redirectLocation($query=null, $params=null) : void
+{
+    $url = buildUrl($query, $params);
+
+    header("Location:$url");
 }
