@@ -23,8 +23,6 @@
 
 <body>
 <?php include_once(__DIR__ . '/header.php') ?>
-<p id="user_type" hidden><?php echo $_SESSION['user_type'] ?></p>
-<p id="view_mode" hidden><?php echo $_SESSION['view_mode'] ?></p>
 <?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]) && !empty($cleaned_problem_route)) { ?>
     <p id="folder_route" hidden><?php echo $cleaned_problem_route ?></p>
 <?php } else if (!empty($cleaned_user_solution_route)) { ?>

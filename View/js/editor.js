@@ -9,6 +9,8 @@ let editing = 0;
 let problemId;
 let studentMenuClosed = true;
 let userType;
+let containerPort;
+
 
 $(document).ready(function () {
     if (ace === undefined) {
@@ -45,8 +47,17 @@ $(document).ready(function () {
     folderRoute = document.getElementById("folder_route").innerText;
     openFolder(folderRoute);
 
+    // Get the session data
+    $.ajax({
+        url: "/Model/getUserSession.php",
+        async: false,
+        success: function (response) {
+            let json = JSON.parse(response);
+            userType = json['userType'];
+            containerPort = json['containerPort'];
+        }
+    })
     // Set the auto check options depending on the user and his actions
-    userType = document.getElementById("user_type").innerText;
     // User type 1 is student and 0 professor
     if (userType === "1") {
         setInterval(checkChanges, 3000);
@@ -123,14 +134,22 @@ function setSolutionEditingFalse() {
     })
 }
 
+function rmJupyterDocker() {
+    $.ajax({
+        url: "/Controller/removeJupyterDocker.php"
+    })
+}
+
 $(window).on('beforeunload', function () {
     //this will work only for Chrome
     setSolutionEditingFalse();
+    rmJupyterDocker();
 });
 
 $(window).on("unload", function () {
     //this will work for other browsers
     setSolutionEditingFalse();
+    rmJupyterDocker();
 });
 
 function post(url, data, callback) {
@@ -252,8 +271,8 @@ function openFile(fileName) {
             outputContainer.style.display = "none";
             // Create a new iframe with the src of the file and append it to its container
             let iframe = document.createElement("iframe");
-            let fileLocation = fileName.split("/").slice(-3).join("/");
-            iframe.setAttribute("src", `http://localhost:8888/tree/${fileLocation}`);
+            let fileLocation = fileName.split("/").slice(-2).join("/");
+            iframe.setAttribute("src", `http://localhost:${containerPort}/tree/${fileLocation}`);
             iframe.setAttribute("height", "500px");
             iframe.setAttribute("width", "100%");
             notebookContainer.appendChild(iframe);

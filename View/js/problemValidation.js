@@ -34,6 +34,11 @@ $(document).ready(function () {
             .appendTo(this);
         return true;
     })
+
+    // Set the value of the selector
+    let languageSelector = $("#language");
+    let programingLanguage = languageSelector.attr('value');
+    languageSelector.val(programingLanguage).change();
 })
 
 function validateProblem() {

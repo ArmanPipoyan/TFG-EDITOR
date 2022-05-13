@@ -43,7 +43,7 @@ foreach ($classified_subjects as $group => $items) {
                 'href' => buildUrl(VIEW_SESSION_LIST, array('subject'=>$itemId)),
                 'classes' => '', 'image' => 'session', 'alt' => 'Sessions actives');
         }
-        if ($_SESSION['user_type'] == PROFESSOR) {
+        if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
             $groupItem['buttons'][] = array('type' => 'a',
                 'href' => buildUrl(VIEW_SESSION_FORM, array('subject'=>$itemId)),
                 'classes' => 'add-object', 'image' => 'session', 'alt' => 'Crear sessió');

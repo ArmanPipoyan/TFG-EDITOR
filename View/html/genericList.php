@@ -9,8 +9,8 @@
         <link rel="stylesheet" href="/View/css/external/bootstrap.min.css">
         <link rel="stylesheet" href="/View/css/external/bootstrap-toggle.min.css">
         <link rel="stylesheet" href="/View/css/external/all.css">
-        <link rel="stylesheet" href="/View/css/forms.css"/>
         <link rel="stylesheet" href="/View/css/style.css"/>
+        <link rel="stylesheet" href="/View/css/forms.css"/>
     
         <script src="/View/js/external/jquery.min.js"></script>
         <script src="/View/js/external/popper.min.js"></script>

@@ -12,7 +12,8 @@ $formPage['fields'] = [
         'options' => [ array('id' => 'Public', 'title' => 'Públic'), array('id' => 'Private', 'title' => 'Privat')],
         'required' => 'required'),
     array('type' => 'selector', 'id' => 'language', 'placeholder' => 'Llenguatge de programació',
-        'options' => [ array('id' => 'C++', 'title' => 'C++'), array('id' => 'Python', 'title' => 'Python')],
+        'options' => [ array('id' => 'C++', 'title' => 'C++'), array('id' => 'Python', 'title' => 'Python'),
+            array('id' => 'Notebook', 'title' => 'Notebook')],
         'required' => 'required'),
 ];
 $formPage['submitText'] = 'Crear';

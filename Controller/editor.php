@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . "/../Model/connection.php";
 include_once __DIR__ . "/../Model/redirectionUtils.php";
+include_once __DIR__ . "/../Model/dockerUtils.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/constants.php";
 
@@ -87,5 +88,11 @@ if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
 }
 
 $solution = getSolution($problem_id, $_SESSION['mail']);
+
+if ($problem['language'] == 'Notebook') {
+    $containerData = runJupyterDocker($_SESSION['email']);
+    $_SESSION['containerId'] = $containerData['containerId'];
+    $_SESSION['containerPort'] = $containerData['containerPort'];
+}
 
 include_once __DIR__ . "/../View/html/editor.php";
