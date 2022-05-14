@@ -10,6 +10,11 @@ if (!isset($_GET["problem"])) {
     redirectLocation();
 }
 $problem_id = $_GET["problem"];
+$problem = getProblemWithId($problem_id);
+// If a student is trying to access a private problem send him to the front page
+if ($problem['visibility'] === 'Private' && isset($_SESSION['user_type']) && $_SESSION['user_type'] === STUDENT) {
+    redirectLocation();
+}
 
 // Get the session id if it's set
 $session_id = null;
@@ -35,7 +40,6 @@ if (isset($_GET["view-mode"]) && isset($_GET["user"])) {
 }
 
 # Get the problem files from the machine
-$problem = getProblemWithId($problem_id);
 $subject = $problem["subject_id"];
 $problem_route = $problem["route"];
 $cleaned_problem_route = str_replace('\\', '/', realpath(__DIR__ . $problem_route));
