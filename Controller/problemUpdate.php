@@ -15,4 +15,8 @@ $problemId = $_POST["problem"];
 updateProblem(problem_id: $problemId,description: $description, max_memory_usage: $max_memory_usage,
     max_execution_time: $max_execution_time, programming_language:$programming_language);
 
-redirectLocation(VIEW_PROBLEM_EDIT, array('problem' => $problemId));
+$problem = getProblemWithId($problemId);
+
+redirectLocation(VIEW_PROBLEMS_LIST,
+    array('subject' => $problem['subject_id'],
+        'updated' => $problemId));

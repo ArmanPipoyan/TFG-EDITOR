@@ -19,9 +19,9 @@ function problemTitleExists($title): bool
 }
 
 function createProblem($route, $title, $description, $max_memory_usage, $visibility, $max_execution_time,
-                       $language, $subject) : bool
+                       $language, $subject) : int
 {
-    $created = false;
+    $problemId = -1;
     try {
         $connection = connectDB();
 
@@ -37,29 +37,10 @@ function createProblem($route, $title, $description, $max_memory_usage, $visibil
             ":max_execution_time" => $max_execution_time, ":programming_language" => $language, ":subject" => $subject)
         );
 
+        $problemId = $connection->lastInsertId();
         $connection = null;
-        $created = true;
     } catch (Exception $e) {
         echo "Error creating the problem: " . $e->getMessage();
     }
-    return $created;
-}
-
-function createSubject($title, $description, $course) : bool
-{
-    $created = false;
-    try {
-        $connection = connectDB();
-
-        $statement = $connection->prepare(
-            "INSERT INTO subject (title, description, course) VALUES (:title, :description,:course)"
-        );
-        $statement->execute(array(":title" => $title, ":description" => $description, ":course" => $course));
-
-        $connection = null;
-        $created = true;
-    } catch (Exception $e) {
-        echo "Error creating the subject: " . $e->getMessage();
-    }
-    return $created;
+    return $problemId;
 }

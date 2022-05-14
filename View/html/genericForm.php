@@ -24,7 +24,7 @@
         <?php } ?>
     </head>
 
-    <body class="d-flex flex-column min-vh-100" <?php echo $_SESSION['theme'] ?>>
+    <body class="d-flex flex-column min-vh-100 <?php echo $_SESSION['theme'] ?>">
     <?php include_once(__DIR__ . '/header.php') ?>
 
     <div class="container form-container">

@@ -39,6 +39,13 @@ if (isset($_GET["view-mode"]) && isset($_GET["user"])) {
     }
 }
 
+// Start a new jupyter container for the user if it's needed
+if ($problem['language'] == 'Notebook') {
+    $containerData = runJupyterDocker($_SESSION['email']);
+    $_SESSION['containerId'] = $containerData['containerId'];
+    $_SESSION['containerPort'] = $containerData['containerPort'];
+}
+
 # Get the problem files from the machine
 $subject = $problem["subject_id"];
 $problem_route = $problem["route"];
@@ -87,16 +94,14 @@ if (!file_exists(__DIR__ . $user_solution_route)) {
 
 $cleaned_user_solution_route = str_replace('\\', '/', realpath(__DIR__ . $user_solution_route));
 
+// If the professor is editing the root, set the route as the problem route
+$folder_route = ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]))?
+    $cleaned_problem_route: $cleaned_user_solution_route;
+
 if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
     $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
 }
 
-$solution = getSolution($problem_id, $_SESSION['mail']);
-
-if ($problem['language'] == 'Notebook') {
-    $containerData = runJupyterDocker($_SESSION['email']);
-    $_SESSION['containerId'] = $containerData['containerId'];
-    $_SESSION['containerPort'] = $containerData['containerPort'];
-}
+$solution = getSolution($problem_id, $_SESSION['email']);
 
 include_once __DIR__ . "/../View/html/editor.php";

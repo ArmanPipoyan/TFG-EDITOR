@@ -18,8 +18,9 @@ if ($_SESSION['user_type'] == PROFESSOR) {
     ];
 }
 
-if (isset($_GET['err'])) {
-    $listPage['errorMessage'] = "Inicia sessió o registra't";
+if (isset($_GET['error'])) {
+    $listPage['errorMessage'] = $_SESSION['error'];
+    unset($_SESSION['error']);
 }
 
 // Classify the items and create a list for each element of the list
@@ -30,8 +31,16 @@ foreach ($problems as $problem) {
     }
 
     $problemId = $problem['id'];
+    $problemTitle = $problem['title'];
+
+    if (isset($_GET['updated']) && $problemId === intval($_GET['updated'])) {
+        $listPage['infoMessage'] = "Problema '$problemTitle' actualitzat.";
+    } else if (isset($_GET['created']) && $problemId === intval($_GET['created'])) {
+        $listPage['infoMessage'] = "Problema '$problemTitle' creat.";
+    }
+
     $item = array('id' => $problemId, 'href' => buildUrl(VIEW_EDITOR, array('problem' => $problemId)),
-        'title' => $problem['title']);
+        'title' => $problemTitle);
     if ($_SESSION['user_type'] === PROFESSOR) {
         $item['buttons'][] = array('type' => 'a',
             'href' => buildUrl(VIEW_PROBLEM_EDIT, array('problem' => $problemId)),

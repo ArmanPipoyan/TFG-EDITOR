@@ -63,12 +63,19 @@
         </div>
     <?php } ?>
 
-    <body class="d-flex flex-column min-vh-100" <?php echo $_SESSION['theme'] ?>>
+    <body class="d-flex flex-column min-vh-100 <?php echo $_SESSION['theme'] ?>">
         <?php include_once(__DIR__ . "/header.php") ?>
 
         <div class="container">
             <?php if (isset($listPage['errorMessage'])) { ?>
-                <p class="alert alert-danger" id="error_msg"> <?php echo $listPage['errorMessage'] ?>
+                <p class="alert alert-danger" id="error_msg">
+                    <?php echo $listPage['errorMessage'] ?>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </p>
+            <?php } ?>
+            <?php if (isset($listPage['infoMessage'])) { ?>
+                <p class="alert alert-success" id="info_msg">
+                    <?php echo $listPage['infoMessage'] ?>
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                 </p>
             <?php } ?>
@@ -86,10 +93,10 @@
             </div>
 
             <?php if (isset($listPage['groups'])) {
-                foreach ($listPage['groups'] as $group) { ?>
-                    <button class="collapsible"><h5><?php echo $group['name'] ?></h5></button>
+                foreach ($listPage['groups'] as $group => $items) { ?>
+                    <button class="collapsible"><h5><?php echo $group ?></h5></button>
                     <div class="content">
-                        <?php foreach ($group['items'] as $item) {
+                        <?php foreach ($items as $item) {
                             generateListItem($item);
                         } ?>
                     </div>

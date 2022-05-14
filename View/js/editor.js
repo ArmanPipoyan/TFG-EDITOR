@@ -20,10 +20,20 @@ $(document).ready(function () {
     editor = ace.edit("editor", {
         enableBasicAutocompletion: true,
         enableSnippets: true,
-        enableLiveAutocompletion: false
+        enableLiveAutocompletion: false,
     });
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/c_cpp");
+    editor.setFontSize(16);
+
+    const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type !== "attributes" || mutation.attributeName !== "class") {
+                return
+            }
+            let theme = document.body.classList.contains('dark-theme')? 'one_dark': 'chrome';
+            editor.setTheme(`ace/theme/${theme}`);
+        }
+    });
+    observer.observe(document.body, { attributes: true });
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -119,6 +129,12 @@ $(document).ready(function () {
             .attr("value", uploadFiles)
             .appendTo(this);
         return true;
+    });
+
+    // Set the to delete file when clicking the delete file cross
+    $('#delete_file_modal').on('show.bs.modal', function (e) {
+        let invoker = $(e.relatedTarget);
+        toDeleteFileRoute = invoker.attr('name');
     });
 });
 
@@ -218,7 +234,7 @@ function executeCode() {
     let text = editor.getSession().getValue();
     let answer = document.getElementById("answer");
     if (text.includes("import os") || text.includes("import sys")) {
-        document.getElementById("error_msg_libraries").classList.remove('hide');
+        document.getElementById("error_msg_libraries").toggleAttribute('hidden');
         return false;
     }
     let currentDocumentName = currentDocumentPath.split('/').pop();
@@ -300,12 +316,14 @@ function openFolder() {
         // Open the first file of the folder's available files
         let container = document.querySelector('#files');
         let matches = container.querySelectorAll('ul > li');
-        openFile(matches[0].id);
+        if (matches.length !== 0) {
+            openFile(matches[0].id);
+        }
     });
 }
 
 function newFile(edited, problem) {
-    let filename = prompt("Enter the file/folder name");
+    let filename = prompt("Nom del fitxer");
     if (filename) {
         post("newFile.php", {filename, dir: encodeURIComponent(folderRoute), edited, problem}, function (data) {
             if (data === true) {
@@ -335,10 +353,6 @@ function save() {
             }
         }
     })
-}
-
-function setFileToDelete(fileRoute) {
-    toDeleteFileRoute = fileRoute;
 }
 
 function deleteFile() {

@@ -13,7 +13,7 @@ if (isset($_SESSION["email"])) {
 } else {
     # If the user is anonymous he can only log in or register
     if (!in_array($query, ANONYMOUS_USER_VIEWS)) {
-        header("Location:/index.php?err=1");
+        header("Location:/index.php?error=1");
     }
 }
 
@@ -29,12 +29,6 @@ switch ($query) {
         break;
     case VIEW_PROBLEM_CREATE:
         include __DIR__ . "/Controller/forms/problemNewDiskForm.php";
-        break;
-    case VIEW_PROBLEM_CREATED:
-        include __DIR__ . "/View/html/problemCreationSuccessful.php";   // TODO
-        break;
-    case VIEW_PROBLEM_ERROR_CREATING:
-        include __DIR__ . "/View/html/problemCreationError.php";   // TODO
         break;
     case VIEW_EDITOR:
         include __DIR__ . "/Controller/editor.php";  // TODO

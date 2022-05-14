@@ -11,7 +11,7 @@
                           name="<?php echo $formField['id'] ?>" type="text" rows="<?php echo $formField['rows'] ?>"
                           <?php echo $formField['required'] ?> placeholder=" "><?php echo $formField['value'] ?></textarea>
             <?php } else if($formField['type'] === "selector") { ?>
-                <select id="<?php echo $formField['id'] ?>" class="input" name="<?php echo $formField['id'] ?>"
+                <select id="<?php echo $formField['id'] ?>" class="input" name="<?php echo $formField['name'] ?>"
                     <?php echo $formField['required'] ?>
                     <?php echo $formField['multiple']? 'multiple='.$formField['multiple']: "" ?>
                     <?php echo $formField['value']? 'value='.$formField['value']: "" ?>>

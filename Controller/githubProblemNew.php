@@ -23,13 +23,12 @@ if (!isset($_SESSION['access_token'])) {
 
 // Collect the data of the form
 $lookupArray = isset($_SESSION['repo_link'])? $_SESSION: $_POST;
-
 $repoLink = $lookupArray['repo_link'];
 $maxExecutionTime = $lookupArray['max_execution_time'];
 $maxMemoryUsage = $lookupArray['max_memory_usage'];
 $visibility = $lookupArray['visibility'];
 $language = $lookupArray['language'];
-$subject = $lookupArray['subject'];
+$subjectId = $lookupArray['subject'];
 
 // Clear the session variables
 if ($lookupArray == $_SESSION) {
@@ -46,11 +45,11 @@ try {
     $returnedData = downloadDirectoryFromGithub(client: $client, repoLink: $repoLink);
 } catch (GitHubFileDoesNotExist | SpecifiedUrlNotADirectory | DirectoryAlreadyExists $e){
     $_SESSION['error'] = $e->getMessage();
-    redirectLocation(query: VIEW_PROBLEM_ERROR_CREATING);
+    redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'error' => 1));
     return;
 } catch (Exception $e){
     $_SESSION['error'] = "Error desconegut";
-    redirectLocation(query: VIEW_PROBLEM_ERROR_CREATING);
+    redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'error' => 1));
     return;
 }
 
@@ -58,7 +57,7 @@ $route = $returnedData['route'];
 $title = $returnedData['title'];
 $description = $returnedData['description'];
 
-createProblem(route: $route, title: $title, description:$description, max_memory_usage: $maxMemoryUsage,
-    visibility:$visibility, max_execution_time: $maxExecutionTime, language: $language, subject: $subject);
+$problemId = createProblem(route: $route, title: $title, description:$description, max_memory_usage: $maxMemoryUsage,
+    visibility:$visibility, max_execution_time: $maxExecutionTime, language: $language, subject: $subjectId);
 
-redirectLocation(query: VIEW_PROBLEM_CREATED);
+redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'created' => $problemId));

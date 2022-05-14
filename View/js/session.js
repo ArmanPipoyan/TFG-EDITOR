@@ -1,19 +1,18 @@
 let toCloneSession;
+let alreadyCalled = 0;
 
 $(document).ready(function () {
-    $('form').on('submit', function () {
+    $('form').one('submit', function () {
         let name = document.getElementById("name").value;
-        let subject = document.getElementById("subject").value;
-        let problems = document.getElementById("problems");
+        let problems = document.getElementById("multiple-checkboxes");
         problems = $(problems).val();
         let error = document.getElementById("error_msg");
 
-        if (name === "" || subject === "" || problems.length === 0) {
+        if (name === "" || problems.length === 0) {
             error.classList.remove('hide');
             error.innerHTML = "Hi ha camps buits.";
             return false;
         }
-        this.next.disabled = true;
 
         // Add the subject field to the form
         const queryString = window.location.search;
@@ -42,14 +41,15 @@ function deleteSession(sessionId) {
         },
         success: function () {
             location.reload();
-        },
-        fail: function (response) {
-            console.log(response);
         }
     })
 }
 
 function duplicateSession() {
+    if (alreadyCalled === 1) {
+        return;
+    }
+    alreadyCalled = 1;
     let session_name = document.getElementById("new_session_name").value;
     if (session_name !== "") {
         $.ajax({

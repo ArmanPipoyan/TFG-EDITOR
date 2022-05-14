@@ -192,7 +192,7 @@
     column-gap: 10px;
 }
 
-#error_msg {
+#error_msg, #info_msg {
     border-radius: 20px;
 }
 
