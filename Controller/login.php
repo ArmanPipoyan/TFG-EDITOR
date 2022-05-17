@@ -8,13 +8,14 @@ include_once __DIR__ . "/../Model/login.php";
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-$logged_in = logInStudent($email, $password);
+$loggedIn = logInStudent($email, $password);
 
-if (!$logged_in) {
-    $logged_in = logInProfessor($email, $password);
-    if (!$logged_in) {
-        echo "Not logged in";
+if (!$loggedIn) {
+    $loggedIn = logInProfessor($email, $password);
+    if (!$loggedIn) {
+        redirectLocation(VIEW_LOGIN_FORM, array('error' => '1'));
+        return;
     }
 }
 
-redirect_location();
+redirectLocation();

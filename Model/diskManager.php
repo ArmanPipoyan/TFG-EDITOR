@@ -2,8 +2,12 @@
 include_once __DIR__ . '/exceptions.php';
 include_once __DIR__ . '/constants.php';
 
-function createProblemDirectory(string $directoryName): string {
-    $directory = "./../app/problemes/$directoryName";
+function createProblemDirectory(int $subjectId, string $directoryName): string {
+    $subjectDirectory = "./../app/problemes/$subjectId";
+    $directory = "$subjectDirectory/$directoryName";
+    if (!file_exists($subjectDirectory)) {
+        mkdir($subjectDirectory);
+    }
     if (file_exists($directory)) {
         throw new DirectoryAlreadyExists($directory);
     }

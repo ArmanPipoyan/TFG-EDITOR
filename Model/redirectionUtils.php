@@ -1,16 +1,23 @@
 <?php
 
-function redirect_location($query=null, $params=null) : void
+function buildUrl($query=null, $params=null) : string
 {
     $header = "/index.php";
-    $params_string = "";
+
+    $params = empty($params)? [] : $params;
 
     if (!empty($query)) {
-        $params_string = "?query=$query";
-        foreach ($params as $param => $value) {
-            $params_string .= "&$param=$value";
-        }
+        $params = array_merge(array('query' => $query), $params);
     }
+    $paramsString = '?' . http_build_query($params);
+    $paramsString = $paramsString === '?'? '' : $paramsString;
 
-    header("Location:$header$params_string");
+    return "$header$paramsString";
+}
+
+function redirectLocation($query=null, $params=null) : void
+{
+    $url = buildUrl($query, $params);
+
+    header("Location:$url");
 }

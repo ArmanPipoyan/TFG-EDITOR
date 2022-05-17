@@ -14,4 +14,3 @@ $statement->execute(array(":route" => $route));
 $solution = $statement->fetch(PDO::FETCH_ASSOC);
 
 $connection = null;
-return;

@@ -1,3 +1,46 @@
+$(document).ready(function () {
+    $('.custom-file-input').on('change', function(){
+        let names = [];
+        let files = $(this).get(0).files;
+        for (let i = 0; i < files.length; ++i) {
+            names.push(files[i].name);
+        }
+
+        let fieldValue;
+        if (names.length === 0) {
+            fieldValue = 'Selecciona fitxers';
+        } else if (names.length < 4) {
+            fieldValue = names.join(", ");
+        } else {
+            fieldValue = `${names.length} seleccionats.`;
+        }
+
+        $(this).siblings('label').text(fieldValue);
+    })
+
+    $('form').on('submit', function () {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let subjectId = urlParams.get('subject');
+        let problemId = urlParams.get('problem');
+
+        $("<input />").attr("type", "hidden")
+            .attr("name", "subject")
+            .attr("value", subjectId)
+            .appendTo(this);
+        $("<input />").attr("type", "hidden")
+            .attr("name", "problem")
+            .attr("value", problemId)
+            .appendTo(this);
+        return true;
+    })
+
+    // Set the value of the selector
+    let languageSelector = $("#language");
+    let programingLanguage = languageSelector.attr('value');
+    languageSelector.val(programingLanguage).change();
+})
+
 function validateProblem() {
     let title_element = document.getElementById("title");
     // Initial value set to the title to avoid the validation error when edition the problem
@@ -9,15 +52,21 @@ function validateProblem() {
     let error = document.getElementById("error_msg");
 
     if (title === "" || description === "") {
-        error.classList.remove('hide');
+        if ($(error).is(':hidden')) {
+            error.toggleAttribute('hidden');
+        }
         error.innerHTML = "Hi ha camps buits";
         return false;
     } else if (title.length < 3 || title.length > 80) {
-        error.classList.remove('hide');
+        if ($(error).is(':hidden')) {
+            error.toggleAttribute('hidden');
+        }
         error.innerHTML = "Títol massa curt";
         return false;
     } else if (description.length < 3) {
-        error.classList.remove('hide');
+        if ($(error).is(':hidden')) {
+            error.toggleAttribute('hidden');
+        }
         error.innerHTML = "Descripció massa curta";
         return false;
     }
@@ -30,23 +79,27 @@ function validateProblemAndFiles() {
     }
 
     let error = document.getElementById("error_msg");
-    let customFile = document.getElementById("customFile");
+    let customFile = document.getElementById("file");
     let fileLength = customFile.files.length;
     if (fileLength === 0) {
-        error.classList.remove('hide');
+        if ($(error).is(':hidden')) {
+            error.toggleAttribute('hidden');
+        }
         error.innerHTML = "Selecciona els arxius del problema";
         return false;
     }
 
     // Check if all the files extensions ar allowed
-    let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt)$/i;
+    let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt|\.ipynb)$/i;
     for (let i = 0; i < customFile.files.length; i++) {
         let fileName = customFile.files[i].name;
         let fileExt = fileName.substr(fileName.lastIndexOf('.'));
 
         if (!allowedExtensionsRegx.test(fileExt)) {
-            error.classList.remove('hide');
-            error.innerHTML = "La extensió del fitxer " + fileName + " és incorrecte.";
+            if ($(error).is(':hidden')) {
+                error.toggleAttribute('hidden');
+            }
+            error.innerHTML = `La extensió del fitxer ${fileName} és incorrecte.`;
             return false;
         }
     }

@@ -49,4 +49,4 @@ try{
 }
 $redirectParams[$operation] = $operationCompleted;
 
-redirect_location(VIEW_EDITOR, $redirectParams);
+redirectLocation(VIEW_EDITOR, $redirectParams);

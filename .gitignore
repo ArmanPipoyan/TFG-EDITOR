@@ -1,5 +1,6 @@
 ace-builds-master/
 .vs/
 .idea/
-View/js/lib/
-app/temp/
+app/solucions
+app/problemes
+vendor/

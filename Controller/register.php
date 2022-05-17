@@ -21,7 +21,7 @@ if($taken) {
     if (isset($_POST["token"])) {
         $params += ["token" => $_POST["token"]];
     }
-    redirect_location(query: VIEW_REGISTER_FORM, params: $params);
+    redirectLocation(query: VIEW_REGISTER_FORM, params: $params);
 }
 
 $student = 1;
@@ -30,7 +30,7 @@ if (isset($_POST["token"])) {
     $token_marked = setTokenUsed($token);
 
     if (!$token_marked) {
-        redirect_location(query: VIEW_REGISTER_FORM, params: array("error" => 2));
+        redirectLocation(query: VIEW_REGISTER_FORM, params: array("error" => 2));
     }
 
     $registered = registerProfessor($name, $surname, $email, $hash_password);
@@ -42,4 +42,4 @@ if (!$registered) {
     return;
 }
 
-redirect_location();
+redirectLocation();

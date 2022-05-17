@@ -1,17 +1,19 @@
 let editor;
-let current_document_path = "";
-let current_document_name = "";
-let programming_language;
-let folder_route;
+let currentDocumentPath = "";
+let programmingLanguage;
+let folderRoute;
 let checkChangesInterval;
 let readOnly = false;
-let rutaArchivoBorrar;
+let toDeleteFileRoute;
 let editing = 0;
-let problem_id;
+let problemId;
 let studentMenuClosed = true;
 let userType;
+let viewMode = null;
+let containerPort;
 
-window.onload = function () {
+
+$(document).ready(function () {
     if (ace === undefined) {
         return false;
     }
@@ -19,19 +21,25 @@ window.onload = function () {
     editor = ace.edit("editor", {
         enableBasicAutocompletion: true,
         enableSnippets: true,
-        enableLiveAutocompletion: false
+        enableLiveAutocompletion: false,
     });
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/c_cpp");
+    editor.setFontSize(16);
+
+    const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type !== "attributes" || mutation.attributeName !== "class") {
+                return
+            }
+            let theme = document.body.classList.contains('dark-theme')? 'one_dark': 'chrome';
+            editor.setTheme(`ace/theme/${theme}`);
+        }
+    });
+    observer.observe(document.body, { attributes: true });
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    problem_id = urlParams.get('problem');
-
-    const editInGet = urlParams.get('edit');
-    if (editInGet !== null) {
-        editing = 1;
-    }
+    problemId = urlParams.get('problem');
+    editing = (urlParams.get('edit') !== null);
 
     let keys = {};
     window.addEventListener("keydown", function (event) {
@@ -43,55 +51,41 @@ window.onload = function () {
     });
 
     // Load the files from the disk
-    folder_route = document.getElementById("folder_route").innerText;
-    openFolder(folder_route);
+    folderRoute = document.getElementById("folder_route").innerText;
+    openFolder(folderRoute);
 
-    // Add event listener to the description collapsible
-    let collapsible = document.getElementsByClassName("collapsible");
-    for (let i = 0; i < collapsible.length; i++) {
-        collapsible[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            let content = this.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
-        });
-    }
-
+    // Get the session data
+    $.ajax({
+        url: "/Model/getUserSession.php",
+        async: false,
+        success: function (response) {
+            let json = JSON.parse(response);
+            userType = json['userType'];
+            containerPort = json['containerPort'];
+        }
+    })
     // Set the auto check options depending on the user and his actions
-    userType = document.getElementById("user_type").innerText;
     // User type 1 is student and 0 professor
-    if (userType === "1") {
+    if (userType === 1) {
         setInterval(checkChanges, 3000);
-    } else if (userType === "0") {
-        let viewMode = document.getElementById("view_mode");
+    } else if (userType === 0) {
+        viewMode = urlParams.get('view-mode');
         // View mode 1 is edit mode and 2 read only
-        if (viewMode) {
-            let viewModeValue = viewMode.innerText;
-            if (viewModeValue === "1") {
-                setInterval(save, 4000);
-            } else if (viewModeValue === "2") {
-                editor.setReadOnly(true);
-            }
+        if (viewMode === "1") {
+            setInterval(save, 4000);
+        } else if (viewMode === "2") {
+            editor.setReadOnly(true);
         }
     }
 
     // Set the programming language
     let language = document.getElementById("programming_language").innerText;
     if (language === 'C++') {
-        programming_language = "cpp";
+        programmingLanguage = "cpp";
         editor.session.setMode("ace/mode/c_cpp");
     } else if (language === 'Python') {
-        programming_language = "python";
+        programmingLanguage = "python";
         editor.session.setMode("ace/mode/python");
-    }
-
-    // Set the right menu onclick event
-    let rightMenu = document.getElementById("menu-button");
-    if (rightMenu) {
-        rightMenu.addEventListener("click", openCloseStudentMenu);
     }
 
     // Customize the form modal depending on the button opening it
@@ -112,11 +106,11 @@ window.onload = function () {
         save();
         $("<input />").attr("type", "hidden")
             .attr("name", "solution_path")
-            .attr("value", folder_route)
+            .attr("value", folderRoute)
             .appendTo(this);
         $("<input />").attr("type", "hidden")
             .attr("name", "problem_id")
-            .attr("value", problem_id)
+            .attr("value", problemId)
             .appendTo(this);
         let uploadFiles = $('#github-form-submit-input').attr('value') === "Pujar";
         $("<input />").attr("type", "hidden")
@@ -125,7 +119,30 @@ window.onload = function () {
             .appendTo(this);
         return true;
     });
-}
+
+    // Set the to delete file when clicking the delete file cross
+    $('#delete_file_modal').on('show.bs.modal', function (e) {
+        let invoker = $(e.relatedTarget);
+        toDeleteFileRoute = invoker.attr('name');
+    });
+
+    if ('onbeforeunload' in window) {
+        window.addEventListener('beforeunload', exitFunction, false);
+    } else if ('onpagehide' in window) {
+        window.addEventListener('pagehide', exitFunction, false);
+    } else {
+        window.addEventListener('unload', exitFunction, false);
+    }
+
+    $('#show-description').on('click', function () {
+        let content = $(this).siblings('.content')[0];
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    })
+});
 
 function setSolutionEditingFalse() {
     // Set the solution's editing field as false before leaving the page
@@ -133,21 +150,22 @@ function setSolutionEditingFalse() {
         url: "/Model/solutionSetEditingFalse.php",
         method: "POST",
         data: {
-            folder: folder_route,
+            folder: folderRoute,
             user_type: userType
         }
     })
 }
 
-$(window).on('beforeunload', function () {
-    //this will work only for Chrome
-    setSolutionEditingFalse();
-});
+function rmJupyterDocker() {
+    $.ajax({
+        url: "/Controller/removeJupyterDocker.php",
+    })
+}
 
-$(window).on("unload", function () {
-    //this will work for other browsers
+function exitFunction () {
     setSolutionEditingFalse();
-});
+    rmJupyterDocker();
+}
 
 function post(url, data, callback) {
     let xhr = new XMLHttpRequest();
@@ -171,18 +189,9 @@ function post(url, data, callback) {
     xhr.send(encodeURI(data));
 }
 
-function openCloseStudentMenu() {
-    let displayValue = 'block';
-    if (!studentMenuClosed) {
-        displayValue = 'none';
-    }
-    document.getElementById("student-menu").style.setProperty('display', displayValue);
-    studentMenuClosed = !studentMenuClosed;
-}
-
 function openFiler() {
-    if (current_document_path !== "") {
-        openFile(current_document_path);
+    if (currentDocumentPath !== "") {
+        openFile(currentDocumentPath);
     }
 }
 
@@ -191,7 +200,7 @@ function checkChanges() {
         url: "/Model/checkStudent.php",
         method: "POST",
         data: {
-            route: folder_route,
+            route: folderRoute,
         },
         success: function (response) {
             // Check if the professor is editing the solution
@@ -215,21 +224,22 @@ function executeCode() {
     let text = editor.getSession().getValue();
     let answer = document.getElementById("answer");
     if (text.includes("import os") || text.includes("import sys")) {
-        document.getElementById("error_msg_libraries").classList.remove('hide');
+        document.getElementById("error_msg_libraries").toggleAttribute('hidden');
         return false;
     }
-    if (current_document_name === "") {
-        $(".output").text("Selecciona el fitxer per executar");
+    let currentDocumentName = currentDocumentPath.split('/').pop();
+    if (currentDocumentName === "") {
+        $("#output").text("Selecciona el fitxer per executar");
         return false;
     }
     $.ajax({
         url: "/app/compiler.php",
         method: "POST",
         data: {
-            language: programming_language,
+            language: programmingLanguage,
             code: editor.getSession().getValue(),
-            route: folder_route,
-            file_to_execute: current_document_name
+            route: folderRoute,
+            file_to_execute: currentDocumentName
         },
         success: function (response) {
             answer.innerHTML = response;
@@ -238,48 +248,81 @@ function executeCode() {
 }
 
 function openFile(fileName) {
-    if (fileName !== "" && fileName !== current_document_path) {
-        post("getFileContent.php", {file: encodeURIComponent(fileName)}, function (data) {
-            // Set the previous file as not selected, the first time it will be ""
-            if (current_document_path !== "") {
-                save();
-                document.getElementById(current_document_path).style.color = 'black';
-                document.getElementById(current_document_path).style.fontWeight = 'normal';
-            }
-            current_document_path = fileName;
-            // Set the new file as selected
-            document.getElementById(current_document_path).style.color = 'grey';
-            document.getElementById(current_document_path).style.fontWeight = 'bold';
-            current_document_name = current_document_path.split('/').pop();
+    if (fileName !== "" && fileName !== currentDocumentPath) {
+        // Set the previous file as not selected, the first time it will be ""
+        if (currentDocumentPath !== "") {
+            save();
+            document.getElementById(currentDocumentPath).style.color = 'black';
+            document.getElementById(currentDocumentPath).style.fontWeight = 'normal';
+        }
+        currentDocumentPath = fileName;
+        // Set the new file as selected
+        document.getElementById(currentDocumentPath).style.color = 'grey';
+        document.getElementById(currentDocumentPath).style.fontWeight = 'bold';
 
-            let fileExtension = current_document_path.split('.').pop();
-            editor.setValue(data, -1);
+        let fileExtension = currentDocumentPath.split('.').pop();
+        // If the file is a notebook embed an iframe, otherwise get the file content from the backend
+        let notebookContainer = document.getElementById("notebook");
+        let editorContainer = document.getElementById("editor");
+        let outputContainer = document.getElementById("answer");
+        let executeButton = document.getElementById("execute");
+
+        // Clear the notebooks container
+        if (notebookContainer.hasChildNodes()) {
+            notebookContainer.removeChild(notebookContainer.lastElementChild);
+        }
+
+        if (fileExtension === 'ipynb') {
+            executeButton.setAttribute("hidden", "");
+            // Remove the editor and the output views
+            editorContainer.style.display = "none";
+            outputContainer.style.display = "none";
+            // Create a new iframe with the src of the file and append it to its container
+            let iframe = document.createElement("iframe");
+            let fileLocation = fileName.split("/").slice(-2).join("/");
+            iframe.setAttribute("src", `http://localhost:${containerPort}/tree/${fileLocation}`);
+            iframe.setAttribute("height", "800px");
+            iframe.setAttribute("width", "100%");
+            notebookContainer.appendChild(iframe);
+        } else {
+            executeButton.removeAttribute("hidden");
+            editorContainer.style.display = "block";
+            outputContainer.style.display = "block";
             if (fileExtension === "cpp") {
                 editor.session.setMode("ace/mode/c_cpp");
             } else {
                 editor.session.setMode("ace/mode/python");
             }
-        });
+            post("getFileContent.php", {file: encodeURIComponent(fileName)}, function (data) {
+                editor.setValue(data, -1);
+                // Clear undo history when changing a file
+                editor.session.setUndoManager(new ace.UndoManager());
+            });
+        }
     }
 }
 
 function openFolder() {
-    post("dir.php", {folder: encodeURIComponent(folder_route)}, function (data) {
+    post("dir.php", {folder: encodeURIComponent(folderRoute)}, function (data) {
         document.getElementById('files').innerHTML = data;
 
         // Open the first file of the folder's available files
         let container = document.querySelector('#files');
         let matches = container.querySelectorAll('ul > li');
-        openFile(matches[0].id);
+        if (matches.length !== 0) {
+            openFile(matches[0].id);
+        }
     });
 }
 
-function newFile(edited, problema) {
-    let filename = prompt("Enter the file/folder name");
+function newFile() {
+    let edited = (userType === 0 && editing === 1);
+
+    let filename = prompt("Nom del fitxer");
     if (filename) {
-        post("newFile.php", {filename, dir: encodeURIComponent(folder_route), edited, problema}, function (data) {
+        post("newFile.php", {filename, dir: encodeURIComponent(folderRoute), edited, problemId}, function (data) {
             if (data === true) {
-                openFolder(folder_route);
+                openFolder(folderRoute);
             }
         });
         location.reload();
@@ -287,17 +330,17 @@ function newFile(edited, problema) {
 }
 
 function save() {
-    if (current_document_path === undefined) {
+    if (currentDocumentPath === undefined || currentDocumentPath.split('.').pop() === "ipynb") {
         return false;
     }
     $.ajax({
         url: "/Model/save.php",
         method: "POST",
         data: {
-            file: current_document_path,
+            file: currentDocumentPath,
             code: editor.getSession().getValue(),
             editing: editing,
-            problem: problem_id,
+            problem: problemId,
         },
         success: function (response) {
             if (response === 'true') {
@@ -307,46 +350,52 @@ function save() {
     })
 }
 
-function setBorrarArchivo(rutaArchivo) {
-    rutaArchivoBorrar = rutaArchivo;
-}
-
-function deleteArchivo() {
+function deleteFile() {
     $.ajax({
         url: "/Model/fileDelete.php",
         method: "POST",
         data: {
-            id: rutaArchivoBorrar,
+            id: toDeleteFileRoute,
         },
-        success: function (response) {
+        success: function () {
             location.reload();
         }
     })
 }
 
-function recibirFichero() {
-    let control = document.getElementById('my_file')
+function receiveFile() {
+    let control = document.getElementById('new_file');
     control.click();
     control.onchange = function (event) {
         let fileList = control.files;
         if (fileList.length === 0) {
             return false;
         }
-        let filelength = control.files.length;
-        if (filelength === 0) {
+        let fileLength = control.files.length;
+        if (fileLength === 0) {
             alert("Selecciona els arxius del problema");
             return false;
         }
+        let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt|\.ipynb)$/i;
         for (let i = 0; i < control.files.length; i++) {
             let file = control.files[i];
             let FileName = file.name;
             let FileExt = FileName.substr(FileName.lastIndexOf('.'));
-            let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt)$/i;
             let isAllowed = allowedExtensionsRegx.test(FileExt);
             if (!isAllowed) {
                 return false;
             }
         }
+
+        // Set additional fields
+        $("<input />").attr("type", "hidden")
+            .attr("name", "root_edited")
+            .attr("value", editing)
+            .appendTo(this.form);
+        $("<input />").attr("type", "hidden")
+            .attr("name", "problem")
+            .attr("value", problemId)
+            .appendTo(this.form);
         this.form.submit();
     };
 }
