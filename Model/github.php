@@ -40,7 +40,7 @@ function createProblemFileWithoutException($route, $fileName, $fileContentBase64
     }
 }
 
-function downloadDirectoryFromGithub(Client $client, string $repoLink): array {
+function downloadDirectoryFromGithub(Client $client, string $repoLink, int $subjectId): array {
     // Retrieve the relevant information from the link
     $repositoryInformation = retrieveOwnerRepoAndPathFromLink($repoLink);
     $owner = $repositoryInformation['owner'];
@@ -52,7 +52,7 @@ function downloadDirectoryFromGithub(Client $client, string $repoLink): array {
         throw new SpecifiedUrlNotADirectory($path);
     }
 
-    $route = createProblemDirectory($path);
+    $route = createProblemDirectory($subjectId, $path);
 
     $returnData['description'] = "";
     foreach ($pathContent as $item) {

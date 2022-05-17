@@ -42,7 +42,7 @@ if ($lookupArray == $_SESSION) {
 
 try {
     $client = authClient();
-    $returnedData = downloadDirectoryFromGithub(client: $client, repoLink: $repoLink);
+    $returnedData = downloadDirectoryFromGithub(client: $client, repoLink: $repoLink, subjectId:$subjectId);
 } catch (GitHubFileDoesNotExist | SpecifiedUrlNotADirectory | DirectoryAlreadyExists $e){
     $_SESSION['error'] = $e->getMessage();
     redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'error' => 1));

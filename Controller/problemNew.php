@@ -12,7 +12,6 @@ $max_memory_usage = $_POST['max_memory_usage'];
 $max_execution_time = $_POST['max_execution_time'];
 $visibility = $_POST['visibility'];
 $language = $_POST['language'];
-$route = "./../app/problemes/" . $_POST['title'];
 $subjectId = $_POST['subject'];
 
 # If the title already exists redirect the user to the error view.
@@ -22,8 +21,11 @@ if (problemTitleExists($title)) {
     return;
 }
 
-$problemId = createProblem(route: $route, title: $title, description: $description, max_memory_usage: $max_memory_usage,
-    visibility: $visibility, max_execution_time: $max_execution_time, language: $language, subject: $subjectId);
+$subjectRoute = "./../app/problemes/$subjectId/"; 
+$problemRoute = $subjectRoute . $_POST['title'];
+$problemId = createProblem(route: $problemRoute, title: $title, description: $description,
+    max_memory_usage: $max_memory_usage, visibility: $visibility, max_execution_time: $max_execution_time,
+    language: $language, subject: $subjectId);
 
 # If any problem arises when creating the problem redirect the user to the error view
 if ($problemId === -1) {
@@ -32,11 +34,14 @@ if ($problemId === -1) {
     return;
 }
 
+if (!file_exists($problemRoute)) {
+    mkdir($subjectRoute);
+}
 # Create the folder of the problem, by default with 0777 permission
-mkdir($route);
+mkdir($problemRoute);
 
 try {
-    uploadFiles($route, $_FILES);
+    uploadFiles($problemRoute, $_FILES);
 } catch (WrongFileExtension | FileTooLarge $e) {
     $_SESSION['error'] = $e->getMessage();
     redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'error' => 1));

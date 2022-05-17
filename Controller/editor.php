@@ -5,7 +5,6 @@ include_once __DIR__ . "/../Model/dockerUtils.php";
 include_once __DIR__ . "/../Model/diskManager.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/constants.php";
-use Spatie\Async\Pool;
 
 
 # If only the query is set without indicating a problem return to the homepage
@@ -65,9 +64,14 @@ if (!file_exists(__DIR__ . $user_route) && !mkdir(__DIR__ . $user_route)) {
     echo 'Failed to create folder';
 }
 
+$user_subject_route = "$user_route/$subject";
+if (!file_exists(__DIR__ . $user_subject_route) && !mkdir(__DIR__ . $user_subject_route)) {
+    echo 'Failed to create folder';
+}
+
 # Create the folder of the problem if it doesn't already exist
 $problem_title = $problem["title"];
-$user_solution_route = "./../app/solucions/$email/$problem_title";
+$user_solution_route = "$user_subject_route/$problem_title";
 
 if (!file_exists(__DIR__ . $user_solution_route)) {
     if (!mkdir(__DIR__ . $user_solution_route)) {
