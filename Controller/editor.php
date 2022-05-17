@@ -2,11 +2,14 @@
 include_once __DIR__ . "/../Model/connection.php";
 include_once __DIR__ . "/../Model/redirectionUtils.php";
 include_once __DIR__ . "/../Model/dockerUtils.php";
+include_once __DIR__ . "/../Model/diskManager.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/constants.php";
+use Spatie\Async\Pool;
+
 
 # If only the query is set without indicating a problem return to the homepage
-if (!isset($_GET["problem"])) {
+if (!isset($_GET["problem"]) || !isset($_SESSION["user_type"])) {
     redirectLocation();
 }
 $problem_id = $_GET["problem"];
@@ -41,9 +44,14 @@ if (isset($_GET["view-mode"]) && isset($_GET["user"])) {
 
 // Start a new jupyter container for the user if it's needed
 if ($problem['language'] == 'Notebook') {
-    $containerData = runJupyterDocker($_SESSION['email']);
-    $_SESSION['containerId'] = $containerData['containerId'];
-    $_SESSION['containerPort'] = $containerData['containerPort'];
+    if (isset($_SESSION['containerId'])) {
+        $_SESSION['containerUsages'] += 1;
+    } else {
+        $containerData = runJupyterDocker($_SESSION['email']);
+        $_SESSION['containerId'] = $containerData['containerId'];
+        $_SESSION['containerPort'] = $containerData['containerPort'];
+        $_SESSION['containerUsages'] = 1;
+    }
 }
 
 # Get the problem files from the machine
@@ -52,15 +60,14 @@ $problem_route = $problem["route"];
 $cleaned_problem_route = str_replace('\\', '/', realpath(__DIR__ . $problem_route));
 
 # Create the folder for the user if it doesn't already exist
-$user_route = './../app/solucions/' . $email;
-if (!file_exists(__DIR__ . $user_route) &&
-    !mkdir(__DIR__ . $user_route)) {
+$user_route = "./../app/solucions/$email";
+if (!file_exists(__DIR__ . $user_route) && !mkdir(__DIR__ . $user_route)) {
     echo 'Failed to create folder';
 }
 
 # Create the folder of the problem if it doesn't already exist
 $problem_title = $problem["title"];
-$user_solution_route = './../app/solucions/' . $email . "/" . $problem_title;
+$user_solution_route = "./../app/solucions/$email/$problem_title";
 
 if (!file_exists(__DIR__ . $user_solution_route)) {
     if (!mkdir(__DIR__ . $user_solution_route)) {
@@ -70,17 +77,11 @@ if (!file_exists(__DIR__ . $user_solution_route)) {
     $cleaned_user_solution_route = str_replace('\\', '/', realpath(__DIR__ . $user_solution_route));
 
     # Create the files of the problem if the folder was created right now
-    $problem_files = scandir($cleaned_problem_route);
+    $problem_files = getDirectoryFiles($cleaned_problem_route);
     foreach ($problem_files as $file) {
-        if ($file === '.' || $file === "..") {
-            continue;
-        }
-        $path = $cleaned_problem_route . '/' . $file;
-        $peg = $cleaned_user_solution_route . '/' . $file;
-
-        if (is_file($path)) {
-            copy($path, $peg);
-        }
+        $origin = $cleaned_problem_route . '/' . $file;
+        $destination = $cleaned_user_solution_route . '/' . $file;
+        copy($origin, $destination);
     }
 
     if ($_SESSION['user_type'] == STUDENT) {

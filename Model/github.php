@@ -1,7 +1,7 @@
 <?php
 
 use Github\Client, Github\Exception\RuntimeException;
-include_once __DIR__ . '/libs/Github/vendor/autoload.php';
+include_once __DIR__ . '/../vendor/autoload.php';
 include_once __DIR__ . '/diskManager.php';
 include_once __DIR__ . '/exceptions.php';
 

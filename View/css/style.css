@@ -133,12 +133,12 @@ header {
 }
 
 .nav-link, .btn {
-    background-color: var(--themeActiveButtonBGColor);
-    color: var(--themeActiveTextColor);
-    border: 1px solid var(--themeActiveButtonBorderColor);
-    text-align: center;
+    background-color: var(--themeActiveButtonBGColor) !important;
+    color: var(--themeActiveTextColor) !important;
+    border: 1px solid var(--themeActiveButtonBorderColor) !important;
+    text-align: center !important;
     padding: 8px !important;
-    border-radius: 10px;
+    border-radius: 10px !important;
 }
 
 .nav-link {
@@ -146,9 +146,9 @@ header {
 }
 
 .nav-link:hover, .btn:hover {
-    background-color: var(--themeActiveButtonHoverColor);
-    color: var(--themeActiveTextColor);
-    border: 1px solid var(--themeActiveButtonBorderColor);
+    background-color: var(--themeActiveButtonHoverColor) !important;
+    color: var(--themeActiveTextColor) !important;
+    border: 1px solid var(--themeActiveButtonBorderColor) !important;
 }
 
 .navbar-toggler {

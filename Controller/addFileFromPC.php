@@ -7,30 +7,29 @@ include_once __DIR__ . "/../Model/addFilesToProblem.php";
 session_start();
 
 $files = array_filter($_FILES['file']['name']);
-$route = str_replace('\\', '/', realpath($_POST['token']));
+$route = str_replace('\\', '/', realpath($_POST['solution_path']));
+$problemId = $_POST['problem'];
+$rootEdited = $_POST['root_edited'];
 
-if (isset($_POST['edit'])) {
-    # Set the solution as edited for the students
-    setSolutionAsEdited($_POST['problem']);
-}
-
+$problem = getProblemWithId($problemId);
+$subjectId = $problem['subject_id'];
 try {
     uploadFiles($route, $_FILES);
 } catch (WrongFileExtension | FileTooLarge $e) {
     $_SESSION['error'] = $e->getMessage();
-    redirectLocation(query: VIEW_PROBLEM_ERROR_CREATING);
+    redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'error' => 1));
     return;
 } catch (Exception) {
     $_SESSION['error'] = "Error desconegut";
-    redirectLocation(query: VIEW_PROBLEM_ERROR_CREATING);
+    redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'error' => 1));
     return;
 }
 
-$params = array(
-    "problem" => $_POST['problem'],
-);
-if (isset($_POST['edit'])) {
-    $params += ["edit" => 1];
+$params = array("problem" => $problemId);
+if ($rootEdited == 1) {
+    # Set the solution as edited for the students
+    setSolutionAsEdited($problemId);
+    $params['edit'] = 1;
 }
 
 redirectLocation(query:VIEW_EDITOR, params: $params);

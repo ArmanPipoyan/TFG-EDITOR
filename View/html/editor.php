@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="/View/css/external/bootstrap.min.css">
     <link rel="stylesheet" href="/View/css/external/bootstrap-toggle.min.css">
     <link rel="stylesheet" href="/View/css/external/all.css">
-    <link rel="stylesheet" href="/View/css/editor.css"/>
     <link rel="stylesheet" href="/View/css/forms.css"/>
     <link rel="stylesheet" href="/View/css/style.css"/>
+    <link rel="stylesheet" href="/View/css/editor.css"/>
 
     <script src="/View/js/external/jquery.min.js"></script>
     <script src="/View/js/external/popper.min.js"></script>
@@ -32,37 +32,6 @@
 <?php include_once(__DIR__ . '/header.php') ?>
 <?php if (!empty($folder_route)) { ?>
     <p id="folder_route" hidden><?php echo $folder_route ?></p>
-<?php } ?>
-
-<?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
-    <!-- Student sidebar used for the professors -->
-    <?php if (!empty($students)) { ?>
-        <div class="w3-teal ">
-            <button id="menu-button" class="w3-button w3-teal w3-xlarge w3-right">Estudiants &#9776;</button>
-            <?php if (isset($_GET["view-mode"])) { ?>
-                <a class="w3-button w3-teal w3-xlarge w3-right"
-                   href="<?php echo"/index.php?query=7&problem=".$_GET['problem']."&session=".$_GET['session']?>">
-                    Tornar enrere</a>
-            <?php } ?>
-        </div>
-    <?php } ?>
-
-    <div class="w3-sidebar w3-bar-block w3-card  w3-animate-right mt-5" id="student-menu">
-        <ul class="list-group list-group-flush">
-            <?php if (!empty($students)) {
-                foreach ($students as $student) { ?>
-                    <li class="list-group-item d-flex justify-content-between align-items-center ">
-                        <a href="<?php echo "/index.php?query=7&problem=".$_GET['problem']."&view-mode=1&user=".
-                            $student["user"]."&session=".$_GET['session'] ?>"
-                           class="w3-bar-item  w3-button"><?php echo $student["user"] ?></a>
-                        <a href="<?php echo "/index.php?query=7&problem=".$_GET['problem']."&view-mode=2&user=".
-                            $student["user"]."&session=".$_GET['session'] ?>"
-                           class="btn btn-success btn-sm rounded-0" title="Veure"><i class="fas fa-eye"></i></a>
-                    </li>
-                <?php }
-            } ?>
-        </ul>
-    </div>
 <?php } ?>
 
 <div class="container-fluid">
@@ -92,39 +61,71 @@
             soportades </strong>
         <button type="button" class="close" data-dismiss="alert">&times;</button>
     </p>
+    <p class="text-center font-weight-bold problem-title"><?php echo $problem["title"]; ?></p>
 </div>
 
 <div id="editor-container" class="container-fluid">
-    <p class="text-center font-weight-bold"><?php echo $problem["title"]; ?></p>
     <p id="programming_language" hidden><?php echo $problem["language"]; ?></p>
-    <button type="button" class="collapsible add-object">
-        <img class="icon" src="/View/images/description.png" alt="Afegit fitxer">
-    </button>
-    <div class="content"><p><?php echo htmlspecialchars($problem["description"]); ?></p></div>
 
-    <button class="btn" onclick="executeCode()" title="Executar">
-        <img class="icon" src="/View/images/execute.png" alt="Executar">
-    </button>
-    <button class="btn add-object" data-toggle="modal" data-target="#add_file_modal" title="Afegit fitxer">
-        <img class="icon" src="/View/images/file.png" alt="Afegit fitxer">
-    </button>
-    <button id="github-add-file" class="btn github" data-toggle="modal" data-target="#github-form-modal"
-            title="Afegir fitxer desde GitHub">
-        <img class="icon" src="/View/images/file.png" alt="Afegir fitxer desde GitHub">
-    </button>
-    <button id="save" class="btn" onclick="save()" title="Guardar">
-        <img class="icon" src="/View/images/save.png" alt="Guardar"/>
-    </button>
-    <button id="github-upload" class="btn github" data-toggle="modal" data-target="#github-form-modal"
-            title="Pujar a GitHub">
-        <img class="icon github" src="/View/images/save.png" alt="Pujar a GitHub">
-    </button>
+    <div class="editor-sub-container">
+        <button id="execute" class="btn" onclick="executeCode()" title="Executar">
+            <img class="icon" src="/View/images/execute.png" alt="Executar">
+        </button>
+        <?php if($problem["description"]) { ?>
+            <button id="show-description" type="button" class="btn">
+                <img class="icon" src="/View/images/description.png" alt="Descripció">
+            </button>
+        <?php } ?>
+        <button class="btn add-object" data-toggle="modal" data-target="#add_file_modal" title="Afegit fitxer">
+            <img class="icon" src="/View/images/file.png" alt="Afegit fitxer">
+        </button>
+        <button id="github-add-file" class="btn github" data-toggle="modal" data-target="#github-form-modal"
+                title="Afegir fitxer desde GitHub">
+            <img class="icon" src="/View/images/file.png" alt="Afegir fitxer desde GitHub">
+        </button>
+        <button id="save" class="btn" onclick="save()" title="Guardar">
+            <img class="icon" src="/View/images/save.png" alt="Guardar"/>
+        </button>
+        <button id="github-upload" class="btn github" data-toggle="modal" data-target="#github-form-modal"
+                title="Pujar a GitHub">
+            <img class="icon github" src="/View/images/save.png" alt="Pujar a GitHub">
+        </button>
+        <?php if($problem["description"]) { ?>
+            <div class="content"><p><?php echo htmlspecialchars($problem["description"]); ?></p></div>
+        <?php } ?>
 
-    <div id="files" class="mt-1"></div>
-    <div id="editor" contenteditable="true"></div>
-    <div id="notebook"></div>
-
-    <div id="answer"></div>
+        <div id="files" class="mt-1"></div>
+        <div id="editor" contenteditable="true"></div>
+        <div id="notebook"></div>
+        <div id="answer"></div>
+    </div>
+    <?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
+        <div class="students-list">
+            <ul>
+                <?php if (!empty($students)) { ?>
+                    <div class="students-list-header">
+                        <?php if (isset($_GET["view-mode"])) { ?>
+                            <a class="btn"
+                               href="<?php echo"/index.php?query=7&problem=".$_GET['problem']."&session=".$_GET['session']?>">
+                                &#8592;
+                            </a>
+                        <?php } ?>
+                        <h4>Estudiants</h4>
+                    </div>
+                    <?php foreach ($students as $student) { ?>
+                        <li <?php echo $_GET['user'] === $student['user']? "class='selected'": "" ?>>
+                            <a href="<?php echo "/index.php?query=7&problem=".$_GET['problem']."&view-mode=1&user=".
+                                $student["user"]."&session=".$_GET['session'] ?>"
+                               class="btn email"><?php echo $student["user"] ?></a>
+                            <a href="<?php echo "/index.php?query=7&problem=".$_GET['problem']."&view-mode=2&user=".
+                                $student["user"]."&session=".$_GET['session'] ?>"
+                               class="btn view" title="Veure"><i class="fas fa-eye"></i></a>
+                        </li>
+                    <?php }
+                } ?>
+            </ul>
+        </div>
+    <?php } ?>
 </div>
 
 <!--  MODALS -->
@@ -154,65 +155,25 @@
 </div>
 
 <div id="add_file_modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content border-0">
-            <div class="modal-body p-0">
-                <div class="card border-0 p-sm-3 p-2 justify-content-center">
-                    <div class="card-header pb-0 bg-white border-0 ">
-                        <div class="row">
-                            <div class="col ml-auto">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span></button>
-                            </div>
-                        </div>
-                        <p class="font-weight-bold mb-2"> Crear una nova fulla</p>
-                        <p class="text-muted "> Importar fulla des de l'ordinador o un full en blanc.</p>
-                    </div>
-                    <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
-                        <div class="row justify-content-end no-gutters">
-                            <form action="/Controller/addFileFromPC.php" method="post" enctype="multipart/form-data">
-                                <div class="col-auto mr-1">
-                                    <button type="submit" onclick="receiveFile()" class="btn btn-light text-muted"
-                                            data-dismiss="modal">Importar desde l'ordinador
-                                    </button>
-                                </div>
-                                <input type="file" name="file[]" style="display:none;" id="my_file" multiple>
-                                <div class="form-group">
-                                    <input type="hidden" name="token"
-                                           value="<?php if (!empty($cleaned_user_solution_route))
-                                               echo $cleaned_user_solution_route; ?>"/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="hidden" name="problem" value="<?php echo $_GET['problem']; ?>"/>
-                                </div>
-                                <?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"])) { ?>
-                                    <div class="form-group">
-                                        <input type="hidden" name="edit" value="1"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="hidden" name="token"
-                                               value="<?php if (!empty($cleaned_problem_route))
-                                                   echo $cleaned_problem_route; ?>"/>
-                                    </div>
-                                <?php } ?>
-                            </form>
-                            <?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"])) { ?>
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-danger px-4"
-                                            onclick="newFile(1,<?php echo $_GET['problem']; ?>)" data-dismiss="modal">
-                                        Arxiu en blanc
-                                    </button>
-                                </div>
-                            <?php } else { ?>
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-danger px-4"
-                                            onclick="newFile(0,<?php echo $_GET['problem']; ?>)" data-dismiss="modal">
-                                        Arxiu en blanc
-                                    </button>
-                                </div>
-                            <?php } ?>
-                        </div>
-                    </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Importa o crea un nou fitxer</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-buttons">
+                    <form action="/Controller/addFileFromPC.php" method="post" enctype="multipart/form-data">
+                        <button type="submit" onclick="receiveFile()" class="btn" data-dismiss="modal">
+                            Importar
+                        </button>
+                        <input id="new_file" type="file" name="file[]" hidden multiple>
+                        <input type="hidden" name="solution_path" value="<?php echo $folder_route?? ""; ?>"/>
+                    </form>
+                    <button type="button" class="btn" onclick="newFile()" data-dismiss="modal">
+                        Crear nou
+                    </button>
                 </div>
             </div>
         </div>

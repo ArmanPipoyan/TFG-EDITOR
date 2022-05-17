@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/libs/Github/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 use Github\Client;
 
 function authClient(): Client {

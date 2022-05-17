@@ -9,6 +9,7 @@ let editing = 0;
 let problemId;
 let studentMenuClosed = true;
 let userType;
+let viewMode = null;
 let containerPort;
 
 
@@ -38,11 +39,7 @@ $(document).ready(function () {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     problemId = urlParams.get('problem');
-
-    const editInGet = urlParams.get('edit');
-    if (editInGet !== null) {
-        editing = 1;
-    }
+    editing = (urlParams.get('edit') !== null);
 
     let keys = {};
     window.addEventListener("keydown", function (event) {
@@ -69,15 +66,13 @@ $(document).ready(function () {
     })
     // Set the auto check options depending on the user and his actions
     // User type 1 is student and 0 professor
-    if (userType === "1") {
+    if (userType === 1) {
         setInterval(checkChanges, 3000);
-    } else if (userType === "0") {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        let viewMode = urlParams.get('view-mode');
+    } else if (userType === 0) {
+        viewMode = urlParams.get('view-mode');
         // View mode 1 is edit mode and 2 read only
         if (viewMode === "1") {
-                setInterval(save, 4000);
+            setInterval(save, 4000);
         } else if (viewMode === "2") {
             editor.setReadOnly(true);
         }
@@ -91,12 +86,6 @@ $(document).ready(function () {
     } else if (language === 'Python') {
         programmingLanguage = "python";
         editor.session.setMode("ace/mode/python");
-    }
-
-    // Set the right menu onclick event
-    let rightMenu = document.getElementById("menu-button");
-    if (rightMenu) {
-        rightMenu.addEventListener("click", openCloseStudentMenu);
     }
 
     // Customize the form modal depending on the button opening it
@@ -136,6 +125,23 @@ $(document).ready(function () {
         let invoker = $(e.relatedTarget);
         toDeleteFileRoute = invoker.attr('name');
     });
+
+    if ('onbeforeunload' in window) {
+        window.addEventListener('beforeunload', exitFunction, false);
+    } else if ('onpagehide' in window) {
+        window.addEventListener('pagehide', exitFunction, false);
+    } else {
+        window.addEventListener('unload', exitFunction, false);
+    }
+
+    $('#show-description').on('click', function () {
+        let content = $(this).siblings('.content')[0];
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    })
 });
 
 function setSolutionEditingFalse() {
@@ -152,21 +158,14 @@ function setSolutionEditingFalse() {
 
 function rmJupyterDocker() {
     $.ajax({
-        url: "/Controller/removeJupyterDocker.php"
+        url: "/Controller/removeJupyterDocker.php",
     })
 }
 
-$(window).on('beforeunload', function () {
-    //this will work only for Chrome
+function exitFunction () {
     setSolutionEditingFalse();
     rmJupyterDocker();
-});
-
-$(window).on("unload", function () {
-    //this will work for other browsers
-    setSolutionEditingFalse();
-    rmJupyterDocker();
-});
+}
 
 function post(url, data, callback) {
     let xhr = new XMLHttpRequest();
@@ -188,15 +187,6 @@ function post(url, data, callback) {
         data = newObj;
     }
     xhr.send(encodeURI(data));
-}
-
-function openCloseStudentMenu() {
-    let displayValue = 'block';
-    if (!studentMenuClosed) {
-        displayValue = 'none';
-    }
-    document.getElementById("student-menu").style.setProperty('display', displayValue);
-    studentMenuClosed = !studentMenuClosed;
 }
 
 function openFiler() {
@@ -275,6 +265,7 @@ function openFile(fileName) {
         let notebookContainer = document.getElementById("notebook");
         let editorContainer = document.getElementById("editor");
         let outputContainer = document.getElementById("answer");
+        let executeButton = document.getElementById("execute");
 
         // Clear the notebooks container
         if (notebookContainer.hasChildNodes()) {
@@ -282,6 +273,7 @@ function openFile(fileName) {
         }
 
         if (fileExtension === 'ipynb') {
+            executeButton.setAttribute("hidden", "");
             // Remove the editor and the output views
             editorContainer.style.display = "none";
             outputContainer.style.display = "none";
@@ -289,10 +281,11 @@ function openFile(fileName) {
             let iframe = document.createElement("iframe");
             let fileLocation = fileName.split("/").slice(-2).join("/");
             iframe.setAttribute("src", `http://localhost:${containerPort}/tree/${fileLocation}`);
-            iframe.setAttribute("height", "500px");
+            iframe.setAttribute("height", "800px");
             iframe.setAttribute("width", "100%");
             notebookContainer.appendChild(iframe);
         } else {
+            executeButton.removeAttribute("hidden");
             editorContainer.style.display = "block";
             outputContainer.style.display = "block";
             if (fileExtension === "cpp") {
@@ -322,10 +315,12 @@ function openFolder() {
     });
 }
 
-function newFile(edited, problem) {
+function newFile() {
+    let edited = (userType === 0 && editing === 1);
+
     let filename = prompt("Nom del fitxer");
     if (filename) {
-        post("newFile.php", {filename, dir: encodeURIComponent(folderRoute), edited, problem}, function (data) {
+        post("newFile.php", {filename, dir: encodeURIComponent(folderRoute), edited, problemId}, function (data) {
             if (data === true) {
                 openFolder(folderRoute);
             }
@@ -369,7 +364,7 @@ function deleteFile() {
 }
 
 function receiveFile() {
-    let control = document.getElementById('my_file')
+    let control = document.getElementById('new_file');
     control.click();
     control.onchange = function (event) {
         let fileList = control.files;
@@ -381,16 +376,26 @@ function receiveFile() {
             alert("Selecciona els arxius del problema");
             return false;
         }
+        let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt|\.ipynb)$/i;
         for (let i = 0; i < control.files.length; i++) {
             let file = control.files[i];
             let FileName = file.name;
             let FileExt = FileName.substr(FileName.lastIndexOf('.'));
-            let allowedExtensionsRegx = /(\.cpp|\.h|\.py|\.python|\.txt|\.ipynb)$/i;
             let isAllowed = allowedExtensionsRegx.test(FileExt);
             if (!isAllowed) {
                 return false;
             }
         }
+
+        // Set additional fields
+        $("<input />").attr("type", "hidden")
+            .attr("name", "root_edited")
+            .attr("value", editing)
+            .appendTo(this.form);
+        $("<input />").attr("type", "hidden")
+            .attr("name", "problem")
+            .attr("value", problemId)
+            .appendTo(this.form);
         this.form.submit();
     };
 }
