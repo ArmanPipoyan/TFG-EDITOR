@@ -8,10 +8,10 @@ $title = $_POST["title"];
 $description = $_POST["description"];
 $course = $_POST["course"];
 
-$created = createSubject($title, $description, $course);
-if (!$created) {
+$subjectId = createSubject($title, $description, $course);
+if ($subjectId == -1) {
     $_SESSION['error'] = "Assignatura '$title' no creada";
     redirectLocation(params: array('error' => 1));
 }
 
-redirectLocation(params: array('created' => 1));
+redirectLocation(params: array('created' => $subjectId));

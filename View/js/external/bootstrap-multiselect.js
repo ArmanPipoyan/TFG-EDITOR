@@ -396,7 +396,7 @@
             nonSelectedText: 'Cap seleccionat',
             nSelectedText: 'selecctionats',
             allSelectedText: 'Tots seleccionats',
-            numberDisplayed: 1,
+            numberDisplayed: 2,
             disableIfEmpty: false,
             disabledText: '',
             delimiterText: ', ',

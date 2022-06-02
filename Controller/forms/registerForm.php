@@ -1,8 +1,16 @@
 <?php
 require_once __DIR__ . '/../../Model/constants.php';
 
-if (isset($_GET['error'])) {
-    $formPage['error'] = "L'email ja està sent utilitzat";
+$error = $_GET['error'];
+if (isset($error)) {
+    if ($error == 1) {
+        $message = "L'email ja està sent utilitzat";
+    } else if ($error == 2) {
+        $message = "El token ja ha sigut utilitzat o no existeix";
+    } else {
+        $message = "Error desconegut";
+    }
+    $formPage['error'] = $message;
 }
 
 $formPage['validationJS'] = 'userManagement.js';

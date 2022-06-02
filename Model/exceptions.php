@@ -9,7 +9,7 @@ class GitHubFileDoesNotExist extends RuntimeException {
 
 class SpecifiedUrlNotADirectory extends RuntimeException {
     public function __construct($url, $code = 0) {
-        $message = "L'URL no apunta a un directori: $url";
+        $message = "L'URL no apunta a un directori: " . urldecode($url);
         return parent::__construct($message, $code);
     }
 }

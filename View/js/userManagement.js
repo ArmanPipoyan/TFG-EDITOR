@@ -31,8 +31,8 @@ function validateRegister() {
     let name = document.getElementById("first_name").value;
     let surname = document.getElementById("last_name").value;
     let email = document.getElementById("email").value;
-    let password = document.getElementById("email").value;
-    let password2 = document.getElementById("email_confirmation").value;
+    let password = document.getElementById("password").value;
+    let password2 = document.getElementById("password_confirmation").value;
     let error = document.getElementById("error_msg");
     let onlyLettersRegex = /^[A-Z]+$/i;
 
@@ -78,5 +78,16 @@ function validateRegister() {
         }
         error.innerHTML = "Els cognoms només poden contenir lletres";
         return false;
+    }
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    let token = urlParams.get('token');
+    if (token !== null) {
+        let form = $('form')[0];
+        $("<input />").attr("type", "hidden")
+            .attr("name", "token")
+            .attr("value", token)
+            .appendTo(form);
     }
 }

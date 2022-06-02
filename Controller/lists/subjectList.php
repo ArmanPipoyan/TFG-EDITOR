@@ -21,6 +21,10 @@ if (isset($_GET['error'])) {
     $listPage['errorMessage'] = "Inicia sessió o registra't";
 } else if (isset($_GET['deleted'])) {
     $listPage['infoMessage'] = "L'assignatura s'ha esborrat";
+} else if (isset($_GET['logged'])) {
+    $listPage['infoMessage'] = "Sessió iniciada";
+} else if (isset($_GET['registered'])) {
+    $listPage['infoMessage'] = "Compte creat";
 }
 
 // Classify the items and create a list for each element of the list

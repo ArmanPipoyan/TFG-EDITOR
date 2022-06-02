@@ -3,6 +3,7 @@
         "knplabs/github-api": "3.0",
         "symfony/http-client": "^6.0",
         "nyholm/psr7": "^1.5",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+      "ext-curl": "*"
     }
 }

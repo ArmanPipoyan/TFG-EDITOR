@@ -59,7 +59,7 @@
     <p class="alert alert-warning" hidden id="root_modified"><strong>El professor està editant </strong></p>
     <p class="alert alert-danger" hidden id="error_msg_libraries"><strong>Les llibreries que s'estàn utilitzant no estàn
             soportades </strong>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <button id="error_msg_libraries_btn" type="button" class="close">&times;</button>
     </p>
     <p class="text-center font-weight-bold problem-title"><?php echo $problem["title"]; ?></p>
 </div>

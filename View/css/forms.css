@@ -95,16 +95,20 @@
 }
 
 .input, .multiselect {
-    color: var(--themeActiveFormTextColor);
-    background-color: var(--themeActiveFormFieldBGColor);
+    color: var(--themeActiveFormTextColor) !important;
+    background-color: var(--themeActiveFormFieldBGColor) !important;
     border-radius: 12px;
     border: 0;
     box-sizing: border-box;
     font-size: 18px;
     height: 50px;
     outline: 0;
-    padding: 4px 20px 0;
+    padding: 4px 20px 0 !important;
     width: 100%;
+}
+
+.multiselect {
+    text-align-last: left;
 }
 
 .custom-file-label, .custom-file-input {
