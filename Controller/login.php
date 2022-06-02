@@ -18,4 +18,4 @@ if (!$loggedIn) {
     }
 }
 
-redirectLocation();
+redirectLocation(params:array('logged' => 1));

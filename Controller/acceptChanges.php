@@ -2,23 +2,22 @@
 session_start();
 include_once __DIR__ . "/../Model/connection.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
+include_once __DIR__ . "/../Model/diskManager.php";
 
 $email = $_SESSION['email'];
-$problem_id = $_POST["id"];
+$problemId = $_POST["id"];
+$problem = getProblemWithId($problemId);
 
-$problem = getProblemWithId($problem_id);
-$route=$problem["route"];
-$full_route = str_replace('\\', '/', realpath(__DIR__ . $route));
-$files = scandir($full_route);
+$subjectId = $problem['subject_id'];
+$solutionRoute = str_replace('\\', '/',
+    realpath(__DIR__ . "./../app/solucions/$email/$subjectId/".$problem["title"]));
 
-
-$new_route=str_replace('\\', '/', realpath(__DIR__ . "./../app/solucions/$email/".$problem["title"]));
-unsetSolutionEdited($problem_id, $email);
+$problemRoute = str_replace('\\', '/', realpath(__DIR__ . $problem["route"]));
+$files = getDirectoryFiles($problemRoute);
 foreach($files as $file) {
-    if($file === '.' || $file === "..") {continue;}
-    $path = $full_route .'/'. $file;
-    $peg=$new_route. '/' .$file;
-    if(is_file($path)) {
-      copy($path, $peg);
-    }
-  }
+    $origin = "$problemRoute/$file";
+    $destination = "$solutionRoute/$file";
+    copy($origin, $destination);
+}
+
+unsetSolutionEdited($problemId, $email);

@@ -1,7 +1,7 @@
 <?php
-function createSubject($title, $description, $course) : bool
+function createSubject($title, $description, $course) : int
 {
-    $created = false;
+    $subjectId = -1;
     try {
         $connection = connectDB();
 
@@ -10,12 +10,12 @@ function createSubject($title, $description, $course) : bool
         );
         $statement->execute(array(":title" => $title, ":description" => $description, ":course" => $course));
 
+        $subjectId = $connection->lastInsertId();
         $connection = null;
-        $created = true;
     } catch (Exception $e) {
         echo "Error creating the subject: " . $e->getMessage();
     }
-    return $created;
+    return $subjectId;
 }
 
 function deleteSubject($subjectId) : bool

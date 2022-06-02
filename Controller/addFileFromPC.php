@@ -9,7 +9,7 @@ session_start();
 $files = array_filter($_FILES['file']['name']);
 $route = str_replace('\\', '/', realpath($_POST['solution_path']));
 $problemId = $_POST['problem'];
-$rootEdited = $_POST['root_edited'];
+$rootEdited = filter_var($_POST['root_edited'], FILTER_VALIDATE_BOOLEAN);
 
 $problem = getProblemWithId($problemId);
 $subjectId = $problem['subject_id'];
@@ -26,7 +26,7 @@ try {
 }
 
 $params = array("problem" => $problemId);
-if ($rootEdited == 1) {
+if ($rootEdited) {
     # Set the solution as edited for the students
     setSolutionAsEdited($problemId);
     $params['edit'] = 1;

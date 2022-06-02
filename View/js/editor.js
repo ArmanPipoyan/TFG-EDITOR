@@ -7,7 +7,6 @@ let readOnly = false;
 let toDeleteFileRoute;
 let editing = 0;
 let problemId;
-let studentMenuClosed = true;
 let userType;
 let viewMode = null;
 let containerPort;
@@ -142,6 +141,11 @@ $(document).ready(function () {
             content.style.display = "block";
         }
     })
+
+    $('#error_msg_libraries_btn').on('click', function () {
+        let alert = document.getElementById('error_msg_libraries');
+        $(alert).attr("hidden", "");
+    })
 });
 
 function setSolutionEditingFalse() {
@@ -224,7 +228,7 @@ function executeCode() {
     let text = editor.getSession().getValue();
     let answer = document.getElementById("answer");
     if (text.includes("import os") || text.includes("import sys")) {
-        document.getElementById("error_msg_libraries").toggleAttribute('hidden');
+        document.getElementById("error_msg_libraries").removeAttribute("hidden");
         return false;
     }
     let currentDocumentName = currentDocumentPath.split('/').pop();
@@ -279,7 +283,7 @@ function openFile(fileName) {
             outputContainer.style.display = "none";
             // Create a new iframe with the src of the file and append it to its container
             let iframe = document.createElement("iframe");
-            let fileLocation = fileName.split("/").slice(-2).join("/");
+            let fileLocation = fileName.split("/").slice(-3).join("/");
             iframe.setAttribute("src", `http://localhost:${containerPort}/tree/${fileLocation}`);
             iframe.setAttribute("height", "800px");
             iframe.setAttribute("width", "100%");
@@ -316,16 +320,15 @@ function openFolder() {
 }
 
 function newFile() {
-    let edited = (userType === 0 && editing === 1);
+    let edited = (userType === 0 && editing);
 
     let filename = prompt("Nom del fitxer");
     if (filename) {
         post("newFile.php", {filename, dir: encodeURIComponent(folderRoute), edited, problemId}, function (data) {
-            if (data === true) {
+            if (data === "1") {
                 openFolder(folderRoute);
             }
         });
-        location.reload();
     }
 }
 
@@ -407,7 +410,7 @@ function acceptChanges(id) {
         data: {
             id: id,
         },
-        success: function () {
+        success: function (response) {
             location.reload();
         }
     })

@@ -122,10 +122,15 @@
     background-color: transparent;
 }
 
-.navbar-nav, .navbar {
+#files {
+    overflow-x: scroll;
+}
+
+#files .navbar-nav, #files .navbar {
     flex-direction: row;
     margin-bottom: 0;
     padding-bottom: 0;
+    width: 100px;
 }
 
 .navbar-nav li {

@@ -10,7 +10,8 @@ $formPage['fields'] = [
     array('type' => 'text', 'id' => 'title', 'placeholder' => "Títol de l'assignatura", 'required' => 'required'),
     array('type' => 'number', 'id' => 'course', 'placeholder' => 'Curs on es realitzarà', 'min' => 1, 'max' => 10,
         'required' => 'required'),
-    array('type' => 'textarea', 'id' => 'description', 'placeholder' => "Descripció de l'assignatura", 'rows' => 3)
+    array('type' => 'textarea', 'id' => 'description', 'placeholder' => "Descripció de l'assignatura", 'rows' => 3,
+        'required' => 'required')
 ];
 $formPage['submitText'] = 'Crear';
 

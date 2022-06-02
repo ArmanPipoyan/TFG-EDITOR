@@ -47,9 +47,13 @@ function downloadDirectoryFromGithub(Client $client, string $repoLink, int $subj
     $repository = $repositoryInformation['repository'];
     $path = $repositoryInformation['path'];
 
+    if ($path == "") {
+        throw new SpecifiedUrlNotADirectory($repoLink);
+    }
+
     $pathContent = getPathContent($client, $owner, $repository, $path);
     if (isset($pathContent['type'])) {
-        throw new SpecifiedUrlNotADirectory($path);
+        throw new SpecifiedUrlNotADirectory($repoLink);
     }
 
     $route = createProblemDirectory($subjectId, $path);

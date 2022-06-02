@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/connection.php';
 
 function registerStudent($name, $surname, $email, $hash_password) : bool
 {
@@ -33,16 +34,16 @@ function setTokenUsed($token) : bool
     $valid = false;
     try {
         $connection = connectDB();
-        $statement = $connection->prepare("SELECT * FROM tokens WHERE value= :email and usage = 0");
-        $statement->execute(array(":email" => $token));
+        $statement = $connection->prepare("SELECT * FROM tokens AS t WHERE t.value=:token and t.usage=0");
+        $statement->execute(array(":token" => $token));
         $token_row = $statement->fetchColumn();
         // The token doesn't exist, or it's no longer available
         if (!$token_row) {
             return false;
         }
 
-        $stmt = $connection->prepare("UPDATE tokens SET usage=1 WHERE value= :email and usage = 0");
-        $stmt->execute(array(":email" => $token));
+        $stmt = $connection->prepare("UPDATE tokens AS t SET t.usage=1 WHERE t.value=:token and t.usage=0");
+        $stmt->execute(array(":token" => $token));
 
         $valid = true;
         $connection = null;

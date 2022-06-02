@@ -12,34 +12,34 @@ $email = $_POST["email"];
 $password = $_POST["password"];
 $password2 = $_POST["password_confirmation"];
 $hash_password = password_hash($password, PASSWORD_DEFAULT);
+$token = $_POST["token"];
 
 $taken = isEmailTaken($email);
 if($taken) {
-    $params = array(
-        "error" => 3,
-    );
-    if (isset($_POST["token"])) {
-        $params += ["token" => $_POST["token"]];
+    $params['error'] = 1;
+    if (isset($token)) {
+        $params['token'] = $token;
     }
     redirectLocation(query: VIEW_REGISTER_FORM, params: $params);
-}
-
-$student = 1;
-if (isset($_POST["token"])) {
-    $token = $_POST["token"];
-    $token_marked = setTokenUsed($token);
-
-    if (!$token_marked) {
-        redirectLocation(query: VIEW_REGISTER_FORM, params: array("error" => 2));
-    }
-
-    $registered = registerProfessor($name, $surname, $email, $hash_password);
-}
-$registered = registerStudent($name, $surname, $email, $hash_password);
-
-if (!$registered) {
-    echo "The user was not created";
     return;
 }
 
-redirectLocation();
+$student = 1;
+if (isset($token)) {
+    $token_marked = setTokenUsed($token);
+    if (!$token_marked) {
+        redirectLocation(query: VIEW_REGISTER_FORM, params: array("error" => 2));
+        return;
+    }
+
+    $registered = registerProfessor($name, $surname, $email, $hash_password);
+} else {
+    $registered = registerStudent($name, $surname, $email, $hash_password);
+}
+
+if (!$registered) {
+    redirectLocation(query: VIEW_REGISTER_FORM, params: array("error" => 3));
+    return;
+}
+
+redirectLocation(params:array('registered' => 1));

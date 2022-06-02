@@ -10,16 +10,17 @@ $dir = str_replace('\\', '/', realpath(urldecode($_POST['dir'])));
 
 if ($edited == 1) {
     setSolutionAsEdited($problem);
-} else {
-    echo "There no changes to the root";
 }
 
 $dst = $dir . '/' . $filename;
 //Check if it should be a folder or file
-if (strpos($filename, '.') > 1) {
+echo $filename;
+if (strpos($filename, '.') == 1) {
     if (touch($dst)) {
         echo true;
     } else {
-        echo 'Failed to create file';
+        echo false;
     }
 }
+
+echo false;
