@@ -15,7 +15,7 @@ For running each sample code:
 
 - <a href="https://www.python.org/downloads/">Python 3.7</a>
 - <a href="https://numpy.org/install/">Visual Studio Code</a>
-- Phpmyadmin with PHP 8.1.3
+- Apache, PHP 8.1.3 and Mysql stack
 - G++
 - Python
 - <a href="https://jupyter.org/install">Docker</a>
