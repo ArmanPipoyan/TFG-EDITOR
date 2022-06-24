@@ -13,26 +13,23 @@ One of the biggest problems teachers face in programming is supervising students
 # Requeriments <a name="R"></a>
 For running each sample code:
 
-- <a href="https://www.apachefriends.org/es/index.html">Xampp</a>
 - <a href="https://www.python.org/downloads/">Python 3.7</a>
 - <a href="https://numpy.org/install/">Visual Studio Code</a>
-- Phpmyadmin with PHP 8.1
+- Phpmyadmin with PHP 8.1.3
 - G++
 - Python
-- <a href="https://jupyter.org/install">Jupyter Notebook</a>
+- <a href="https://jupyter.org/install">Docker</a>
 
 ## INSTALLATION GUIDE:
-1. Install Xampp
-2. Install Python3
-3. Install G++
-4. Install Jupyter Notebook
-5. Clone this repo
-6. Save this folder in htdocs folder
-7. Start Jupyter Notebook in the ./app/solucions/ directory
-8. Start Xampp and load Apache and MySQL
-9. Go to http://localhost/phpmyadmin/index.php
-10. Import the Database with the file "webtfg.sql"
-11. Start working in localhost
+1. <a href="https://jupyter.org/install](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-20-04-es">Install Apache, PHP and Mysql (The project name should be tfg)</a>
+2. Set the mysql password in the file Model/connection.php
+3. Load the content of "webtfg.sql" to a DB calle webtfg.
+4. Create a Github OAuth App with repo premissions and set the variables in githubApiToken.json.
+5. Clone this repo to /var/www/tfg/
+6. Install Python 3
+7. Install G++
+8. Install Docker
+9. Start working in localhost
 
 # Description <a name="2"></a>
 
