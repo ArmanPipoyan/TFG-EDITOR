@@ -21,7 +21,7 @@ For running each sample code:
 - <a href="https://jupyter.org/install">Docker</a>
 
 ## INSTALLATION GUIDE:
-1. <a href="https://jupyter.org/install](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-20-04-es">Install Apache, PHP and Mysql (The project name should be tfg)</a>
+1. <a href="https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-20-04-es">Install Apache, PHP and Mysql (The project name should be tfg)</a>
 2. Set the mysql password in the file Model/connection.php
 3. Load the content of "webtfg.sql" to a DB calle webtfg.
 4. Create a Github OAuth App with repo premissions and set the variables in githubApiToken.json.
