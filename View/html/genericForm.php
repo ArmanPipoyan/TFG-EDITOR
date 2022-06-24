@@ -39,14 +39,14 @@
             <?php } else {
                 if(isset($formPage['subtitle'])) { ?>
                     <p class="subtitle"><?php echo $formPage['subtitle'] ?></p>
-                <?php } ?>
-                <div class="container">
-                    <p class="alert alert-danger" <?php echo isset($formPage['error'])? "": "hidden"; ?> id="error_msg">
-                        <?php echo $formPage['error'] ?>
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </p>
-                </div>
-                <?php foreach($formPage['fields'] as $field) {
+                <?php } if(isset($formPage['error'])) { ?>
+                    <div class="container">
+                        <p class="alert alert-danger" id="error_msg">
+                            <?php echo $formPage['error'] ?>
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        </p>
+                    </div>
+                <?php } foreach($formPage['fields'] as $field) {
                     if ($field['type'] === 'row') { ?>
                         <div class="form-row">
                             <?php foreach($field['fields'] as $formField) { ?>

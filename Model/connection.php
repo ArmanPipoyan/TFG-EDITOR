@@ -3,7 +3,7 @@ function connectDB(): ?PDO
 {
     $connection = null;
     $username = "root";
-    $password = "";
+    $password = "password1234";
     try {
         $connection = new PDO('mysql:host=localhost;dbname=webtfg', $username, $password);
         if (mysqli_connect_errno()) {

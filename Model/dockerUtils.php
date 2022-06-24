@@ -7,19 +7,18 @@ function runJupyterDocker($user): array {
     // Find a port that is not being used by any other container
     do {
         $port = rand(1024, 49151);
-        exec("docker ps -la | findstr $port", $result);
+        exec("docker ps -la | grep $port", $result);
     } while($result === "");
 
     // Create the container with the used and port values
-    $scriptPath = realpath(__DIR__ . "/../jupyter/runJupyterDocker.bat");
-    $handle = popen("start /B ". $scriptPath . ' ' . $user . ' ' . $port, "r");
-    $containerId = fread($handle, 2096);
-    pclose($handle);
+    $scriptPath = exec("realpath " . __DIR__ . "/../jupyter/runJupyterDocker.sh");
+    $containerId = shell_exec("$scriptPath $user $port");
+    sleep(2);
 
     return array('containerId' => $containerId, 'containerPort' => $port);
 }
 
 function rmJupyterDocker($id) {
-    $scriptPath = realpath(__DIR__ . "/../jupyter/rmJupyterDocker.bat");
-    pclose(popen("start /B ". $scriptPath . ' ' . $id, "r"));
+    $scriptPath = exec("realpath " . __DIR__ . "/../jupyter/rmJupyterDocker.sh");
+    shell_exec("$scriptPath $id");
 }

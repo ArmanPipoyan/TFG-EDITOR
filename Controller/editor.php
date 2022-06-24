@@ -46,7 +46,7 @@ if ($problem['language'] == 'Notebook') {
     if (isset($_SESSION['containerId'])) {
         $_SESSION['containerUsages'] += 1;
     } else {
-        $containerData = runJupyterDocker($_SESSION['email']);
+        $containerData = runJupyterDocker($email);
         $_SESSION['containerId'] = $containerData['containerId'];
         $_SESSION['containerPort'] = $containerData['containerPort'];
         $_SESSION['containerUsages'] = 1;
@@ -55,11 +55,11 @@ if ($problem['language'] == 'Notebook') {
 
 # Get the problem files from the machine
 $subject = $problem["subject_id"];
-$problem_route = $problem["route"];
-$cleaned_problem_route = str_replace('\\', '/', realpath(__DIR__ . $problem_route));
+$problem_route = trim("/".$problem["route"]);
+$cleaned_problem_route = exec("realpath " . escapeshellarg(__DIR__ . $problem_route));
 
 # Create the folder for the user if it doesn't already exist
-$user_route = "./../app/solucions/$email";
+$user_route = "/../app/solucions/$email";
 if (!file_exists(__DIR__ . $user_route) && !mkdir(__DIR__ . $user_route)) {
     echo 'Failed to create folder';
 }
@@ -70,7 +70,7 @@ if (!file_exists(__DIR__ . $user_subject_route) && !mkdir(__DIR__ . $user_subjec
 }
 
 # Create the folder of the problem if it doesn't already exist
-$problem_title = $problem["title"];
+$problem_title = trim($problem["title"]);
 $user_solution_route = "$user_subject_route/$problem_title";
 
 if (!file_exists(__DIR__ . $user_solution_route)) {
@@ -82,6 +82,7 @@ if (!file_exists(__DIR__ . $user_solution_route)) {
 
     # Create the files of the problem if the folder was created right now
     $problem_files = getDirectoryFiles($cleaned_problem_route);
+
     foreach ($problem_files as $file) {
         $origin = $cleaned_problem_route . '/' . $file;
         $destination = $cleaned_user_solution_route . '/' . $file;

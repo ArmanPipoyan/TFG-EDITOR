@@ -1,17 +1,17 @@
 <?php if(!empty($listPage)) { ?>
     <!DOCTYPE html>
-    <html lang="es" xmlns="http://www.w3.org/1999/html">
+    <html lang="es" xmlns="https://www.w3.org/1999/html">
     <head>
         <meta charset="UTF-8">
         <title>TFG - <?php echo $listPage['title'] ?></title>
-    
+
         <link rel="shortcut icon" href="/View/images/favicon.png">
         <link rel="stylesheet" href="/View/css/external/bootstrap.min.css">
         <link rel="stylesheet" href="/View/css/external/bootstrap-toggle.min.css">
         <link rel="stylesheet" href="/View/css/external/all.css">
         <link rel="stylesheet" href="/View/css/style.css"/>
         <link rel="stylesheet" href="/View/css/forms.css"/>
-    
+
         <script src="/View/js/external/jquery.min.js"></script>
         <script src="/View/js/external/popper.min.js"></script>
         <script src="/View/js/external/bootstrap.min.js"></script>

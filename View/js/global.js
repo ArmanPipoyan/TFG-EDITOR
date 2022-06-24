@@ -2,7 +2,7 @@ function generateToken() {
     $.ajax({
         url: "/Model/tokenGenerator.php",
         success: function (response) {
-            document.getElementById("invitation_link").value = "localhost/index.php?query=3&token=" + response;
+            document.getElementById("invitation_link").value = "158.109.64.206/index.php?query=3&token=" + response;
         }
     })
 }

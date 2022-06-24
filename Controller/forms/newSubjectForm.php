@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../Model/constants.php';
 
+$formPage['extraOptions'] = [];
+$formPage['customJS'] = [];
 $formPage['validationJS'] = 'subjectValidation.js';
 $formPage['action'] = '/Controller/subjectNew.php';
 $formPage['onSubmit'] = 'validateSubject()';

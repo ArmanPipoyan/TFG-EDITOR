@@ -2,7 +2,7 @@
     --iconSize: 36px;
 
     /* Colors used in the dark theme */
-    --themeDarkCollapseIcon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3e%3cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    --themeDarkCollapseIcon: url("data:image/svg+xml,%3csvg xmlns='https://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3e%3cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     --themeDarkScrollbarColor: rgb(170, 170, 170);
     --themeDarkScrollbarHoverColor: rgb(150, 150, 150);
     --themeDarkHeaderBGColor: rgb(35, 35, 35);
@@ -20,7 +20,7 @@
     --themeDarkTextColor: rgb(255, 255, 255);
 
     /* Colors used in the light theme */
-    --themeLightCollapseIcon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    --themeLightCollapseIcon: url("data:image/svg+xml,%3csvg xmlns='https://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     --themeLightScrollbarColor: rgb(190, 190, 190);
     --themeLightScrollbarHoverColor: rgb(175, 175, 175);
     --themeLightHeaderBGColor: rgb(255, 255, 255);

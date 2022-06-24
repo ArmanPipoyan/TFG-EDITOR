@@ -9,6 +9,7 @@ $sessions = getActiveSessions(subjectId: $subjectId);
 
 $listPage['title'] = 'Sessions actives';
 $listPage['customJS'] = 'session.js';
+$listPage['headerButtons'] = [];
 
 // Classify the items and create a list for each element of the list
 foreach ($sessions as $session) {
@@ -20,7 +21,7 @@ foreach ($sessions as $session) {
         $item['buttons'][] = array('type' => 'modalToggle', 'title' => 'Duplicar',
             'target' => 'duplicate_session_modal', 'image' => 'clone', 'alt' => 'Duplicar Sessió');
         $item['buttons'][] = array('type' => 'js', 'title' => 'Esborrar', 'onClick' => "deleteSession($sessionId)",
-            'image' => 'trash', 'alt' => 'Esborrar Sessió');
+            'image' => 'trash', 'alt' => 'Esborrar Sessió', 'classes'=>'');
     }
     $listPage['items'][] = $item;
 }

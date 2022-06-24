@@ -44,10 +44,10 @@ foreach ($problems as $problem) {
     if ($_SESSION['user_type'] === PROFESSOR) {
         $item['buttons'][] = array('type' => 'a',
             'href' => buildUrl(VIEW_PROBLEM_EDIT, array('problem' => $problemId)),
-            'image' => 'configure', 'alt' => 'Editar problema');
+            'image' => 'configure', 'alt' => 'Editar problema', 'classes' => '');
         $item['buttons'][] = array('type' => 'a',
             'href' => buildUrl(VIEW_EDITOR, array('problem' => $problemId, 'edit' => 1)),
-            'image' => 'edit-source', 'alt' => 'Editar codi');
+            'image' => 'edit-source', 'alt' => 'Editar codi', 'classes' => '');
         $visibilityImage = $problem['visibility'] == 'Private'? 'not-visible': 'visible';
         $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility','title' => 'Canviar visibilitat',
             'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');

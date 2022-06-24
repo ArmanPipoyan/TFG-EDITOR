@@ -12,7 +12,7 @@ $filePath = '"' . $route . "/" . $fileToExecute . '"';
 
 
 if ($language == "python") {
-    $output = shell_exec("py $filePath 2>&1");
+    $output = shell_exec("python3 $filePath 2>&1");
     echo "<pre>";
     print_r($output);
     echo "</pre>";
@@ -28,22 +28,16 @@ if ($language == "python") {
             if (is_file($path) && isset(pathinfo($path)['extension'])) {
                 $ext = pathinfo($path)['extension'];
                 if ($ext === "cpp") {
-                    $filePath = $filePath . ' "' . $path . '"';
+                    $filePath = $filePath . " " .  escapeshellarg($path);
                 }
             }
         }
     }
     $random = substr(md5(mt_rand()), 0, 7);
-    $outputExe = '"' . $dir . "/" . $random . ".exe" . '"';
-    $errors = exec("g++  $filePath -O3 -Wall -o $outputExe 2>&1", $result);
-    if (empty($result)) {
-        $finalDir = $dir . "/";
-        chdir($finalDir);
-
-        $executable = $random . ".exe";
-        $result = shell_exec("$executable");
-        unlink($executable);
-    }
+    $outputFile = escapeshellarg("$dir/$random");
+    shell_exec("g++ $filePath -O3 -Wall -o $outputFile");
+    $result = shell_exec("$outputFile");
+    unlink("$dir/$random");
     echo "<pre>";
     print_r($result);
     echo "</pre>";

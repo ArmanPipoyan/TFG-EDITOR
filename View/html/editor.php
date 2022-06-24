@@ -3,7 +3,7 @@
 } ?>
 
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/html">
+<html lang="es" xmlns="https://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>TFG - Editor</title>

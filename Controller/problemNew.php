@@ -6,6 +6,7 @@ include_once __DIR__ . "/../Model/redirectionUtils.php";
 include_once __DIR__ . "/../Model/problemNew.php";
 include_once __DIR__ . "/../Model/addFilesToProblem.php";
 
+
 $title = $_POST['title'];
 $description = $_POST['description'];
 $max_memory_usage = $_POST['max_memory_usage'];
@@ -21,8 +22,8 @@ if (problemTitleExists($title)) {
     return;
 }
 
-$subjectRoute = "./../app/problemes/$subjectId/"; 
-$problemRoute = $subjectRoute . $_POST['title'];
+$subjectRoute = "../app/problemes/$subjectId/";
+$problemRoute = trim($subjectRoute . $_POST['title']);
 $problemId = createProblem(route: $problemRoute, title: $title, description: $description,
     max_memory_usage: $max_memory_usage, visibility: $visibility, max_execution_time: $max_execution_time,
     language: $language, subject: $subjectId);
@@ -34,7 +35,7 @@ if ($problemId === -1) {
     return;
 }
 
-if (!file_exists($problemRoute)) {
+if (!file_exists($subjectRoute)) {
     mkdir($subjectRoute);
 }
 # Create the folder of the problem, by default with 0777 permission

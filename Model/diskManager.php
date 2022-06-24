@@ -29,7 +29,8 @@ function createProblemFile(string $directory, string $fileName, string $content)
 
 function getDirectoryFiles(string $directory): array {
     // Get all items
-    $directoryItems = scandir(realpath($directory));
+    $realDirectory = str_replace("\n", "", shell_exec("realpath " . escapeshellarg($directory)));
+    $directoryItems = scandir($realDirectory);
     // Remove the . and ..
     $dotsRemovedItems = array_diff($directoryItems, array('..', '.'));
     // Remove the directories

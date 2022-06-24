@@ -284,7 +284,7 @@ function openFile(fileName) {
             // Create a new iframe with the src of the file and append it to its container
             let iframe = document.createElement("iframe");
             let fileLocation = fileName.split("/").slice(-3).join("/");
-            iframe.setAttribute("src", `http://localhost:${containerPort}/tree/${fileLocation}`);
+            iframe.setAttribute("src", `https://158.109.64.206:${containerPort}/tree/${fileLocation}`);
             iframe.setAttribute("height", "800px");
             iframe.setAttribute("width", "100%");
             notebookContainer.appendChild(iframe);

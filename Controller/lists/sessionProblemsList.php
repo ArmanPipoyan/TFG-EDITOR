@@ -1,5 +1,4 @@
 <?php
-session_start();
 include_once __DIR__ . "/../../Model/constants.php";
 include_once __DIR__ . "/../../Model/connection.php";
 include_once __DIR__ . "/../../Model/problemsGet.php";
@@ -16,13 +15,15 @@ if ($userType == STUDENT) {
 
 $listPage['title'] = 'Problemes de la sessió';
 $listPage['customJS'] = 'problemsList.js';
+$listPage['modals'] = [];
+$listPage['headerButtons'] = [];
 
 // Classify the items and create a list for each element of the list
 foreach ($problems as $problem) {
     $problemId = $problem['id'];
     $item = array('id' => $problemId,
         'href' => buildUrl(VIEW_EDITOR, array('session' => $sessionId, 'problem' => $problemId)),
-        'title' => $problem['title']);
+        'title' => $problem['title'], 'buttons' => []);
     $listPage['items'][] = $item;
 }
 

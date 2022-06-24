@@ -29,5 +29,6 @@ if (empty($selectorOptions)) {
     ];
     $formPage['submitText'] = 'Crear sessió';
 }
+$formPage['extraOptions'] = [];
 
 require_once __DIR__ . '/../../View/html/genericForm.php';
