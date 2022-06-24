@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-06-2022 a las 15:09:23
+-- Tiempo de generación: 24-06-2022 a las 09:20:44
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.3
 
@@ -158,10 +158,10 @@ CREATE TABLE `solution` (
 --
 
 INSERT INTO `solution` (`id`, `route`, `problem_id`, `subject_id`, `user`, `editing`, `edited`) VALUES
-(107, '/var/www/tfg/app/solucions/namesurname@mail.com/6/problema de prova', 69, 6, 'namesurname@mail.com', 0, 0),
-(109, '/var/www/tfg/app/solucions/namesurname@mail.com/0/Progamació de classes i headers', 46, 0, 'namesurname@mail.com', 0, 0),
-(110, '/var/www/tfg/app/solucions/namesurname@mail.com/6/New problem', 130, 6, 'namesurname@mail.com', 0, 0),
-(111, '/var/www/tfg/app/solucions/namesurname@mail.com/0/Llibreria numpy', 47, 0, 'namesurname@mail.com', 0, 0);
+(107, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/6/problema de prova', 69, 6, 'namesurname@mail.com', 0, 0),
+(109, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/0/Progamació de classes i headers', 46, 0, 'namesurname@mail.com', 0, 0),
+(110, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/6/New problem', 130, 6, 'namesurname@mail.com', 0, 0),
+(111, 'D:/xampp/htdocs/app/solucions/namesurname@mail.com/0/Llibreria numpy', 47, 0, 'namesurname@mail.com', 0, 0);
 
 -- --------------------------------------------------------
 
