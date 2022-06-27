@@ -25,7 +25,7 @@ For running each sample code:
 1. <a href="https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-20-04-es">Install Apache, PHP and Mysql (The project name should be tfg)</a>
 2. Run 'composer update' to install all the dependencies.
 3. Set the mysql password in the file Model/connection.php
-4. Load the content of "webtfg.sql" to a DB calle webtfg.
+4. Load the content of "webtfg.sql" to a DB named webtfg.
 5. Create a Github OAuth App with repo premissions and set the variables in githubApiToken.json.
 6. Clone this repo to /var/www/tfg/
 7. Install Python 3
