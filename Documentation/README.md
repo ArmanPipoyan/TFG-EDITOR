@@ -1,4 +1,4 @@
-1. TFG_Proposta_Final_1530274.pdf is the main memory of the TFG.
+1. TFG_Proposta_Final_1530274.pdf is the draft of the main memory of the TFG while TFG_Memoria_1530274.pdf is final version of the memory.
 
 2. TFG_How_To_JupyterHub_1530274.pdf is a 'How To' that explains the changes needed to integrate the teaching tool with JupyterHub, 
 allowing the users to view and modify '.ipynb' files.
