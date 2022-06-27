@@ -7,3 +7,5 @@ allowing the users to view and modify '.ipynb' files.
 
 4. In the directory Diagrams we have all the diagrams used in the memory in full scale.
 There are 3 use case diagrams representing the already implemented funcionalities, the added ones and a diagram where all the use cases are merged.
+
+5. TFG_Inicial_1530274.pdf, TFG_Proges1_1530274.pdf and TFG_Proges2_1530274.pdf are the 3 progress reports deliviered while working on the project.
